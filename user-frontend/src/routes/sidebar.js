@@ -17,21 +17,20 @@ const routes = [
     name: "Courses",
   },
   {
+    path: "/app/students",
+    icon: "PeopleIcon",
+    name: "Students",
+  },
+  {
     path: "/app/results",
     icon: "FormsIcon",
     name: "Results",
   },
-
   {
     path: "/app/exams",
     icon: "ChartsIcon",
     name: "Reports",
   },
-  {
-    path: "/app/payments",
-    icon: "MoneyIcon",
-    name: "Payments",
-  }
 ];
 
 export default routes;
