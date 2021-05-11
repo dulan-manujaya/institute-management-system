@@ -22,14 +22,14 @@ import React, { useContext, useEffect, useState } from "react";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import { ToastContainer } from "react-toastify";
-import variables from "../common/globalVariables";
-import PageTitle from "../components/Typography/PageTitle";
-import SectionTitle from "../components/Typography/SectionTitle";
+import variables from "../../common/globalVariables";
+import PageTitle from "../../components/Typography/PageTitle";
+import SectionTitle from "../../components/Typography/SectionTitle";
 // import { TeacherContext } from "../context/Context.Index";
-import { EditIcon, TrashIcon, UploadIcon } from "../icons";
-import ToastMessage from "../messages/HandleMessages";
+import { EditIcon, TrashIcon, UploadIcon } from "../../icons";
+import ToastMessage from "../../messages/HandleMessages";
 
-const Courses = () => {
+const Payments = () => {
   // const { loggedInUser } = useContext(TeacherContext);
   const { loggedInUser } = useState();
   const [courses, setCourses] = useState([]);
@@ -182,7 +182,7 @@ const Courses = () => {
 
   return (
     <>
-      <PageTitle>Courses</PageTitle>
+      <PageTitle>Payments</PageTitle>
       {/* <div className="mb-4">
         <Button size="larger" onClick={openModal}>
           Add New Assignment
@@ -213,53 +213,31 @@ const Courses = () => {
         </>
       ) : (
         <>
-          <SectionTitle>Enrolled Courses</SectionTitle>
+          <SectionTitle>Upcoming Payments</SectionTitle>
           <TableContainer className="mb-4">
             <Table>
               <TableHeader>
                 <tr className="text-gray-700 dark:text-gray-200">
-                  <TableCell>Title</TableCell>
-                  <TableCell>Enrolled Date</TableCell>
+                  <TableCell>Name</TableCell>
+                  <TableCell>Due Date</TableCell>
+                  <TableCell>Amount</TableCell>
                   <TableCell>Actions</TableCell>
                 </tr>
               </TableHeader>
               <TableBody>
                 <TableRow key="1" className="text-gray-700 dark:text-gray-300">
                   <TableCell>
-                    <span className="text-sm">Science - Grade 8</span>
+                    <span className="text-sm">July 2021</span>
                   </TableCell>
                   <TableCell>
-                    <span className="text-sm">10-Jun-2021</span>
+                    <span className="text-sm">01-Jul-2021</span>
                   </TableCell>
                   <TableCell>
-                    <div className="flex items-center space-x-4">
-                      <Button size="small">Results</Button>
-                    </div>
-                  </TableCell>
-                </TableRow>
-                <TableRow key="1" className="text-gray-700 dark:text-gray-300">
-                  <TableCell>
-                    <span className="text-sm">Maths - Grade 8</span>
-                  </TableCell>
-                  <TableCell>
-                    <span className="text-sm">10-Jun-2021</span>
+                    <span className="text-sm">Rs. 2000.00</span>
                   </TableCell>
                   <TableCell>
                     <div className="flex items-center space-x-4">
-                    <Button size="small">Results</Button>
-                    </div>
-                  </TableCell>
-                </TableRow>
-                <TableRow key="1" className="text-gray-700 dark:text-gray-300">
-                  <TableCell>
-                    <span className="text-sm">Computing - Grade 8</span>
-                  </TableCell>
-                  <TableCell>
-                    <span className="text-sm">10-Jun-2021</span>
-                  </TableCell>
-                  <TableCell>
-                    <div className="flex items-center space-x-4">
-                    <Button size="small">Results</Button>
+                      <Button size="small">Pay</Button>
                     </div>
                   </TableCell>
                 </TableRow>
@@ -274,40 +252,48 @@ const Courses = () => {
               />
             </TableFooter>
           </TableContainer>
-          <SectionTitle>Other Courses</SectionTitle>
-          <TableContainer className="mb-4">
+          <SectionTitle>Previous Payments</SectionTitle>
+          <TableContainer>
             <Table>
               <TableHeader>
                 <tr className="text-gray-700 dark:text-gray-200">
-                  <TableCell>Title</TableCell>
-                  <TableCell>Tutor</TableCell>
+                  <TableCell>Name</TableCell>
+                  <TableCell>Paid On</TableCell>
+                  <TableCell>Amount</TableCell>
                   <TableCell>Actions</TableCell>
                 </tr>
               </TableHeader>
+
               <TableBody>
                 <TableRow key="1" className="text-gray-700 dark:text-gray-300">
                   <TableCell>
-                    <span className="text-sm">Science - Grade 9</span>
+                    <span className="text-sm">May 2021</span>
                   </TableCell>
                   <TableCell>
-                    <span className="text-sm">Mrs. Dinithi Weerawansha</span>
+                    <span className="text-sm">01-May-2021</span>
+                  </TableCell>
+                  <TableCell>
+                    <span className="text-sm">Rs. 2000.00</span>
                   </TableCell>
                   <TableCell>
                     <div className="flex items-center space-x-4">
-                    <Button size="small">Enroll</Button>
+                      <Button size="small">View Receipt</Button>
                     </div>
                   </TableCell>
                 </TableRow>
                 <TableRow key="1" className="text-gray-700 dark:text-gray-300">
                   <TableCell>
-                    <span className="text-sm">Maths - Grade 9</span>
+                    <span className="text-sm">June 2021</span>
                   </TableCell>
                   <TableCell>
-                    <span className="text-sm">Mr. Lakmal Perera</span>
+                    <span className="text-sm">01-Jun-2021</span>
+                  </TableCell>
+                  <TableCell>
+                    <span className="text-sm">Rs. 2000.00</span>
                   </TableCell>
                   <TableCell>
                     <div className="flex items-center space-x-4">
-                    <Button size="small">Enroll</Button>
+                      <Button size="small">View Receipt</Button>
                     </div>
                   </TableCell>
                 </TableRow>
@@ -423,4 +409,4 @@ const Courses = () => {
   );
 };
 
-export default Courses;
+export default Payments;

@@ -3,13 +3,13 @@ import { lazy } from 'react'
 // use lazy for better code splitting, a.k.a. load faster
 const Dashboard = lazy(() => import('../pages/Dashboard'))
 const Profile = lazy(() => import('../pages/Profile'))
-const Results = lazy(() => import('../pages/Results'))
-const Exams = lazy(() => import('../pages/Exams'))
-const Courses = lazy(() => import('../pages/Courses'))
-const Payments = lazy(() => import('../pages/Payments'))
+const StudentResults = lazy(() => import('../pages/student/Results'))
+const StudentExams = lazy(() => import('../pages/student/Exams'))
+const StudentCourses = lazy(() => import('../pages/student/Courses'))
+const StudentPayments = lazy(() => import('../pages/student/Payments'))
 const Charts = lazy(() => import('../pages/Charts'))
 const Buttons = lazy(() => import('../pages/Buttons'))
-const Enrollment = lazy(() => import('../pages/Enrollments'))
+const StudentEnrollment = lazy(() => import('../pages/student/Enrollments'))
 const PendingStudents = lazy(() => import('../pages/PendingStudents'))
 const Page404 = lazy(() => import('../pages/404'))
 const Blank = lazy(() => import('../pages/Blank'))
@@ -35,19 +35,19 @@ const routes = [
   },
   {
     path: '/results',
-    component: Results,
+    component: StudentResults,
   },
   {
     path: '/exams',
-    component: Exams,
+    component: StudentExams,
   },
   {
     path: '/courses',
-    component: Courses,
+    component: StudentCourses,
   },
   {
     path: '/payments',
-    component: Payments,
+    component: StudentPayments,
   },
   {
     path: '/charts',
@@ -59,7 +59,7 @@ const routes = [
   },
   {
     path: '/enrollment',
-    component: Enrollment,
+    component: StudentEnrollment,
   },
   {
     path: '/pending-students',

@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 
-import PageTitle from "../components/Typography/PageTitle";
+import PageTitle from "../../components/Typography/PageTitle";
 import { Label, Select } from "@windmill/react-ui";
 
 function Enrollment() {
