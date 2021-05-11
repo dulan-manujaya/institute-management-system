@@ -54,7 +54,7 @@ function Header() {
       setStudentId(sid);
     } catch (err) {
       console.log(err);
-      // history.push("/login");
+      history.push("/login");
     }
   };
 
