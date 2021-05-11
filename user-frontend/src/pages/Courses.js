@@ -226,58 +226,40 @@ const Courses = () => {
               <TableBody>
                 <TableRow key="1" className="text-gray-700 dark:text-gray-300">
                   <TableCell>
-                    <span className="text-sm">Science</span>
+                    <span className="text-sm">Science - Grade 8</span>
                   </TableCell>
                   <TableCell>
                     <span className="text-sm">10-Jun-2021</span>
                   </TableCell>
                   <TableCell>
                     <div className="flex items-center space-x-4">
-                      <Button size="small">Assignments</Button>
-                      <Button size="small" onClick={openModal}>
-                        Exams
-                      </Button>
-                      <Button size="small" onClick={openModal}>
-                        Payments
-                      </Button>
+                      <Button size="small">Results</Button>
                     </div>
                   </TableCell>
                 </TableRow>
                 <TableRow key="1" className="text-gray-700 dark:text-gray-300">
                   <TableCell>
-                    <span className="text-sm">Maths</span>
+                    <span className="text-sm">Maths - Grade 8</span>
                   </TableCell>
                   <TableCell>
                     <span className="text-sm">10-Jun-2021</span>
                   </TableCell>
                   <TableCell>
                     <div className="flex items-center space-x-4">
-                      <Button size="small">Assignments</Button>
-                      <Button size="small" onClick={openModal}>
-                        Exams
-                      </Button>
-                      <Button size="small" onClick={openModal}>
-                        Payments
-                      </Button>
+                    <Button size="small">Results</Button>
                     </div>
                   </TableCell>
                 </TableRow>
                 <TableRow key="1" className="text-gray-700 dark:text-gray-300">
                   <TableCell>
-                    <span className="text-sm">Computing</span>
+                    <span className="text-sm">Computing - Grade 8</span>
                   </TableCell>
                   <TableCell>
                     <span className="text-sm">10-Jun-2021</span>
                   </TableCell>
                   <TableCell>
                     <div className="flex items-center space-x-4">
-                      <Button size="small">Assignments</Button>
-                      <Button size="small" onClick={openModal}>
-                        Exams
-                      </Button>
-                      <Button size="small" onClick={openModal}>
-                        Payments
-                      </Button>
+                    <Button size="small">Results</Button>
                     </div>
                   </TableCell>
                 </TableRow>
@@ -298,65 +280,34 @@ const Courses = () => {
               <TableHeader>
                 <tr className="text-gray-700 dark:text-gray-200">
                   <TableCell>Title</TableCell>
-                  <TableCell>Enrolled Date</TableCell>
+                  <TableCell>Tutor</TableCell>
                   <TableCell>Actions</TableCell>
                 </tr>
               </TableHeader>
               <TableBody>
                 <TableRow key="1" className="text-gray-700 dark:text-gray-300">
                   <TableCell>
-                    <span className="text-sm">Science</span>
+                    <span className="text-sm">Science - Grade 9</span>
                   </TableCell>
                   <TableCell>
-                    <span className="text-sm">10-Jun-2021</span>
+                    <span className="text-sm">Mrs. Dinithi Weerawansha</span>
                   </TableCell>
                   <TableCell>
                     <div className="flex items-center space-x-4">
-                      <Button size="small">Assignments</Button>
-                      <Button size="small" onClick={openModal}>
-                        Exams
-                      </Button>
-                      <Button size="small" onClick={openModal}>
-                        Payments
-                      </Button>
+                    <Button size="small">Enroll</Button>
                     </div>
                   </TableCell>
                 </TableRow>
                 <TableRow key="1" className="text-gray-700 dark:text-gray-300">
                   <TableCell>
-                    <span className="text-sm">Maths</span>
+                    <span className="text-sm">Maths - Grade 9</span>
                   </TableCell>
                   <TableCell>
-                    <span className="text-sm">10-Jun-2021</span>
-                  </TableCell>
-                  <TableCell>
-                    <div className="flex items-center space-x-4">
-                      <Button size="small">Assignments</Button>
-                      <Button size="small" onClick={openModal}>
-                        Exams
-                      </Button>
-                      <Button size="small" onClick={openModal}>
-                        Payments
-                      </Button>
-                    </div>
-                  </TableCell>
-                </TableRow>
-                <TableRow key="1" className="text-gray-700 dark:text-gray-300">
-                  <TableCell>
-                    <span className="text-sm">Computing</span>
-                  </TableCell>
-                  <TableCell>
-                    <span className="text-sm">10-Jun-2021</span>
+                    <span className="text-sm">Mr. Lakmal Perera</span>
                   </TableCell>
                   <TableCell>
                     <div className="flex items-center space-x-4">
-                      <Button size="small">Assignments</Button>
-                      <Button size="small" onClick={openModal}>
-                        Exams
-                      </Button>
-                      <Button size="small" onClick={openModal}>
-                        Payments
-                      </Button>
+                    <Button size="small">Enroll</Button>
                     </div>
                   </TableCell>
                 </TableRow>
