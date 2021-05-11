@@ -108,7 +108,6 @@ const CreateAccount = () => {
     setStudentDob("");
     setStudentGender("Male");
     setSubmitted(false);
-
   };
 
   const formValidations = () => {
@@ -139,33 +138,27 @@ const CreateAccount = () => {
       alert("Please upload a picture for your avatar", "error");
       isValid = false;
       return isValid;
-    }
-    else if (studentPassword == "" || studentPassword == null) {
+    } else if (studentPassword == "" || studentPassword == null) {
       alert("Please enter a password", "error");
       isValid = false;
       return isValid;
-    }
-    else if (studentPassword.length < 6 ) {
+    } else if (studentPassword.length < 6) {
       alert("The password entered is less than 6 characters", "error");
       isValid = false;
       return isValid;
-    }
-    else if (studentPassword != studentConfirmPassword) {
+    } else if (studentPassword != studentConfirmPassword) {
       alert("The two password fields don't have matching passwords", "error");
       isValid = false;
       return isValid;
-    }
-    else if (studentMobile == "" || studentMobile == null) {
+    } else if (studentMobile == "" || studentMobile == null) {
       alert("Please enter your mobile number", "error");
       isValid = false;
       return isValid;
-    }
-    else if (studentDob == "" || studentDob == null) {
+    } else if (studentDob == "" || studentDob == null) {
       alert("Please enter/select your date of birth", "error");
       isValid = false;
       return isValid;
-    }
-    else if (studentGender == "" || studentGender == null) {
+    } else if (studentGender == "" || studentGender == null) {
       alert("Please select a Gender", "error");
       isValid = false;
       return isValid;
@@ -181,12 +174,12 @@ const CreateAccount = () => {
   return (
     <>
       <div className="min-h-screen p-6 dark:bg-gray-900">
-        <div className="flex justify-center mb-4">
+        {/* <div className="flex justify-center mb-4">
           <img className="object-center" width="200px" src={logo}></img>
-        </div>
+        </div> */}
         <div className="flex-1 h-full max-w-6xl mx-auto overflow-hidden bg-white rounded-lg dark:bg-gray-800">
           <div className="ml-4 mr-4">
-            <PageTitle>Create Account</PageTitle>
+            <PageTitle>Create Student Account</PageTitle>
             <form
               onSubmit={async (e) => {
                 e.preventDefault();
@@ -284,7 +277,7 @@ const CreateAccount = () => {
                       </p>
                     ) : null}
                   </div>
-                  <div className="md:w-full px-3">
+                  {/* <div className="md:w-full px-3">
                     <label
                       className="block uppercase tracking-wide text-gray-400 text-xs font-bold mb-2"
                       htmlFor="grid-grade"
@@ -314,7 +307,7 @@ const CreateAccount = () => {
                         Please fill out this field.
                       </p>
                     ) : null}
-                  </div>
+                  </div> */}
                   <div className="md:w-full px-3">
                     <label
                       className="block uppercase tracking-wide text-gray-400 text-xs font-bold mb-2"
@@ -459,6 +452,55 @@ const CreateAccount = () => {
                     ) : null}
                   </div>
                 </div>
+                <div className="-mx-3 md:flex mb-6">
+                  <div className="md:w-1/2 px-3 mb-6 md:mb-0">
+                    <label
+                      className="block uppercase tracking-wide text-gray-400 text-xs font-bold mb-2"
+                      htmlFor="grid-first-name"
+                    >
+                      Guardian Email
+                    </label>
+                    <Input
+                      className="appearance-none block w-full bg-grey-lighter text-grey-darker border border-red rounded py-3 px-4"
+                      id="grid-email"
+                      type="email"
+                      autoComplete="nope"
+                      placeholder="example@example.com"
+                      value={studentEmail}
+                      onChange={(e) => {
+                        setStudentEmail(e.target.value);
+                      }}
+                    />
+                    {!submitted ? null : !studentEmail ? (
+                      <p className="text-red-400 text-xs italic">
+                        Please fill out this field.
+                      </p>
+                    ) : null}
+                  </div>
+                  <div className="md:w-1/2 px-3 mb-6 md:mb-0">
+                    <label
+                      className="block uppercase tracking-wide text-gray-400 text-xs font-bold mb-2"
+                      htmlFor="grid-city"
+                    >
+                      Guardian Mobile
+                    </label>
+                    <Input
+                      className="appearance-none block w-full bg-grey-lighter text-grey-darker border border-grey-lighter rounded py-3 px-4"
+                      id="grid-city"
+                      type="text"
+                      placeholder="07xxxxxxxx"
+                      value={studentMobile}
+                      onChange={(e) => {
+                        setStudentMobile(e.target.value);
+                      }}
+                    />
+                    {!submitted ? null : !studentMobile ? (
+                      <p className="text-red-400 text-xs italic">
+                        Please fill out this field.
+                      </p>
+                    ) : null}
+                  </div>
+                </div>
                 <div className="flex justify-end space-x-4 mt-4">
                   <button
                     className="mr-5 bg-red-600 hover:bg-red-800 text-white font-bold py-2 px-6 rounded-md"
@@ -472,7 +514,7 @@ const CreateAccount = () => {
                     onClick={() => setSubmitted(true)}
                     className="mr-5 bg-green-600 hover:bg-green-800 text-white font-bold py-2 px-6 rounded-lg"
                   >
-                    Submit Student
+                    Create Student
                   </button>
                 </div>
               </div>
