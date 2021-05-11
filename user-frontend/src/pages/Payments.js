@@ -218,7 +218,7 @@ const Payments = () => {
             <Table>
               <TableHeader>
                 <tr className="text-gray-700 dark:text-gray-200">
-                  <TableCell>Course</TableCell>
+                  <TableCell>Name</TableCell>
                   <TableCell>Due Date</TableCell>
                   <TableCell>Amount</TableCell>
                   <TableCell>Actions</TableCell>
@@ -227,10 +227,10 @@ const Payments = () => {
               <TableBody>
                 <TableRow key="1" className="text-gray-700 dark:text-gray-300">
                   <TableCell>
-                    <span className="text-sm">Physics - Jun 2021</span>
+                    <span className="text-sm">July 2021</span>
                   </TableCell>
                   <TableCell>
-                    <span className="text-sm">11-Jun-2021</span>
+                    <span className="text-sm">01-Jul-2021</span>
                   </TableCell>
                   <TableCell>
                     <span className="text-sm">Rs. 2000.00</span>
@@ -257,7 +257,7 @@ const Payments = () => {
             <Table>
               <TableHeader>
                 <tr className="text-gray-700 dark:text-gray-200">
-                  <TableCell>Course</TableCell>
+                  <TableCell>Name</TableCell>
                   <TableCell>Paid On</TableCell>
                   <TableCell>Amount</TableCell>
                   <TableCell>Actions</TableCell>
@@ -267,7 +267,7 @@ const Payments = () => {
               <TableBody>
                 <TableRow key="1" className="text-gray-700 dark:text-gray-300">
                   <TableCell>
-                    <span className="text-sm">Maths - May 2021</span>
+                    <span className="text-sm">May 2021</span>
                   </TableCell>
                   <TableCell>
                     <span className="text-sm">01-May-2021</span>
@@ -283,7 +283,7 @@ const Payments = () => {
                 </TableRow>
                 <TableRow key="1" className="text-gray-700 dark:text-gray-300">
                   <TableCell>
-                    <span className="text-sm">Science - Jun 2021</span>
+                    <span className="text-sm">June 2021</span>
                   </TableCell>
                   <TableCell>
                     <span className="text-sm">01-Jun-2021</span>

@@ -213,6 +213,7 @@ const Courses = () => {
         </>
       ) : (
         <>
+          <SectionTitle>Enrolled Courses</SectionTitle>
           <TableContainer className="mb-4">
             <Table>
               <TableHeader>
@@ -233,9 +234,12 @@ const Courses = () => {
                   <TableCell>
                     <div className="flex items-center space-x-4">
                       <Button size="small">Assignments</Button>
-                      <Button size="small" onClick={openModal}>Exams</Button>
-                      <Button size="small" onClick={openModal}>Payments</Button>
-                      
+                      <Button size="small" onClick={openModal}>
+                        Exams
+                      </Button>
+                      <Button size="small" onClick={openModal}>
+                        Payments
+                      </Button>
                     </div>
                   </TableCell>
                 </TableRow>
@@ -249,9 +253,12 @@ const Courses = () => {
                   <TableCell>
                     <div className="flex items-center space-x-4">
                       <Button size="small">Assignments</Button>
-                      <Button size="small" onClick={openModal}>Exams</Button>
-                      <Button size="small" onClick={openModal}>Payments</Button>
-                      
+                      <Button size="small" onClick={openModal}>
+                        Exams
+                      </Button>
+                      <Button size="small" onClick={openModal}>
+                        Payments
+                      </Button>
                     </div>
                   </TableCell>
                 </TableRow>
@@ -265,14 +272,94 @@ const Courses = () => {
                   <TableCell>
                     <div className="flex items-center space-x-4">
                       <Button size="small">Assignments</Button>
-                      <Button size="small" onClick={openModal}>Exams</Button>
-                      <Button size="small" onClick={openModal}>Payments</Button>
-                      
+                      <Button size="small" onClick={openModal}>
+                        Exams
+                      </Button>
+                      <Button size="small" onClick={openModal}>
+                        Payments
+                      </Button>
                     </div>
                   </TableCell>
                 </TableRow>
-
-                
+              </TableBody>
+            </Table>
+            <TableFooter>
+              <Pagination
+                totalResults={totalResults}
+                resultsPerPage={resultsPerPage}
+                label="Table navigation"
+                onChange={onPageChange}
+              />
+            </TableFooter>
+          </TableContainer>
+          <SectionTitle>Other Courses</SectionTitle>
+          <TableContainer className="mb-4">
+            <Table>
+              <TableHeader>
+                <tr className="text-gray-700 dark:text-gray-200">
+                  <TableCell>Title</TableCell>
+                  <TableCell>Enrolled Date</TableCell>
+                  <TableCell>Actions</TableCell>
+                </tr>
+              </TableHeader>
+              <TableBody>
+                <TableRow key="1" className="text-gray-700 dark:text-gray-300">
+                  <TableCell>
+                    <span className="text-sm">Science</span>
+                  </TableCell>
+                  <TableCell>
+                    <span className="text-sm">10-Jun-2021</span>
+                  </TableCell>
+                  <TableCell>
+                    <div className="flex items-center space-x-4">
+                      <Button size="small">Assignments</Button>
+                      <Button size="small" onClick={openModal}>
+                        Exams
+                      </Button>
+                      <Button size="small" onClick={openModal}>
+                        Payments
+                      </Button>
+                    </div>
+                  </TableCell>
+                </TableRow>
+                <TableRow key="1" className="text-gray-700 dark:text-gray-300">
+                  <TableCell>
+                    <span className="text-sm">Maths</span>
+                  </TableCell>
+                  <TableCell>
+                    <span className="text-sm">10-Jun-2021</span>
+                  </TableCell>
+                  <TableCell>
+                    <div className="flex items-center space-x-4">
+                      <Button size="small">Assignments</Button>
+                      <Button size="small" onClick={openModal}>
+                        Exams
+                      </Button>
+                      <Button size="small" onClick={openModal}>
+                        Payments
+                      </Button>
+                    </div>
+                  </TableCell>
+                </TableRow>
+                <TableRow key="1" className="text-gray-700 dark:text-gray-300">
+                  <TableCell>
+                    <span className="text-sm">Computing</span>
+                  </TableCell>
+                  <TableCell>
+                    <span className="text-sm">10-Jun-2021</span>
+                  </TableCell>
+                  <TableCell>
+                    <div className="flex items-center space-x-4">
+                      <Button size="small">Assignments</Button>
+                      <Button size="small" onClick={openModal}>
+                        Exams
+                      </Button>
+                      <Button size="small" onClick={openModal}>
+                        Payments
+                      </Button>
+                    </div>
+                  </TableCell>
+                </TableRow>
               </TableBody>
             </Table>
             <TableFooter>
