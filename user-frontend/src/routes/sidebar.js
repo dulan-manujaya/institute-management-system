@@ -17,7 +17,7 @@ const routes = [
     name: "Courses",
   },
   {
-    path: "/app/assignments",
+    path: "/app/results",
     icon: "FormsIcon",
     name: "Results",
   },

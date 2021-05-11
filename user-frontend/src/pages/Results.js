@@ -29,7 +29,7 @@ import SectionTitle from "../components/Typography/SectionTitle";
 import { EditIcon, TrashIcon, UploadIcon } from "../icons";
 import ToastMessage from "../messages/HandleMessages";
 
-const Assignments = () => {
+const Results = () => {
   // const { loggedInUser } = useContext(TeacherContext);
   const { loggedInUser } = useState();
   const [courses, setCourses] = useState([]);
@@ -182,7 +182,7 @@ const Assignments = () => {
 
   return (
     <>
-      <PageTitle>Assignments</PageTitle>
+      <PageTitle>Results</PageTitle>
       {/* <div className="mb-4">
         <Button size="larger" onClick={openModal}>
           Add New Assignment
@@ -213,7 +213,6 @@ const Assignments = () => {
         </>
       ) : (
         <>
-          <SectionTitle>Upcoming Assignments</SectionTitle>
           <TableContainer className="mb-4">
             <Table>
               <TableHeader>
@@ -221,31 +220,25 @@ const Assignments = () => {
                   <TableCell>Title</TableCell>
                   <TableCell>Course</TableCell>
                   <TableCell>Uploaded On</TableCell>
-                  <TableCell>Deadline</TableCell>
                   <TableCell>Actions</TableCell>
                 </tr>
               </TableHeader>
               <TableBody>
                 <TableRow key="1" className="text-gray-700 dark:text-gray-300">
                   <TableCell>
-                    <span className="text-sm">
-                      Monthly Assingment - Jun 2021
-                    </span>
+                    <span className="text-sm">Monthly Exam - Jun 2021</span>
                   </TableCell>
                   <TableCell>
-                    <span className="text-sm">Maths</span>
+                    <span className="text-sm">Maths - Grade 8</span>
                   </TableCell>
                   <TableCell>
                     <span className="text-sm">01-May-2021</span>
                   </TableCell>
                   <TableCell>
-                    <span className="text-sm">30-Jun-2021</span>
-                  </TableCell>
-                  <TableCell>
                     <div className="flex items-center space-x-4">
                       <a target="_blank" href="facebook.com">
                         {" "}
-                        <Button size="small">Submit</Button>
+                        <Button size="small">View</Button>
                       </a>
                       {/* <Button layout="link" size="icon" aria-label="Edit">
                         <EditIcon className="w-5 h-5" aria-hidden="true" />
@@ -258,24 +251,19 @@ const Assignments = () => {
                 </TableRow>
                 <TableRow key="1" className="text-gray-700 dark:text-gray-300">
                   <TableCell>
-                    <span className="text-sm">
-                      MidTerm Assingment - May 2021
-                    </span>
+                    <span className="text-sm">MidTerm Exam - May 2021</span>
                   </TableCell>
                   <TableCell>
-                    <span className="text-sm">Physics</span>
+                    <span className="text-sm">Computing - Grade 8</span>
                   </TableCell>
                   <TableCell>
                     <span className="text-sm">01-May-2021</span>
-                  </TableCell>
-                  <TableCell>
-                    <span className="text-sm">30-May-2021</span>
                   </TableCell>
                   <TableCell>
                     <div className="flex items-center space-x-4">
                       {" "}
                       <Button size="small" onClick={openModal}>
-                        Submit
+                        View
                       </Button>
                       {/* <Button layout="link" size="icon" aria-label="Edit">
                         <EditIcon className="w-5 h-5" aria-hidden="true" />
@@ -283,130 +271,6 @@ const Assignments = () => {
                       <Button layout="link" size="icon" aria-label="Delete">
                         <TrashIcon className="w-5 h-5" aria-hidden="true" />
                       </Button> */}
-                    </div>
-                  </TableCell>
-                </TableRow>
-              </TableBody>
-            </Table>
-            <TableFooter>
-              <Pagination
-                totalResults={totalResults}
-                resultsPerPage={resultsPerPage}
-                label="Table navigation"
-                onChange={onPageChange}
-              />
-            </TableFooter>
-          </TableContainer>
-          <SectionTitle>Previous Assignments</SectionTitle>
-          <TableContainer>
-            <Table>
-              <TableHeader>
-                <tr className="text-gray-700 dark:text-gray-200">
-                  <TableCell>Title</TableCell>
-                  <TableCell>Course</TableCell>
-                  <TableCell>Submitted On</TableCell>
-                  <TableCell>Deadline</TableCell>
-                  <TableCell>Actions</TableCell>
-                </tr>
-              </TableHeader>
-
-              <TableBody>
-                {/* {data.map((submission, i) => (
-                  <TableRow
-                    key={i}
-                    className="text-gray-700 dark:text-gray-300"
-                  >
-                    <TableCell>
-                      <span className="text-sm">{submission.title}</span>
-                    </TableCell>
-                    <TableCell>
-                      <span className="text-sm">{submission.course_name}</span>
-                    </TableCell>
-                    <TableCell>
-                      <span className="text-sm">
-                        {new Date(
-                          submission.submitted_date
-                        ).toLocaleDateString()}
-                      </span>
-                    </TableCell>
-                    <TableCell>
-                      <span className="text-sm">
-                        {new Date(submission.deadline).toLocaleDateString()}
-                      </span>
-                    </TableCell>
-                    <TableCell>
-                      <div className="flex items-center space-x-4">
-                        <a target="_blank" href={submission.paper_url}>
-                          {" "}
-                          <Button size="small">View</Button>
-                        </a>
-                        <Button layout="link" size="icon" aria-label="Edit">
-                          <EditIcon className="w-5 h-5" aria-hidden="true" />
-                        </Button>
-                        <Button layout="link" size="icon" aria-label="Delete">
-                          <TrashIcon className="w-5 h-5" aria-hidden="true" />
-                        </Button>
-                      </div>
-                    </TableCell>
-                  </TableRow>
-                ))} */}
-                <TableRow key="1" className="text-gray-700 dark:text-gray-300">
-                  <TableCell>
-                    <span className="text-sm">
-                      Monthly Assingment - May 2021
-                    </span>
-                  </TableCell>
-                  <TableCell>
-                    <span className="text-sm">Maths</span>
-                  </TableCell>
-                  <TableCell>
-                    <span className="text-sm">01-May-2021</span>
-                  </TableCell>
-                  <TableCell>
-                    <span className="text-sm">02-May-2021</span>
-                  </TableCell>
-                  <TableCell>
-                    <div className="flex items-center space-x-4">
-                      <a target="_blank" href="facebook.com">
-                        {" "}
-                        <Button size="small">View</Button>
-                      </a>
-                      <Button layout="link" size="icon" aria-label="Edit">
-                        <EditIcon className="w-5 h-5" aria-hidden="true" />
-                      </Button>
-                      <Button layout="link" size="icon" aria-label="Delete">
-                        <TrashIcon className="w-5 h-5" aria-hidden="true" />
-                      </Button>
-                    </div>
-                  </TableCell>
-                </TableRow>
-                <TableRow key="1" className="text-gray-700 dark:text-gray-300">
-                  <TableCell>
-                    <span className="text-sm">
-                      Daily Homework - 10 May 2021
-                    </span>
-                  </TableCell>
-                  <TableCell>
-                    <span className="text-sm">Science</span>
-                  </TableCell>
-                  <TableCell>
-                    <span className="text-sm">11-May-2021</span>
-                  </TableCell>
-                  <TableCell>
-                    <span className="text-sm">11-May-2021</span>
-                  </TableCell>
-                  <TableCell>
-                    <div className="flex items-center space-x-4">
-                      <a target="_blank" href="facebook.com">
-                        {" "}
-                        <Button size="small">View</Button>
-                      </a>
-                      <Button layout="link" size="icon" aria-label="Edit">
-                        <EditIcon className="w-5 h-5" aria-hidden="true" />
-                      </Button>
-                      <Button layout="link" size="icon" aria-label="Delete">
-                        <TrashIcon className="w-5 h-5" aria-hidden="true" />
-                      </Button>
                     </div>
                   </TableCell>
                 </TableRow>
@@ -540,4 +404,4 @@ const Assignments = () => {
   );
 };
 
-export default Assignments;
+export default Results;
