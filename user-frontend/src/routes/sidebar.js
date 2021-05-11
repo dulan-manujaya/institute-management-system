@@ -12,19 +12,14 @@ const routes = [
     name: "Dashboard", // name that appear in Sidebar
   },
   {
-    path: "/app/courses",
+    path: "/app/teacher/courses",
     icon: "CardsIcon",
     name: "Courses",
   },
   {
-    path: "/app/students",
+    path: "/app/teacher/students",
     icon: "PeopleIcon",
     name: "Students",
-  },
-  {
-    path: "/app/results",
-    icon: "FormsIcon",
-    name: "Results",
   },
   {
     path: "/app/exams",

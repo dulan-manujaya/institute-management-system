@@ -7,9 +7,11 @@ const StudentResults = lazy(() => import('../pages/student/Results'))
 const StudentExams = lazy(() => import('../pages/student/Exams'))
 const StudentCourses = lazy(() => import('../pages/student/Courses'))
 const StudentPayments = lazy(() => import('../pages/student/Payments'))
+const StudentEnrollment = lazy(() => import('../pages/student/Enrollments'))
+const TeacherCourses = lazy(() => import('../pages/teacher/Courses'))
+const TeacherStudents = lazy(() => import('../pages/teacher/Students'))
 const Charts = lazy(() => import('../pages/Charts'))
 const Buttons = lazy(() => import('../pages/Buttons'))
-const StudentEnrollment = lazy(() => import('../pages/student/Enrollments'))
 const PendingStudents = lazy(() => import('../pages/PendingStudents'))
 const Page404 = lazy(() => import('../pages/404'))
 const Blank = lazy(() => import('../pages/Blank'))
@@ -34,20 +36,32 @@ const routes = [
     component: Profile,
   },
   {
-    path: '/results',
+    path: '/student/results',
     component: StudentResults,
   },
   {
-    path: '/exams',
+    path: '/student/exams',
     component: StudentExams,
   },
   {
-    path: '/courses',
+    path: '/student/courses',
     component: StudentCourses,
   },
   {
-    path: '/payments',
+    path: '/student/payments',
     component: StudentPayments,
+  },
+  {
+    path: '/student/enrollment',
+    component: StudentEnrollment,
+  },
+  {
+    path: '/teacher/courses',
+    component: TeacherCourses,
+  },
+  {
+    path: '/teacher/students',
+    component: TeacherStudents,
   },
   {
     path: '/charts',
@@ -56,10 +70,6 @@ const routes = [
   {
     path: '/buttons',
     component: Buttons,
-  },
-  {
-    path: '/enrollment',
-    component: StudentEnrollment,
   },
   {
     path: '/pending-students',
