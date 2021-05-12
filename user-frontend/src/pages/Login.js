@@ -26,7 +26,7 @@ const Login = () => {
 
   const changeUserType = (value) => {
     setUserType(value);
-    console.log(value);
+    localStorage.setItem("type", value);
   };
   const loginBody = {
     email: email,
