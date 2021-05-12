@@ -10,6 +10,7 @@ const StudentPayments = lazy(() => import('../pages/student/Payments'))
 const StudentEnrollment = lazy(() => import('../pages/student/Enrollments'))
 const TeacherCourses = lazy(() => import('../pages/teacher/Courses'))
 const TeacherStudents = lazy(() => import('../pages/teacher/Students'))
+const ParentChildren = lazy(() => import('../pages/parent/Children'))
 const Charts = lazy(() => import('../pages/Charts'))
 const Buttons = lazy(() => import('../pages/Buttons'))
 const PendingStudents = lazy(() => import('../pages/PendingStudents'))
@@ -62,6 +63,10 @@ const routes = [
   {
     path: '/teacher/students',
     component: TeacherStudents,
+  },
+  {
+    path: '/parent/children',
+    component: ParentChildren,
   },
   {
     path: '/charts',
