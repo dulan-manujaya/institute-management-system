@@ -1,0 +1,36 @@
+.root {
+  --primary-color: #7e3af2 !important;
+}
+.tabview .tabview-custom i,
+.tabview-demo .tabview-custom span {
+  vertical-align: middle;
+}
+
+.tabview .tabview-custom span {
+  margin: 0 0.5rem;
+}
+
+.tabview .p-button {
+  margin-right: 0.25rem;
+}
+
+.tabview .p-tabview p {
+  line-height: 1.5;
+  margin: 0;
+}
+.p-tabview .p-tabview-panels {
+  background-color: white;
+}
+
+.p-tabview-dark .p-tabview-panels-dark {
+  background-color: #1a1c23 !important;
+}
+
+.p-tabview .p-tabview-nav li.p-highlight .p-tabview-nav-link {
+  color: #7e3af2;
+  border-color: #7e3af2 !important;
+}
+
+.p-tabview .p-tabview-nav li .p-tabview-nav-link:not(.p-disabled):focus {
+  box-shadow: #7e3af2 !important;
+}
