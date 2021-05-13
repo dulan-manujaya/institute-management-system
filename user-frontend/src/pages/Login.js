@@ -11,15 +11,23 @@ import {
   Modal,
   ModalHeader,
   ModalBody,
+  Dropdown,
+  DropdownItem,
+  Badge,
 } from "@windmill/react-ui";
 
 const Login = () => {
   const history = useHistory();
-  // const [userType, setUserType] = useState("");
+  const [userType, setUserType] = useState("student");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [studentId, setStudentId] = useState("");
+  const [isOpen, setIsOpen] = useState(false);
 
+  const changeUserType = (value) => {
+    setUserType(value);
+    localStorage.setItem("type", value);
+  };
   const loginBody = {
     email: email,
     password: password,
@@ -106,37 +114,42 @@ const Login = () => {
             </div>
             <main className="flex items-center justify-center p-6 sm:p-12 md:w-1/2">
               <div className="w-full">
-                {/* <h1 className="mb-4 text-xl font-semibold text-gray-700 dark:text-gray-200">
-                  Login as:
-                </h1>
-                <div className="flex justify-center">
-                  <div className="mt-2">
-                    <label className="inline-flex items-center text-white">
-                      <input
-                        type="radio"
-                        className="form-radio"
-                        name="accountType"
-                        defaultValue="teacher"
-                        onClick={(e) => {
-                          radioClick(e);
-                        }}
-                      />
-                      <span className="ml-2">Teacher</span>
-                    </label>
-                    <label className="inline-flex items-center ml-6 text-white">
-                      <input
-                        type="radio"
-                        className="form-radio"
-                        name="accountType"
-                        defaultValue="student"
-                        onClick={(e) => {
-                          radioClick(e);
-                        }}
-                      />
-                      <span className="ml-2">Student</span>
-                    </label>
-                  </div>
-                </div> */}
+                <div className="flex justify-center p-6">
+                  <Label className="inline-flex items-center mt-3" radio>
+                    <Input
+                      id="student"
+                      type="radio"
+                      className="form-radio h-5 w-5 text-gray-600"
+                      name="userType"
+                      value="student"
+                      defaultChecked
+                      onClick={(e) => changeUserType(e.target.value)}
+                    />
+                    <span className="ml-2 mr-2">Student</span>
+                  </Label>
+                  <Label className="inline-flex items-center mt-3" radio>
+                    <Input
+                      id="teacher"
+                      type="radio"
+                      className="form-radio h-5 w-5 text-gray-600"
+                      name="userType"
+                      value="teacher"
+                      onClick={(e) => changeUserType(e.target.value)}
+                    />
+                    <span className="ml-2 mr-2">Teacher</span>
+                  </Label>
+                  <Label className="inline-flex items-center mt-3" radio>
+                    <Input
+                      id="parent"
+                      type="radio"
+                      className="form-radio h-5 w-5 text-gray-600"
+                      name="userType"
+                      value="parent"
+                      onClick={(e) => changeUserType(e.target.value)}
+                    />
+                    <span className="ml-2">Parent</span>
+                  </Label>
+                </div>
 
                 <Label>
                   <span>Email</span>
@@ -167,10 +180,6 @@ const Login = () => {
                 </Button>
 
                 <hr className="my-8" />
-                <Button className="mt-4" block layout="outline">
-                  <TwitterIcon className="w-4 h-4 mr-2" aria-hidden="true" />
-                  Twitter
-                </Button>
 
                 <p className="mt-4">
                   <Link
@@ -180,7 +189,7 @@ const Login = () => {
                     Forgot your password?
                   </Link>
                 </p>
-                <p className="mt-1">
+                <p className="mt-1" hidden = {userType != "student" ? true : false }>
                   <Link
                     className="text-sm font-medium text-purple-600 dark:text-purple-400 hover:underline"
                     to="/create-account"

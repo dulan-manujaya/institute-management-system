@@ -22,12 +22,12 @@ import React, { useContext, useEffect, useState } from "react";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import { ToastContainer } from "react-toastify";
-import variables from "../common/globalVariables";
-import PageTitle from "../components/Typography/PageTitle";
-import SectionTitle from "../components/Typography/SectionTitle";
+import variables from "../../common/globalVariables";
+import PageTitle from "../../components/Typography/PageTitle";
+import SectionTitle from "../../components/Typography/SectionTitle";
 // import { TeacherContext } from "../context/Context.Index";
-import { EditIcon, TrashIcon, UploadIcon } from "../icons";
-import ToastMessage from "../messages/HandleMessages";
+import { EditIcon, TrashIcon, UploadIcon } from "../../icons";
+import ToastMessage from "../../messages/HandleMessages";
 
 const Exams = () => {
   // const { loggedInUser } = useContext(TeacherContext);

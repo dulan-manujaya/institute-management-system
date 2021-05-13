@@ -15,9 +15,9 @@ const ForgotPassword = () => {
   const [otp, setOTP] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
-  const [emailHidden, setEmailHidden] = useState(true);
+  const [emailHidden, setEmailHidden] = useState(false);
   const [otpHidden, setOTPHidden] = useState(true);
-  const [newPasswordHidden, setNewPasswordHidden] = useState(false);
+  const [newPasswordHidden, setNewPasswordHidden] = useState(true);
 
   const confirmEmail = async () => {
     const emailRegex = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;

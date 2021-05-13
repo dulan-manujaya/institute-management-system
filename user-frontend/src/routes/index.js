@@ -3,13 +3,16 @@ import { lazy } from 'react'
 // use lazy for better code splitting, a.k.a. load faster
 const Dashboard = lazy(() => import('../pages/Dashboard'))
 const Profile = lazy(() => import('../pages/Profile'))
-const Assignments = lazy(() => import('../pages/Assignments'))
-const Exams = lazy(() => import('../pages/Exams'))
-const Courses = lazy(() => import('../pages/Courses'))
-const Payments = lazy(() => import('../pages/Payments'))
+const StudentResults = lazy(() => import('../pages/student/Results'))
+const StudentExams = lazy(() => import('../pages/student/Exams'))
+const StudentCourses = lazy(() => import('../pages/student/Courses'))
+const StudentPayments = lazy(() => import('../pages/student/Payments'))
+const StudentEnrollment = lazy(() => import('../pages/student/Enrollments'))
+const TeacherCourses = lazy(() => import('../pages/teacher/Courses'))
+const TeacherStudents = lazy(() => import('../pages/teacher/Students'))
+const ParentChildren = lazy(() => import('../pages/parent/Children'))
 const Charts = lazy(() => import('../pages/Charts'))
 const Buttons = lazy(() => import('../pages/Buttons'))
-const Enrollment = lazy(() => import('../pages/Enrollments'))
 const PendingStudents = lazy(() => import('../pages/PendingStudents'))
 const Page404 = lazy(() => import('../pages/404'))
 const Blank = lazy(() => import('../pages/Blank'))
@@ -34,20 +37,36 @@ const routes = [
     component: Profile,
   },
   {
-    path: '/assignments',
-    component: Assignments,
+    path: '/student/results',
+    component: StudentResults,
   },
   {
-    path: '/exams',
-    component: Exams,
+    path: '/student/exams',
+    component: StudentExams,
   },
   {
-    path: '/courses',
-    component: Courses,
+    path: '/student/courses',
+    component: StudentCourses,
   },
   {
-    path: '/payments',
-    component: Payments,
+    path: '/student/payments',
+    component: StudentPayments,
+  },
+  {
+    path: '/student/enrollment',
+    component: StudentEnrollment,
+  },
+  {
+    path: '/teacher/courses',
+    component: TeacherCourses,
+  },
+  {
+    path: '/teacher/students',
+    component: TeacherStudents,
+  },
+  {
+    path: '/parent/children',
+    component: ParentChildren,
   },
   {
     path: '/charts',
@@ -56,10 +75,6 @@ const routes = [
   {
     path: '/buttons',
     component: Buttons,
-  },
-  {
-    path: '/enrollment',
-    component: Enrollment,
   },
   {
     path: '/pending-students',

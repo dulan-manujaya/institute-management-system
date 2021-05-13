@@ -22,14 +22,14 @@ import React, { useContext, useEffect, useState } from "react";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import { ToastContainer } from "react-toastify";
-import variables from "../common/globalVariables";
-import PageTitle from "../components/Typography/PageTitle";
-import SectionTitle from "../components/Typography/SectionTitle";
+import variables from "../../common/globalVariables";
+import PageTitle from "../../components/Typography/PageTitle";
+import SectionTitle from "../../components/Typography/SectionTitle";
 // import { TeacherContext } from "../context/Context.Index";
-import { EditIcon, TrashIcon, UploadIcon } from "../icons";
-import ToastMessage from "../messages/HandleMessages";
+import { EditIcon, TrashIcon, UploadIcon } from "../../icons";
+import ToastMessage from "../../messages/HandleMessages";
 
-const Payments = () => {
+const Results = () => {
   // const { loggedInUser } = useContext(TeacherContext);
   const { loggedInUser } = useState();
   const [courses, setCourses] = useState([]);
@@ -182,7 +182,7 @@ const Payments = () => {
 
   return (
     <>
-      <PageTitle>Payments</PageTitle>
+      <PageTitle>Results</PageTitle>
       {/* <div className="mb-4">
         <Button size="larger" onClick={openModal}>
           Add New Assignment
@@ -213,87 +213,64 @@ const Payments = () => {
         </>
       ) : (
         <>
-          <SectionTitle>Upcoming Payments</SectionTitle>
           <TableContainer className="mb-4">
             <Table>
               <TableHeader>
                 <tr className="text-gray-700 dark:text-gray-200">
+                  <TableCell>Title</TableCell>
                   <TableCell>Course</TableCell>
-                  <TableCell>Due Date</TableCell>
-                  <TableCell>Amount</TableCell>
+                  <TableCell>Uploaded On</TableCell>
                   <TableCell>Actions</TableCell>
                 </tr>
               </TableHeader>
               <TableBody>
                 <TableRow key="1" className="text-gray-700 dark:text-gray-300">
                   <TableCell>
-                    <span className="text-sm">Physics - Jun 2021</span>
+                    <span className="text-sm">Monthly Exam - Jun 2021</span>
                   </TableCell>
                   <TableCell>
-                    <span className="text-sm">11-Jun-2021</span>
-                  </TableCell>
-                  <TableCell>
-                    <span className="text-sm">Rs. 2000.00</span>
-                  </TableCell>
-                  <TableCell>
-                    <div className="flex items-center space-x-4">
-                      <Button size="small">Pay</Button>
-                    </div>
-                  </TableCell>
-                </TableRow>
-              </TableBody>
-            </Table>
-            <TableFooter>
-              <Pagination
-                totalResults={totalResults}
-                resultsPerPage={resultsPerPage}
-                label="Table navigation"
-                onChange={onPageChange}
-              />
-            </TableFooter>
-          </TableContainer>
-          <SectionTitle>Previous Payments</SectionTitle>
-          <TableContainer>
-            <Table>
-              <TableHeader>
-                <tr className="text-gray-700 dark:text-gray-200">
-                  <TableCell>Course</TableCell>
-                  <TableCell>Paid On</TableCell>
-                  <TableCell>Amount</TableCell>
-                  <TableCell>Actions</TableCell>
-                </tr>
-              </TableHeader>
-
-              <TableBody>
-                <TableRow key="1" className="text-gray-700 dark:text-gray-300">
-                  <TableCell>
-                    <span className="text-sm">Maths - May 2021</span>
+                    <span className="text-sm">Maths - Grade 8</span>
                   </TableCell>
                   <TableCell>
                     <span className="text-sm">01-May-2021</span>
                   </TableCell>
                   <TableCell>
-                    <span className="text-sm">Rs. 2000.00</span>
-                  </TableCell>
-                  <TableCell>
                     <div className="flex items-center space-x-4">
-                      <Button size="small">View Receipt</Button>
+                      <a target="_blank" href="facebook.com">
+                        {" "}
+                        <Button size="small">View</Button>
+                      </a>
+                      {/* <Button layout="link" size="icon" aria-label="Edit">
+                        <EditIcon className="w-5 h-5" aria-hidden="true" />
+                      </Button>
+                      <Button layout="link" size="icon" aria-label="Delete">
+                        <TrashIcon className="w-5 h-5" aria-hidden="true" />
+                      </Button> */}
                     </div>
                   </TableCell>
                 </TableRow>
                 <TableRow key="1" className="text-gray-700 dark:text-gray-300">
                   <TableCell>
-                    <span className="text-sm">Science - Jun 2021</span>
+                    <span className="text-sm">MidTerm Exam - May 2021</span>
                   </TableCell>
                   <TableCell>
-                    <span className="text-sm">01-Jun-2021</span>
+                    <span className="text-sm">Computing - Grade 8</span>
                   </TableCell>
                   <TableCell>
-                    <span className="text-sm">Rs. 2000.00</span>
+                    <span className="text-sm">01-May-2021</span>
                   </TableCell>
                   <TableCell>
                     <div className="flex items-center space-x-4">
-                      <Button size="small">View Receipt</Button>
+                      {" "}
+                      <Button size="small" onClick={openModal}>
+                        View
+                      </Button>
+                      {/* <Button layout="link" size="icon" aria-label="Edit">
+                        <EditIcon className="w-5 h-5" aria-hidden="true" />
+                      </Button>
+                      <Button layout="link" size="icon" aria-label="Delete">
+                        <TrashIcon className="w-5 h-5" aria-hidden="true" />
+                      </Button> */}
                     </div>
                   </TableCell>
                 </TableRow>
@@ -313,11 +290,29 @@ const Payments = () => {
 
       {/* Add Assignment */}
       <Modal isOpen={isModalOpen} onClose={closeModal}>
-        <ModalHeader>Submit Answer Sheet</ModalHeader>
+        <ModalHeader>Submit Assignment</ModalHeader>
         <ModalBody>
           <div className=" px-4 py-3 mb-8 bg-gray-200 rounded-lg shadow-md dark:bg-gray-800 ">
-            <Label className="text-align: left max-w-md">
-              <span>Answer Sheet Title</span>
+            <Label>
+              <span>Course</span>
+              <Select
+                className="block appearance-none w-full bg-grey-lighter border border-grey-lighter text-grey-darker py-3 px-4 pr-8 rounded"
+                onChange={(e) => {
+                  setAssignmentCourse(e.target.value);
+                }}
+              >
+                <option>Select Course</option>
+                {!courses
+                  ? null
+                  : courses.map((course) => (
+                      <option value={course.course_id} key={course.course_id}>
+                        {course.course_name}
+                      </option>
+                    ))}
+              </Select>
+            </Label>
+            <Label className="mt-4 text-align: left max-w-md">
+              <span>Assignment Title</span>
               <Input
                 className="appearance-none block w-full bg-grey-lighter text-grey-darker border border-grey-lighter rounded py-3 px-4"
                 placeholder="Maths Geometry"
@@ -409,4 +404,4 @@ const Payments = () => {
   );
 };
 
-export default Payments;
+export default Results;
