@@ -81,28 +81,33 @@ class StudentModel {
     guardian_mobile,
     guardian_password,
   }) => {
-    const guardian_sql = `INSERT INTO ${this.guardianTableName}
-    (email, password, mobile) VALUES (${guardian_email},${guardian_password},${guardian_mobile})
-    ON DUPLICATE KEY UPDATE
-    mobile = VALUES(${guardian_mobile})`;
+    const guardian_sql =
+      `INSERT INTO ${this.guardianTableName} ` +
+      `(email, password, mobile) VALUES (?,?,?) `;
 
-    const guardian_result = await query(guardian_sql);
+    const guardian_result = await query(guardian_sql, [
+      guardian_email,
+      guardian_password,
+      guardian_mobile,
+    ]);
 
-    // const sql = `INSERT INTO ${this.tableName}
-    //     (student_auth_id,email, password, first_name, last_name, avatar, mobile, grade_id, date_of_birth, gender) VALUES (?,?,?,?,?,?,?,?,?,?)`;
+    var guard_id = guardian_result.insertId;
+    const sql =
+      `INSERT INTO ${this.tableName} ` +
+      `(email, password, first_name, last_name, avatar, mobile, gender, date_of_birth, guardian_id) ` +
+      `VALUES (?,?,?,?,?,?,?,?,?)`;
 
-    // const result = await query(sql, [
-    //   email,
-    //   password,
-    //   first_name,
-    //   last_name,
-    //   avatar,
-    //   mobile,
-    //   date_of_birth,
-    //   gender,
-    //   guardian_email,
-    //   guardian_mobile,
-    // ]);
+    const result = await query(sql, [
+      email,
+      password,
+      first_name,
+      last_name,
+      avatar,
+      mobile,
+      gender,
+      date_of_birth,
+      guard_id,
+    ]);
     const affectedRows = result ? result.affectedRows : 0;
 
     return affectedRows;

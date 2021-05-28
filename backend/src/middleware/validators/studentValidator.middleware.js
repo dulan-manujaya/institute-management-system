@@ -3,14 +3,10 @@ const { body } = require("express-validator");
 exports.createStudentSchema = [
   body("first_name")
     .exists()
-    .withMessage("Your first name is required")
-    .isAlpha()
-    .withMessage("Must be only alphabetical chars"),
+    .withMessage("Your first name is required"),
   body("last_name")
     .exists()
-    .withMessage("Your last name is required")
-    .isAlpha()
-    .withMessage("Must be only alphabetical chars"),
+    .withMessage("Your last name is required"),
   body("email")
     .exists()
     .withMessage("Email is required")

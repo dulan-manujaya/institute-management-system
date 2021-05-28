@@ -128,7 +128,6 @@ class StudentController {
     await this.hashPassword(req);
 
     const result = await StudentModel.create(req.body);
-
     if (!result) {
       throw new HttpException(500, "Something went wrong");
     }
@@ -209,7 +208,10 @@ class StudentController {
   hashPassword = async (req) => {
     if (req.body.password) {
       req.body.password = await bcrypt.hash(req.body.password, 8);
-      req.body.guardian_password = await bcrypt.hash(req.body.guardian_password, 8)
+      req.body.guardian_password = await bcrypt.hash(
+        req.body.guardian_password,
+        8
+      );
     }
   };
 
@@ -225,7 +227,7 @@ class StudentController {
     }
     var password = charArr.join("");
     return password;
-  }
+  };
 
   verifyStudentEmail = async (req, res, next) => {
     const student = await StudentModel.findOne({ email: req.params.email });

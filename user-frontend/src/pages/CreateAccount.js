@@ -19,6 +19,8 @@ const CreateAccount = () => {
   const [studentFirstName, setStudentFirstName] = useState("");
   const [studentLastName, setStudentLastName] = useState("");
   const [studentEmail, setStudentEmail] = useState("");
+  const [guardianEmail, setGuardianEmail] = useState("");
+  const [guardianMobile, setGuardianMobile] = useState("");
   const [studentPassword, setStudentPassword] = useState("");
   const [studentConfirmPassword, setStudentConfirmPassword] = useState("");
   const [studentMobile, setStudentMobile] = useState("");
@@ -40,10 +42,10 @@ const CreateAccount = () => {
     last_name: studentLastName,
     avatar: avatarUrl,
     mobile: studentMobile,
-    grade_id: gradeId,
     gender: studentGender,
     date_of_birth: studentDob,
-    is_approved: false,
+    guardian_mobile: guardianMobile,
+    guardian_email: guardianEmail,
   };
 
   const alert = (message, type) => {
@@ -112,7 +114,8 @@ const CreateAccount = () => {
 
   const formValidations = () => {
     var isValid = true;
-    const emailRegex = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+    const emailRegex =
+      /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
 
     if (studentFirstName == "" || studentFirstName == null) {
       alert("Please enter your first name", "error");
@@ -128,10 +131,6 @@ const CreateAccount = () => {
       return isValid;
     } else if (!emailRegex.test(String(studentEmail).toLowerCase())) {
       alert("Please enter a valid email", "error");
-      isValid = false;
-      return isValid;
-    } else if (gradeId == "-1") {
-      alert("Please select a grade", "error");
       isValid = false;
       return isValid;
     } else if (avatar == null || avatar == undefined) {
@@ -466,9 +465,9 @@ const CreateAccount = () => {
                       type="email"
                       autoComplete="nope"
                       placeholder="example@example.com"
-                      value={studentEmail}
+                      value={guardianEmail}
                       onChange={(e) => {
-                        setStudentEmail(e.target.value);
+                        setGuardianEmail(e.target.value);
                       }}
                     />
                     {!submitted ? null : !studentEmail ? (
@@ -489,9 +488,9 @@ const CreateAccount = () => {
                       id="grid-city"
                       type="text"
                       placeholder="07xxxxxxxx"
-                      value={studentMobile}
+                      value={guardianMobile}
                       onChange={(e) => {
-                        setStudentMobile(e.target.value);
+                        setGuardianMobile(e.target.value);
                       }}
                     />
                     {!submitted ? null : !studentMobile ? (
