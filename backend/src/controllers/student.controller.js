@@ -122,6 +122,9 @@ class StudentController {
   createStudent = async (req, res, next) => {
     this.checkValidation(req);
 
+    var guardian_password = await this.generatePassword();
+    req.body.guardian_password = guardian_password;
+
     await this.hashPassword(req);
 
     const result = await StudentModel.create(req.body);
@@ -206,8 +209,23 @@ class StudentController {
   hashPassword = async (req) => {
     if (req.body.password) {
       req.body.password = await bcrypt.hash(req.body.password, 8);
+      req.body.guardian_password = await bcrypt.hash(req.body.guardian_password, 8)
     }
   };
+
+  generatePassword = async () => {
+    var charArr = [];
+    var characters =
+      "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+    var charactersLength = characters.length;
+    for (var i = 0; i < 6; i++) {
+      charArr.push(
+        characters.charAt(Math.floor(Math.random() * charactersLength))
+      );
+    }
+    var password = charArr.join("");
+    return password;
+  }
 
   verifyStudentEmail = async (req, res, next) => {
     const student = await StudentModel.findOne({ email: req.params.email });
@@ -220,16 +238,6 @@ class StudentController {
       res.send({
         isExist: true,
       });
-      var result = [];
-      var characters =
-        "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
-      var charactersLength = characters.length;
-      for (var i = 0; i < 6; i++) {
-        result.push(
-          characters.charAt(Math.floor(Math.random() * charactersLength))
-        );
-      }
-      console.log(result.join(""));
     }
   };
 }

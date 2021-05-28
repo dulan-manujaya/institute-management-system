@@ -44,7 +44,6 @@ router.get(
 );
 router.post(
   "/",
-  auth(),
   createStudentSchema,
   awaitHandlerFactory(studentController.createStudent)
 );

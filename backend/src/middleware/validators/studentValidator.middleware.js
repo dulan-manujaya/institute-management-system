@@ -1,9 +1,6 @@
 const { body } = require("express-validator");
 
 exports.createStudentSchema = [
-  body("student_auth_id")
-    .exists()
-    .withMessage("Student authentication ID is required"),
   body("first_name")
     .exists()
     .withMessage("Your first name is required")
@@ -21,11 +18,6 @@ exports.createStudentSchema = [
     .withMessage("Must be a valid email")
     .normalizeEmail(),
   body("avatar").exists().withMessage("Profile Picture is required"),
-  body("grade_id")
-    .exists()
-    .withMessage("Grade is required")
-    .notEmpty()
-    .withMessage("Must be a valid grade"),
   body("date_of_birth")
     .exists()
     .withMessage("Date of Birth is required")
@@ -50,6 +42,18 @@ exports.createStudentSchema = [
     .withMessage(
       "confirm_password field must have the same value as the password field"
     ),
+    body("guardian_mobile")
+    .exists()
+    .withMessage("Guardian mobile is required")
+    .isMobilePhone()
+    .withMessage("Must be a valid mobile number")
+    .trim(),
+    body("guardian_email")
+    .exists()
+    .withMessage("Guardian email is required")
+    .isEmail()
+    .withMessage("Must be a valid email")
+    .normalizeEmail(),
 ];
 
 exports.updateStudentSchema = [

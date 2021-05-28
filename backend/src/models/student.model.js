@@ -2,6 +2,7 @@ const query = require("../db/db-connection");
 const { multipleColumnSet } = require("../utils/common.utils");
 class StudentModel {
   tableName = "student";
+  guardianTableName = "guardian";
 
   find = async (params = {}) => {
     let sql = `SELECT * FROM ${this.tableName}`;
@@ -68,32 +69,40 @@ class StudentModel {
   };
 
   create = async ({
-    student_auth_id,
     email,
     password,
     first_name,
     last_name,
     avatar,
     mobile,
-    grade_id,
     date_of_birth,
     gender,
+    guardian_email,
+    guardian_mobile,
+    guardian_password,
   }) => {
-    const sql = `INSERT INTO ${this.tableName}
-        (student_auth_id,email, password, first_name, last_name, avatar, mobile, grade_id, date_of_birth, gender) VALUES (?,?,?,?,?,?,?,?,?,?)`;
+    const guardian_sql = `INSERT INTO ${this.guardianTableName}
+    (email, password, mobile) VALUES (${guardian_email},${guardian_password},${guardian_mobile})
+    ON DUPLICATE KEY UPDATE
+    mobile = VALUES(${guardian_mobile})`;
 
-    const result = await query(sql, [
-      student_auth_id,
-      email,
-      password,
-      first_name,
-      last_name,
-      avatar,
-      mobile,
-      grade_id,
-      date_of_birth,
-      gender,
-    ]);
+    const guardian_result = await query(guardian_sql);
+
+    // const sql = `INSERT INTO ${this.tableName}
+    //     (student_auth_id,email, password, first_name, last_name, avatar, mobile, grade_id, date_of_birth, gender) VALUES (?,?,?,?,?,?,?,?,?,?)`;
+
+    // const result = await query(sql, [
+    //   email,
+    //   password,
+    //   first_name,
+    //   last_name,
+    //   avatar,
+    //   mobile,
+    //   date_of_birth,
+    //   gender,
+    //   guardian_email,
+    //   guardian_mobile,
+    // ]);
     const affectedRows = result ? result.affectedRows : 0;
 
     return affectedRows;
