@@ -8,7 +8,7 @@ class DBConnection {
       host: process.env.HOST,
       user: process.env.DBUSER,
       password: process.env.PASSWORD,
-      database: "educa",
+      database: "benchmarsystemdb",
     });
 
     this.checkConnection();
