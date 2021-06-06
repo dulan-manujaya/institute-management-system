@@ -83,13 +83,14 @@ class StudentModel {
   }) => {
     const guardian_sql =
       `INSERT INTO ${this.guardianTableName} ` +
-      `(email, password, mobile) VALUES (?,?,?) `;
+      `(guardian_email, guardian_password, guardian_mobile) VALUES (?,?,?) `;
 
     const guardian_result = await query(guardian_sql, [
       guardian_email,
       guardian_password,
       guardian_mobile,
     ]);
+    console.log(guardian_result);
 
     var guard_id = guardian_result.insertId;
     const sql =

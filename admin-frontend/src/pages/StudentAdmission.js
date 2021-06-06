@@ -5,17 +5,11 @@ import { ToastContainer } from "react-toastify";
 import variables from "../common/globalVariables";
 import FormFillError from "../components/Error/FormFillError";
 import PageTitle from "../components/Typography/PageTitle";
-import SectionTitle from "../components/Typography/SectionTitle";
-import { GradeContext, TeacherContext } from "../context/Context.Index";
+import { TeacherContext } from "../context/Context.Index";
 import ToastMessage from "../messages/HandleMessages";
 
 const StudentAdmission = () => {
   const { loggedInUser } = useContext(TeacherContext);
-  const [{ alt, src }, setImg] = useState({
-    alt: "Upload an Image",
-  });
-  const [gradeId, setGradeId] = useState("");
-  const { grades } = useContext(GradeContext);
   const [submitted, setSubmitted] = useState(false);
   const [studentFirstName, setStudentFirstName] = useState("");
   const [studentLastName, setStudentLastName] = useState("");
@@ -28,11 +22,10 @@ const StudentAdmission = () => {
   const [avatar, setAvatar] = useState("");
   const [avatarUrl, setAvatarUrl] = useState("");
   const [confirmPassEqual, setConfirmPassEqual] = useState(true);
-  const [studentAuthId, setStudentAuthId] = useState("");
-  const today = new Date(Date.now());
+  const [guardianEmail, setGuardianEmail] = useState("");
+  const [guardianMobile, setGuardianMobile] = useState("");
 
   const studentAdmissionBody = {
-    student_auth_id: studentAuthId,
     email: studentEmail,
     password: studentPassword,
     confirm_password: studentConfirmPassword,
@@ -40,17 +33,16 @@ const StudentAdmission = () => {
     last_name: studentLastName,
     avatar: avatarUrl,
     mobile: studentMobile,
-    grade_id: gradeId,
     gender: studentGender,
     date_of_birth: studentDob,
-    is_approved: true,
+    guardian_mobile: guardianMobile,
+    guardian_email: guardianEmail,
   };
 
   const clearForm = () => {
     setStudentFirstName("");
     setStudentLastName("");
     setStudentEmail("");
-    setGradeId(-1);
     setAvatarUrl("");
     setAvatar();
     setStudentPassword("");
@@ -65,28 +57,12 @@ const StudentAdmission = () => {
     var file = event.target.files[0];
     setAvatarUrl(`${variables.apiServer}/public/student-avatar/${file.name}`);
     setAvatar(file);
-    if (event.target.files[0]) {
-      setImg({
-        src: URL.createObjectURL(event.target.files[0]),
-        alt: event.target.files[0].name,
-      });
-    }
-  };
-
-  const genereateStudentAuthId = async () => {
-    const response = await axios.get(
-      `${variables.apiServer}/api/v1/students/last`,
-      {
-        headers: {
-          Authorization: `Bearer ${loggedInUser.token}`,
-        },
-      }
-    );
-    console.log(response.data.student_id);
-    setStudentAuthId(
-      `STU_${today.getFullYear()}${response.data.student_id + 1}`
-    );
-    console.log(studentAuthId);
+    // if (event.target.files[0]) {
+    //   setImg({
+    //     src: URL.createObjectURL(event.target.files[0]),
+    //     alt: event.target.files[0].name,
+    //   });
+    // }
   };
 
   const handleFileSubmission = async (file) => {
@@ -127,19 +103,15 @@ const StudentAdmission = () => {
     setDefaultAvatar();
   }, [studentGender, loggedInUser]);
 
-  useEffect(() => {
-    genereateStudentAuthId();
-  }, [studentAuthId, loggedInUser]);
-
   return (
     <>
       <PageTitle>Student Admission</PageTitle>
-      <SectionTitle>New Admission: {studentAuthId}</SectionTitle>
       <form
         onSubmit={async (e) => {
           e.preventDefault();
           console.log(studentAdmissionBody);
           console.log("Form Submitted!");
+          const token = sessionStorage.getItem("adminAccessToken");
           try {
             await axios
               .post(
@@ -147,7 +119,7 @@ const StudentAdmission = () => {
                 studentAdmissionBody,
                 {
                   headers: {
-                    Authorization: `Bearer ${variables.token}`,
+                    Authorization: `Bearer ${token}`,
                   },
                 }
               )
@@ -156,7 +128,6 @@ const StudentAdmission = () => {
                 handleFileSubmission(avatar);
                 ToastMessage(response.data);
                 clearForm();
-                genereateStudentAuthId();
               })
               .catch((error) => {
                 console.log(error.response);
@@ -247,42 +218,6 @@ const StudentAdmission = () => {
                 }}
               />
               {!submitted ? null : !studentEmail ? <FormFillError /> : null}
-            </div>
-            <div className="md:w-1/3 px-3">
-              <label
-                className="block uppercase tracking-wide text-gray-900 dark:text-gray-200 text-xs font-bold mb-2"
-                htmlFor="grid-grade"
-              >
-                Grade
-              </label>
-              <Select
-                className="block appearance-none w-full bg-grey-lighter border border-grey-lighter text-grey-darker py-3 px-4 pr-8 rounded"
-                value={gradeId}
-                onChange={(e) => {
-                  setGradeId(e.target.value);
-                }}
-              >
-                <option>Select Grade</option>
-                {!grades
-                  ? null
-                  : grades
-                      .sort((a, b) => a.grade_id - b.grade_id)
-                      .map((grade) => (
-                        <option value={grade.grade_id} key={grade.grade_id}>
-                          {grade.grade_name}
-                        </option>
-                      ))}
-              </Select>
-              {!submitted ? null : !gradeId ? <FormFillError /> : null}
-            </div>
-            <div className="md:w-1/3 px-3">
-              <label
-                className="block uppercase tracking-wide text-gray-900 dark:text-gray-200 text-xs font-bold mb-2"
-                htmlFor="grid-email"
-              >
-                Preview
-              </label>
-              <img src={src} className="absolute w-32 h-32" />
             </div>
           </div>
           <div className="-mx-3 md:flex mb-2">
@@ -399,6 +334,47 @@ const StudentAdmission = () => {
                 <option>Other</option>
               </Select>
               {!submitted ? null : !studentGender ? <FormFillError /> : null}
+            </div>
+          </div>
+          <div className="-mx-3 md:flex mb-6">
+            <div className="md:w-1/2 px-3 mb-6 md:mb-0">
+              <label className="block uppercase tracking-wide text-gray-400 text-xs font-bold mb-2">
+                Guardian Email
+              </label>
+              <Input
+                className="appearance-none block w-full bg-grey-lighter text-grey-darker border border-red rounded py-3 px-4"
+                type="email"
+                autoComplete="nope"
+                placeholder="example@example.com"
+                value={guardianEmail}
+                onChange={(e) => {
+                  setGuardianEmail(e.target.value);
+                }}
+              />
+              {!submitted ? null : !studentEmail ? (
+                <p className="text-red-400 text-xs italic">
+                  Please fill out this field.
+                </p>
+              ) : null}
+            </div>
+            <div className="md:w-1/2 px-3 mb-6 md:mb-0">
+              <label className="block uppercase tracking-wide text-gray-400 text-xs font-bold mb-2">
+                Guardian Mobile
+              </label>
+              <Input
+                className="appearance-none block w-full bg-grey-lighter text-grey-darker border border-grey-lighter rounded py-3 px-4"
+                type="text"
+                placeholder="07xxxxxxxx"
+                value={guardianMobile}
+                onChange={(e) => {
+                  setGuardianMobile(e.target.value);
+                }}
+              />
+              {!submitted ? null : !studentMobile ? (
+                <p className="text-red-400 text-xs italic">
+                  Please fill out this field.
+                </p>
+              ) : null}
             </div>
           </div>
           <div className="flex justify-end space-x-4 mt-4">

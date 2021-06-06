@@ -2,7 +2,7 @@ const express = require("express");
 const router = express.Router();
 const studentController = require("../controllers/student.controller");
 const studentAuth = require("../middleware/studentAuth.middleware");
-const auth = require("../middleware/adminAuth.middleware");
+const adminAuth = require("../middleware/adminAuth.middleware");
 const awaitHandlerFactory = require("../middleware/awaitHandlerFactory.middleware");
 
 const {
@@ -11,30 +11,27 @@ const {
   validateLogin,
 } = require("../middleware/validators/studentValidator.middleware");
 
-router.get("/", auth(), awaitHandlerFactory(studentController.getAllStudents));
-router.get(
-  "/all",
-  auth(),
-  awaitHandlerFactory(studentController.getAllStudentsWithGrade)
-);
+router.get("/", awaitHandlerFactory(studentController.getAllStudents));
+// router.get(
+//   "/all",
+//   adminAuth(),
+//   awaitHandlerFactory(studentController.getAllStudentsWithGrade)
+// );
 router.get(
   "/last",
-  auth(),
   awaitHandlerFactory(studentController.getLastStudent)
 );
 router.get(
   "/course/:courseid",
-  auth(),
   awaitHandlerFactory(studentController.getStudentsByCourse)
 );
 router.get("/id/:id", awaitHandlerFactory(studentController.getStudentById));
-router.get(
-  "/authid/:authid",
-  awaitHandlerFactory(studentController.getStudentByAuthId)
-);
+// router.get(
+//   "/adminAuthid/:adminAuthid",
+//   awaitHandlerFactory(studentController.getStudentByAuthId)
+// );
 router.get(
   "/email/:email",
-  studentAuth(),
   awaitHandlerFactory(studentController.getStudentByEmail)
 );
 router.get(
@@ -49,13 +46,13 @@ router.post(
 );
 router.patch(
   "/id/:id",
-  auth(),
+  adminAuth(),
   updateStudentSchema,
   awaitHandlerFactory(studentController.updateStudent)
 );
 router.delete(
   "/id/:id",
-  auth(),
+  adminAuth(),
   awaitHandlerFactory(studentController.deleteStudent)
 );
 
