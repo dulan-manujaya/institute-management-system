@@ -18,10 +18,10 @@ const ForgotPassword = lazy(() => import("./pages/ForgotPassword"));
 const App = () => {
   const [loggedInUser, setLoggedInUser] = useState(null);
   const [grades, setGrades] = useState("");
-  const providerValue = useMemo(() => ({ loggedInUser, setLoggedInUser }), [
-    loggedInUser,
-    setLoggedInUser,
-  ]);
+  const providerValue = useMemo(
+    () => ({ loggedInUser, setLoggedInUser }),
+    [loggedInUser, setLoggedInUser]
+  );
 
   const getGrades = async () => {
     try {
@@ -68,6 +68,7 @@ const App = () => {
   useEffect(() => {
     getTeacherId();
     getGrades();
+    localStorage.setItem("theme", "dark");
   }, []);
   return (
     <>
