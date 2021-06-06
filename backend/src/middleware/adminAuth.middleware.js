@@ -1,5 +1,5 @@
 const HttpException = require("../utils/HttpException.utils");
-const TeacherModel = require("../models/teacher.model");
+const AdminModel = require("../models/admin.model");
 const jwt = require("jsonwebtoken");
 const dotenv = require("dotenv");
 dotenv.config();
@@ -19,24 +19,24 @@ const auth = () => {
 
       // Verify Token
       const decoded = jwt.verify(token, secretKey);
-      const teacher = await TeacherModel.findOne({ teacher_id: decoded.teacher_id });
+      const admin = await AdminModel.findOne({ admin_id: decoded.admin_id });
 
-      if (!teacher) {
+      if (!admin) {
         throw new HttpException(401, "Authentication failed!");
       }
 
-      // check if the current teacher is the owner teacher
-      const ownerAuthorized = req.params.id == teacher.teacher_id;
+      // check if the current admin is the owner admin
+      const ownerAuthorized = req.params.id == admin.admin_id;
 
-      // if the current teacher is not the owner and
-      // if the teacher role don't have the permission to do this action.
-      // the teacher will get this error
-      // if (!ownerAuthorized && roles.length && !roles.includes(teacher.role)) {
+      // if the current admin is not the owner and
+      // if the admin role don't have the permission to do this action.
+      // the admin will get this error
+      // if (!ownerAuthorized && roles.length && !roles.includes(admin.role)) {
       //   throw new HttpException(401, "Unauthorized");
       // }
 
-      // if the teacher has permissions
-      req.currentTeacher = teacher;
+      // if the admin has permissions
+      req.currentAdmin = admin;
       next();
     } catch (e) {
       e.status = 401;

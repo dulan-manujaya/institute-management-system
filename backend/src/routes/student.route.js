@@ -2,7 +2,7 @@ const express = require("express");
 const router = express.Router();
 const studentController = require("../controllers/student.controller");
 const studentAuth = require("../middleware/studentAuth.middleware");
-const auth = require("../middleware/auth.middleware");
+const auth = require("../middleware/adminAuth.middleware");
 const awaitHandlerFactory = require("../middleware/awaitHandlerFactory.middleware");
 
 const {
