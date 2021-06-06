@@ -34,7 +34,7 @@ const App = () => {
 
   const getTeacherId = async () => {
     try {
-      const token = sessionStorage.getItem("teacherAccessToken");
+      const token = sessionStorage.getItem("adminAccessToken");
       if (token) {
         const currTeacher = await axios.get(
           `${variables.apiServer}/api/v1/teachers/whoami`,
@@ -54,7 +54,7 @@ const App = () => {
             mobile: currTeacher.data.mobile,
             nic: currTeacher.data.nic,
             teacher_id: currTeacher.data.teacher_id,
-            token: sessionStorage.getItem("teacherAccessToken"),
+            token: sessionStorage.getItem("adminAccessToken"),
           };
           setLoggedInUser(loggedUser);
         }

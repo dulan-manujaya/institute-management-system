@@ -1,6 +1,6 @@
 const variables = {
   apiServer: "http://localhost:4000",
-  token: sessionStorage.getItem("teacherAccessToken"),
+  token: sessionStorage.getItem("adminAccessToken"),
 };
 
 export default variables;

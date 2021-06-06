@@ -40,13 +40,13 @@ const Header = () => {
 
   const logOutTeacher = () => {
     setLoggedInUser(null);
-    sessionStorage.removeItem("teacherAccessToken");
+    sessionStorage.removeItem("adminAccessToken");
     history.push("/login");
   };
 
   // useEffect(() => {
   //   if (loggedInUser === null || loggedInUser === "") {
-  //     const token = sessionStorage.getItem("teacherAccessToken");
+  //     const token = sessionStorage.getItem("adminAccessToken");
   //     if (!token) {
   //       history.push("/login");
   //     }

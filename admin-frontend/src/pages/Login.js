@@ -21,50 +21,45 @@ const Login = () => {
     password: password,
   };
 
-  const getTeacherId = async () => {
+  const getAdminId = async () => {
     try {
-      const token = sessionStorage.getItem("teacherAccessToken");
+      const token = sessionStorage.getItem("adminAccessToken");
       if (token) {
-        const currTeacher = await axios.get(
-          `${variables.apiServer}/api/v1/teachers/whoami`,
+        const currAdmin = await axios.get(
+          `${variables.apiServer}/api/v1/admins/whoami`,
           {
             headers: {
               Authorization: `Bearer ${token}`,
             },
           }
         );
-        if (currTeacher) {
-          console.log(currTeacher);
+        if (currAdmin) {
+          console.log(currAdmin);
           const loggedUser = {
-            avatar: currTeacher.data.avatar,
-            email: currTeacher.data.email,
-            first_name: currTeacher.data.first_name,
-            last_name: currTeacher.data.last_name,
-            mobile: currTeacher.data.mobile,
-            nic: currTeacher.data.nic,
-            teacher_id: currTeacher.data.teacher_id,
-            token: sessionStorage.getItem("teacherAccessToken"),
+            email: currAdmin.data.email,
+            first_name: currAdmin.data.first_name,
+            last_name: currAdmin.data.last_name,
+            mobile: currAdmin.data.mobile,
+            admin_id: currAdmin.data.admin_id,
+            token: sessionStorage.getItem("adminAccessToken"),
           };
           setLoggedInUser(loggedUser);
           history.push("/app/dashboard");
         }
-      } else {
-        history.push("/login");
       }
     } catch (err) {
       console.log(err);
-      history.push("/login");
     }
   };
 
   const loginFunction = async () => {
     try {
       const response = await axios.post(
-        `${variables.apiServer}/api/v1/teachers/login`,
+        `${variables.apiServer}/api/v1/admins/login`,
         loginBody
       );
       console.log(response.data);
-      sessionStorage.setItem("teacherAccessToken", response.data.token);
+      sessionStorage.setItem("adminAccessToken", response.data.token);
       setLoggedInUser(response.data);
       history.push("/app/dashboard");
     } catch (err) {
@@ -74,7 +69,7 @@ const Login = () => {
   };
 
   useEffect(() => {
-    getTeacherId();
+    getAdminId();
   }, []);
 
   return (
@@ -154,7 +149,7 @@ const Login = () => {
                   />
                 </Label>
 
-                <Button onClick={() => history.push("/")} className="mt-4">
+                <Button onClick={() => loginFunction()} className="mt-4">
                   Log in
                 </Button>
 
