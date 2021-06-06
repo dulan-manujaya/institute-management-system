@@ -90,7 +90,6 @@ class StudentModel {
       guardian_password,
       guardian_mobile,
     ]);
-    console.log(guardian_result);
 
     var guard_id = guardian_result.insertId;
     const sql =

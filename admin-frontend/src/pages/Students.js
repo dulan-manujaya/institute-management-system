@@ -20,16 +20,13 @@ import { TeacherContext, GradeContext } from "../context/Context.Index";
 import PageTitle from "../components/Typography/PageTitle";
 
 function Students() {
-  const { grades } = useContext(GradeContext);
   const { loggedInUser } = useContext(TeacherContext);
   const [page, setPage] = useState(1);
   const [data, setData] = useState([]);
   const [courses, setCourses] = useState([]);
   const [response, setResponse] = useState("");
   const [totalResults, setTotalResults] = useState(0);
-  const [gradeId, setGradeId] = useState("");
   const [courseId, setCourseId] = useState("");
-  const [gradeSelected, setGradeSelected] = useState(false);
 
   const resultsPerPage = 9;
 
@@ -37,15 +34,10 @@ function Students() {
     setPage(p);
   };
 
-  const getAllAcceptedStudents = async () => {
+  const getAllStudents = async () => {
     try {
       const students = await axios.get(
-        `${variables.apiServer}/api/v1/students/all`,
-        {
-          headers: {
-            Authorization: `Bearer ${loggedInUser.token}`,
-          },
-        }
+        `${variables.apiServer}/api/v1/students`
       );
       setResponse(students.data);
       setData(
@@ -91,66 +83,39 @@ function Students() {
     }
   );
 
-  const getStudentsByCourse = async (id) => {
-    try {
-      const students = await axios.get(
-        `${variables.apiServer}/api/v1/students/course/${id}`,
-        {
-          headers: {
-            Authorization: `Bearer ${loggedInUser.token}`,
-          },
-        }
-      );
-      setResponse(students.data);
-      setData(
-        students.data.slice((page - 1) * resultsPerPage, page * resultsPerPage)
-      );
-      setTotalResults(response.length);
-    } catch (err) {
-      console.log(err);
-    }
-  };
+  // const getStudentsByCourse = async (id) => {
+  //   try {
+  //     const students = await axios.get(
+  //       `${variables.apiServer}/api/v1/students/course/${id}`,
+  //       {
+  //         headers: {
+  //           Authorization: `Bearer ${loggedInUser.token}`,
+  //         },
+  //       }
+  //     );
+  //     setResponse(students.data);
+  //     setData(
+  //       students.data.slice((page - 1) * resultsPerPage, page * resultsPerPage)
+  //     );
+  //     setTotalResults(response.length);
+  //   } catch (err) {
+  //     console.log(err);
+  //   }
+  // };
 
-  const courseSelect = (e) => {
-    setCourseId(e.target.value);
-    getStudentsByCourse(e.target.value);
-  };
-
-  const gradeSelect = (e) => {
-    setGradeId(e.target.value);
-    getCourseByGrade(e.target.value);
-    if (e.target.value >= 0) {
-      setGradeSelected(true);
-    } else {
-      setGradeSelected(false);
-    }
-  };
-
-  const getCourseByGrade = async (id) => {
-    try {
-      const course = await axios.get(
-        `${variables.apiServer}/api/v1/courses/mycourses/${loggedInUser.teacher_id}/grade/${id}`,
-        {
-          headers: {
-            Authorization: `Bearer ${loggedInUser.token}`,
-          },
-        }
-      );
-      console.log(course);
-      setCourses(course.data);
-    } catch (err) {
-      console.log(err.message);
-    }
-  };
+  // const courseSelect = (e) => {
+  //   setCourseId(e.target.value);
+  //   getStudentsByCourse(e.target.value);
+  // };
 
   const clearFilters = () => {
     setCourseId(-1);
-    setGradeId(-1);
   };
 
   useEffect(() => {
-    getAllAcceptedStudents();
-  }, [page, grades, loggedInUser]);
+    getAllStudents();
+  }, [page, loggedInUser]);
+
   return (
     <>
       <PageTitle>Students</PageTitle>
@@ -181,28 +146,7 @@ function Students() {
           </div>
         </div>
 
-        <div className="flex-1 pr-4 mb-4">
-          <Select
-            className="block appearance-none w-full bg-grey-lighter border border-grey-lighter text-grey-darker py-3 px-4 pr-8 rounded"
-            onChange={(e) => {
-              gradeSelect(e);
-            }}
-            value={gradeId}
-          >
-            <option value={-1}>Select Grade</option>
-            {!grades
-              ? null
-              : grades
-                  .sort((a, b) => a.grade_id - b.grade_id)
-                  .map((grade) => (
-                    <option value={grade.grade_id} key={grade.grade_id}>
-                      {grade.grade_name}
-                    </option>
-                  ))}
-          </Select>
-        </div>
-
-        <div className="flex-1 pr-4 mb-4">
+        {/* <div className="flex-1 pr-4 mb-4">
           <Select
             disabled={!gradeSelected}
             className="block appearance-none w-full bg-grey-lighter border border-grey-lighter text-grey-darker py-3 px-4 pr-8 rounded"
@@ -220,12 +164,12 @@ function Students() {
                   </option>
                 ))}
           </Select>
-        </div>
+        </div> */}
         <div className="mb-4">
           <Button
             onClick={() => {
               clearFilters();
-              getAllAcceptedStudents();
+              getAllStudents();
             }}
           >
             Clear Filters / Refresh List
@@ -246,8 +190,6 @@ function Students() {
             <TableHeader>
               <tr>
                 <TableCell>Student</TableCell>
-                <TableCell>Auth ID</TableCell>
-                <TableCell>Grade</TableCell>
                 <TableCell>Mobile</TableCell>
                 <TableCell>Registered Date</TableCell>
               </tr>
@@ -272,12 +214,6 @@ function Students() {
                         </p>
                       </div>
                     </div>
-                  </TableCell>
-                  <TableCell>
-                    <span className="text-sm">{user.student_auth_id}</span>
-                  </TableCell>
-                  <TableCell>
-                    <span className="text-sm">{user.grade_name}</span>
                   </TableCell>
                   <TableCell>
                     <span className="text-sm">{user.mobile}</span>
