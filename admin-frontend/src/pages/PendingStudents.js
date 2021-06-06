@@ -48,7 +48,7 @@ function PendingStudents() {
     try {
       const token = sessionStorage.getItem("adminAccessToken");
       const currTeacher = await axios.get(
-        `${variables.apiServer}/api/v1/teachers/whoami`,
+        `${variables.apiServer}/api/v1/admins/whoami`,
         {
           headers: {
             Authorization: `Bearer ${token}`,

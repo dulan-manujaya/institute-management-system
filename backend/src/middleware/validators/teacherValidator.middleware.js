@@ -21,8 +21,6 @@ exports.createTeacherSchema = [
     .isEmail()
     .withMessage("Must be a valid email")
     .normalizeEmail(),
-  body("nic").exists().withMessage("NIC is required"),
-  body("avatar").exists().withMessage("Profile picture is required"),
   body("mobile")
     .exists()
     .withMessage("Mobile is required")
@@ -63,7 +61,6 @@ exports.updateTeacherSchema = [
     .isEmail()
     .withMessage("Must be a valid email")
     .normalizeEmail(),
-  body("nic").optional(),
   body("mobile")
     .optional()
     .isMobilePhone()
@@ -97,7 +94,6 @@ exports.updateTeacherSchema = [
         "mobile",
         "first_name",
         "last_name",
-        "avatar",
       ];
       return updates.every((update) => allowUpdates.includes(update));
     })

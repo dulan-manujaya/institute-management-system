@@ -1,7 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const teacherController = require("../controllers/teacher.controller");
-const auth = require("../middleware/adminAuth.middleware");
+const adminAuth = require("../middleware/adminAuth.middleware");
 const awaitHandlerFactory = require("../middleware/awaitHandlerFactory.middleware");
 
 const {
@@ -10,36 +10,40 @@ const {
   validateLogin,
 } = require("../middleware/validators/teacherValidator.middleware");
 
-router.get("/", auth(), awaitHandlerFactory(teacherController.getAllTeachers));
+router.get(
+  "/",
+  adminAuth(),
+  awaitHandlerFactory(teacherController.getAllTeachers)
+);
 router.get(
   "/id/:id",
-  auth(),
   awaitHandlerFactory(teacherController.getTeacherById)
 );
 router.get(
   "/email/:email",
-  auth(),
+  adminAuth(),
   awaitHandlerFactory(teacherController.getTeacherByEmail)
 );
 router.get(
   "/whoami",
-  auth(),
+  adminAuth(),
   awaitHandlerFactory(teacherController.getCurrentTeacher)
 );
 router.post(
   "/",
+  adminAuth(),
   createTeacherSchema,
   awaitHandlerFactory(teacherController.createTeacher)
 );
 router.patch(
   "/id/:id",
-  auth(),
+  adminAuth(),
   updateTeacherSchema,
   awaitHandlerFactory(teacherController.updateTeacher)
 );
 router.delete(
   "/id/:id",
-  auth(),
+  adminAuth(),
   awaitHandlerFactory(teacherController.deleteTeacher)
 );
 

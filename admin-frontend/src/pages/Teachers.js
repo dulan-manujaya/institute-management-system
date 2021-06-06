@@ -21,16 +21,11 @@ import { TrashIcon } from "../icons";
 import PageTitle from "../components/Typography/PageTitle";
 
 function Teachers() {
-  const { grades } = useContext(GradeContext);
   const { loggedInUser } = useContext(TeacherContext);
   const [page, setPage] = useState(1);
   const [data, setData] = useState([]);
-  const [courses, setCourses] = useState([]);
   const [response, setResponse] = useState("");
   const [totalResults, setTotalResults] = useState(0);
-  const [gradeId, setGradeId] = useState("");
-  const [courseId, setCourseId] = useState("");
-  const [gradeSelected, setGradeSelected] = useState(false);
 
   const resultsPerPage = 9;
 
@@ -38,19 +33,39 @@ function Teachers() {
     setPage(p);
   };
 
-  const getAllAcceptedStudents = async () => {
+  const deleteTeacher = async (id) => {
+    const token = sessionStorage.getItem("adminAccessToken");
+    await axios
+      .delete(`${variables.apiServer}/api/v1/teachers/id/${id}`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      })
+      .then((response) => {
+        console.log(response);
+      })
+      .catch((err) => {
+        console.log(err.response);
+      })
+      .finally(() => {
+        getAllTeachers();
+      });
+  };
+
+  const getAllTeachers = async () => {
     try {
-      const students = await axios.get(
-        `${variables.apiServer}/api/v1/students/all`,
+      const token = sessionStorage.getItem("adminAccessToken");
+      const teachers = await axios.get(
+        `${variables.apiServer}/api/v1/teachers`,
         {
           headers: {
-            Authorization: `Bearer ${loggedInUser.token}`,
+            Authorization: `Bearer ${token}`,
           },
         }
       );
-      setResponse(students.data);
+      setResponse(teachers.data);
       setData(
-        students.data.slice((page - 1) * resultsPerPage, page * resultsPerPage)
+        teachers.data.slice((page - 1) * resultsPerPage, page * resultsPerPage)
       );
       setTotalResults(response.length);
     } catch (err) {
@@ -92,66 +107,34 @@ function Teachers() {
     }
   );
 
-  const getStudentsByCourse = async (id) => {
-    try {
-      const students = await axios.get(
-        `${variables.apiServer}/api/v1/students/course/${id}`,
-        {
-          headers: {
-            Authorization: `Bearer ${loggedInUser.token}`,
-          },
-        }
-      );
-      setResponse(students.data);
-      setData(
-        students.data.slice((page - 1) * resultsPerPage, page * resultsPerPage)
-      );
-      setTotalResults(response.length);
-    } catch (err) {
-      console.log(err);
-    }
-  };
+  // const getStudentsByCourse = async (id) => {
+  //   try {
+  //     const teachers = await axios.get(
+  //       `${variables.apiServer}/api/v1/teachers/course/${id}`,
+  //       {
+  //         headers: {
+  //           Authorization: `Bearer ${loggedInUser.token}`,
+  //         },
+  //       }
+  //     );
+  //     setResponse(teachers.data);
+  //     setData(
+  //       teachers.data.slice((page - 1) * resultsPerPage, page * resultsPerPage)
+  //     );
+  //     setTotalResults(response.length);
+  //   } catch (err) {
+  //     console.log(err);
+  //   }
+  // };
 
-  const courseSelect = (e) => {
-    setCourseId(e.target.value);
-    getStudentsByCourse(e.target.value);
-  };
-
-  const gradeSelect = (e) => {
-    setGradeId(e.target.value);
-    getCourseByGrade(e.target.value);
-    if (e.target.value >= 0) {
-      setGradeSelected(true);
-    } else {
-      setGradeSelected(false);
-    }
-  };
-
-  const getCourseByGrade = async (id) => {
-    try {
-      const course = await axios.get(
-        `${variables.apiServer}/api/v1/courses/mycourses/${loggedInUser.teacher_id}/grade/${id}`,
-        {
-          headers: {
-            Authorization: `Bearer ${loggedInUser.token}`,
-          },
-        }
-      );
-      console.log(course);
-      setCourses(course.data);
-    } catch (err) {
-      console.log(err.message);
-    }
-  };
-
-  const clearFilters = () => {
-    setCourseId(-1);
-    setGradeId(-1);
-  };
+  // const clearFilters = () => {
+  //   setCourseId(-1);
+  //   setGradeId(-1);
+  // };
 
   useEffect(() => {
-    getAllAcceptedStudents();
-  }, [page, grades, loggedInUser]);
+    getAllTeachers();
+  }, [page, loggedInUser]);
   return (
     <>
       <PageTitle>Teachers</PageTitle>
@@ -182,51 +165,11 @@ function Teachers() {
           </div>
         </div>
 
-        <div className="flex-1 pr-4 mb-4">
-          <Select
-            className="block appearance-none w-full bg-grey-lighter border border-grey-lighter text-grey-darker py-3 px-4 pr-8 rounded"
-            onChange={(e) => {
-              gradeSelect(e);
-            }}
-            value={gradeId}
-          >
-            <option value={-1}>Select Grade</option>
-            {!grades
-              ? null
-              : grades
-                  .sort((a, b) => a.grade_id - b.grade_id)
-                  .map((grade) => (
-                    <option value={grade.grade_id} key={grade.grade_id}>
-                      {grade.grade_name}
-                    </option>
-                  ))}
-          </Select>
-        </div>
-
-        <div className="flex-1 pr-4 mb-4">
-          <Select
-            disabled={!gradeSelected}
-            className="block appearance-none w-full bg-grey-lighter border border-grey-lighter text-grey-darker py-3 px-4 pr-8 rounded"
-            onChange={(e) => {
-              courseSelect(e);
-            }}
-            value={courseId}
-          >
-            <option value={-1}>Select Course</option>
-            {!courses
-              ? null
-              : courses.map((course) => (
-                  <option value={course.course_id} key={course.course_id}>
-                    {course.course_name}
-                  </option>
-                ))}
-          </Select>
-        </div>
         <div className="mb-4">
           <Button
             onClick={() => {
-              clearFilters();
-              getAllAcceptedStudents();
+              // clearFilters();
+              getAllTeachers();
             }}
           >
             Clear Filters / Refresh List
@@ -247,151 +190,47 @@ function Teachers() {
             <TableHeader>
               <tr>
                 <TableCell>Name</TableCell>
-                <TableCell>Auth ID</TableCell>
                 <TableCell>Mobile</TableCell>
-                <TableCell>Registered Date</TableCell>
                 <TableCell>Actions</TableCell>
               </tr>
             </TableHeader>
             <TableBody>
-              <TableRow>
-                <TableCell>
-                  <div className="flex items-center text-sm">
-                    <Avatar
-                      className="hidden mr-3 md:block"
-                      src={"user.avatar"}
-                    />
-                    <div>
-                      <Link to="#">
-                        <p className="font-semibold">Nimal Perera</p>
-                      </Link>
-                      <p className="text-xs text-gray-600 dark:text-gray-400">
-                        nimal@gmail.com
-                      </p>
+              {data.map((teacher, i) => (
+                <TableRow key={i}>
+                  <TableCell>
+                    <div className="flex items-center text-sm">
+                      <div>
+                        <p className="font-semibold">
+                          {teacher.first_name + " " + teacher.last_name}
+                        </p>
+                        <p className="text-xs text-gray-600 dark:text-gray-400">
+                          {teacher.email}
+                        </p>
+                      </div>
                     </div>
-                  </div>
-                </TableCell>
-                <TableCell>
-                  <span className="text-sm">TEA522</span>
-                </TableCell>
-                <TableCell>
-                  <span className="text-sm">0768056002</span>
-                </TableCell>
-                <TableCell>
-                  <span className="text-sm">05/05/2021</span>
-                </TableCell>
-                <TableCell>
-                  <Button className="mr-4" size="small">
-                    Edit
-                  </Button>
-                  <Button layout="link" size="icon" aria-label="Delete">
-                    <TrashIcon className="w-5 h-5" aria-hidden="true" />
-                  </Button>
-                </TableCell>
-              </TableRow>
-              <TableRow>
-                <TableCell>
-                  <div className="flex items-center text-sm">
-                    <Avatar
-                      className="hidden mr-3 md:block"
-                      src={"user.avatar"}
-                    />
-                    <div>
-                      <Link to="#">
-                        <p className="font-semibold">Nimal Perera</p>
-                      </Link>
-                      <p className="text-xs text-gray-600 dark:text-gray-400">
-                        nimal@gmail.com
-                      </p>
-                    </div>
-                  </div>
-                </TableCell>
-                <TableCell>
-                  <span className="text-sm">TEA522</span>
-                </TableCell>
-                <TableCell>
-                  <span className="text-sm">0768056002</span>
-                </TableCell>
-                <TableCell>
-                  <span className="text-sm">05/05/2021</span>
-                </TableCell>
-                <TableCell>
-                  <Button className="mr-4" size="small">
-                    Edit
-                  </Button>
-                  <Button layout="link" size="icon" aria-label="Delete">
-                    <TrashIcon className="w-5 h-5" aria-hidden="true" />
-                  </Button>
-                </TableCell>
-              </TableRow>
-              <TableRow>
-                <TableCell>
-                  <div className="flex items-center text-sm">
-                    <Avatar
-                      className="hidden mr-3 md:block"
-                      src={"user.avatar"}
-                    />
-                    <div>
-                      <Link to="#">
-                        <p className="font-semibold">Nimal Perera</p>
-                      </Link>
-                      <p className="text-xs text-gray-600 dark:text-gray-400">
-                        nimal@gmail.com
-                      </p>
-                    </div>
-                  </div>
-                </TableCell>
-                <TableCell>
-                  <span className="text-sm">TEA522</span>
-                </TableCell>
-                <TableCell>
-                  <span className="text-sm">0768056002</span>
-                </TableCell>
-                <TableCell>
-                  <span className="text-sm">05/05/2021</span>
-                </TableCell>
-                <TableCell>
-                  <Button className="mr-4" size="small">Edit</Button>
-                  <Button layout="link" size="icon" aria-label="Delete">
-                    <TrashIcon className="w-5 h-5" aria-hidden="true" />
-                  </Button>
-                </TableCell>
-              </TableRow>
-              <TableRow>
-                <TableCell>
-                  <div className="flex items-center text-sm">
-                    <Avatar
-                      className="hidden mr-3 md:block"
-                      src={"user.avatar"}
-                    />
-                    <div>
-                      <Link to="#">
-                        <p className="font-semibold">Nimal Perera</p>
-                      </Link>
-                      <p className="text-xs text-gray-600 dark:text-gray-400">
-                        nimal@gmail.com
-                      </p>
-                    </div>
-                  </div>
-                </TableCell>
-                <TableCell>
-                  <span className="text-sm">TEA522</span>
-                </TableCell>
-                <TableCell>
-                  <span className="text-sm">0768056002</span>
-                </TableCell>
-                <TableCell>
-                  <span className="text-sm">05/05/2021</span>
-                </TableCell>
-                <TableCell>
-                  <Button className="mr-4" size="small">
-                    Edit
-                  </Button>
-                  <Button layout="link" size="icon" aria-label="Delete">
-                    <TrashIcon className="w-5 h-5" aria-hidden="true" />
-                  </Button>
-                </TableCell>
-              </TableRow>
+                  </TableCell>
+                  <TableCell>
+                    <span className="text-sm">{teacher.mobile}</span>
+                  </TableCell>
+                  <TableCell>
+                    <Link to={`/app/edit-teacher/${teacher.teacher_id}`}>
+                      <Button className="mr-4" size="small">
+                        Edit
+                      </Button>
+                    </Link> 
+                    <Button
+                      layout="link"
+                      size="icon"
+                      aria-label="Delete"
+                      onClick={() => {
+                        deleteTeacher(teacher.teacher_id);
+                      }}
+                    >
+                      <TrashIcon className="w-5 h-5" aria-hidden="true" />
+                    </Button>
+                  </TableCell>
+                </TableRow>
+              ))}
             </TableBody>
           </Table>
           <TableFooter>

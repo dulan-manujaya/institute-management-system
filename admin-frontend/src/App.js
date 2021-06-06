@@ -37,7 +37,7 @@ const App = () => {
       const token = sessionStorage.getItem("adminAccessToken");
       if (token) {
         const currTeacher = await axios.get(
-          `${variables.apiServer}/api/v1/teachers/whoami`,
+          `${variables.apiServer}/api/v1/admins/whoami`,
           {
             headers: {
               Authorization: `Bearer ${token}`,
@@ -47,13 +47,11 @@ const App = () => {
         if (currTeacher) {
           console.log(currTeacher);
           const loggedUser = {
-            avatar: currTeacher.data.avatar,
             email: currTeacher.data.email,
             first_name: currTeacher.data.first_name,
             last_name: currTeacher.data.last_name,
             mobile: currTeacher.data.mobile,
-            nic: currTeacher.data.nic,
-            teacher_id: currTeacher.data.teacher_id,
+            admin_id: currTeacher.data.admin_id,
             token: sessionStorage.getItem("adminAccessToken"),
           };
           setLoggedInUser(loggedUser);
@@ -67,7 +65,6 @@ const App = () => {
 
   useEffect(() => {
     getTeacherId();
-    getGrades();
     localStorage.setItem("theme", "dark");
   }, []);
   return (

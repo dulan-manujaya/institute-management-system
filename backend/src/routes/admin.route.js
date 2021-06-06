@@ -1,7 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const adminController = require("../controllers/admin.controller");
-const auth = require("../middleware/adminAuth.middleware");
+const adminAuth = require("../middleware/adminAuth.middleware");
 const awaitHandlerFactory = require("../middleware/awaitHandlerFactory.middleware");
 
 const {
@@ -10,20 +10,20 @@ const {
   validateLogin,
 } = require("../middleware/validators/adminValidator.middleware");
 
-router.get("/", auth(), awaitHandlerFactory(adminController.getAllAdmins));
+router.get("/", adminAuth(), awaitHandlerFactory(adminController.getAllAdmins));
 router.get(
   "/id/:id",
-  auth(),
+  adminAuth(),
   awaitHandlerFactory(adminController.getAdminById)
 );
 router.get(
   "/email/:email",
-  auth(),
+  adminAuth(),
   awaitHandlerFactory(adminController.getAdminByEmail)
 );
 router.get(
   "/whoami",
-  auth(),
+  adminAuth(),
   awaitHandlerFactory(adminController.getCurrentAdmin)
 );
 router.post(
@@ -33,13 +33,13 @@ router.post(
 );
 router.patch(
   "/id/:id",
-  auth(),
+  adminAuth(),
   updateAdminSchema,
   awaitHandlerFactory(adminController.updateAdmin)
 );
 router.delete(
   "/id/:id",
-  auth(),
+  adminAuth(),
   awaitHandlerFactory(adminController.deleteAdmin)
 );
 
