@@ -108,10 +108,6 @@ const StudentDetails = (props) => {
                 </h2>
                 <ul className="dark:bg-gray-800 bg-gray-200 dark:text-gray-200 text-gray-700 hover:shadow py-2 px-3 mt-3 divide-y rounded shadow-sm">
                   <li className="flex items-center py-3">
-                    <span>Authorization ID</span>
-                    <span className="ml-auto"> {student.student_auth_id}</span>
-                  </li>
-                  <li className="flex items-center py-3">
                     <span>Member since</span>
                     <span className="ml-auto">
                       {" "}

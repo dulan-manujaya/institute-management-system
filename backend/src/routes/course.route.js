@@ -1,8 +1,8 @@
 const express = require("express");
 const router = express.Router();
 const courseController = require("../controllers/course.controller");
-const auth = require("../middleware/auth.middleware");
-const studentAuth = require("../middleware/studentAuth.middleware");
+const adminAuth = require("../middleware/adminAuth.middleware");
+const studentadminAuth = require("../middleware/studentAuth.middleware");
 const awaitHandlerFactory = require("../middleware/awaitHandlerFactory.middleware");
 
 const {
@@ -13,12 +13,10 @@ const {
 router.get("/", awaitHandlerFactory(courseController.getAllCourses));
 router.get(
   "/mycourses/:teacherid",
-  auth(),
   awaitHandlerFactory(courseController.getMyCourses)
 );
 router.get(
   "/mycourses/:teacherid/grade/:gradeid",
-  auth(),
   awaitHandlerFactory(courseController.getMyCoursesByGrade)
 );
 router.get("/id/:id", awaitHandlerFactory(courseController.getCourseById));
@@ -28,19 +26,19 @@ router.get(
 );
 router.post(
   "/",
-  auth(),
+  adminAuth(),
   createCourseSchema,
   awaitHandlerFactory(courseController.createCourse)
 );
 router.patch(
   "/id/:id",
-  auth(),
+  adminAuth(),
   updateCourseSchema,
   awaitHandlerFactory(courseController.updateCourse)
 );
 router.delete(
   "/id/:id",
-  auth(),
+  adminAuth(),
   awaitHandlerFactory(courseController.deleteCourse)
 );
 
@@ -48,7 +46,7 @@ router.delete(
 
 router.get(
   "/getByStudentId/:studentId",
-  studentAuth(),
+  studentadminAuth(),
   awaitHandlerFactory(courseController.getByStudentId)
 );
 

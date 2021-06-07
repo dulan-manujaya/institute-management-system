@@ -24,7 +24,7 @@ const Dashboard = () => {
 
   const getAllAcceptedStudents = async () => {
     try {
-      const token = sessionStorage.getItem("teacherAccessToken");
+      const token = sessionStorage.getItem("adminAccessToken");
       const students = await axios.get(
         `${variables.apiServer}/api/v1/students/all`,
         {

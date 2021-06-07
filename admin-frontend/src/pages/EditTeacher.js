@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Input } from "@windmill/react-ui";
 import axios from "axios";
 
@@ -6,13 +6,15 @@ import variables from "../common/globalVariables";
 
 import PageTitle from "../components/Typography/PageTitle";
 
-const AddTeacher = () => {
+const EditTeacher = (props) => {
+  const [teacherId, setTeacherId] = useState(props.match.params.teacherid);
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [mobile, setMobile] = useState("");
+  const [teacherData, setTeacherData] = useState("");
 
   const teacherObj = {
     first_name: firstName,
@@ -23,14 +25,18 @@ const AddTeacher = () => {
     confirm_password: confirmPassword,
   };
 
-  const createTeacher = async () => {
+  const editTeacher = async () => {
     const token = sessionStorage.getItem("adminAccessToken");
     await axios
-      .post(`${variables.apiServer}/api/v1/teachers`, teacherObj, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      })
+      .patch  (
+        `${variables.apiServer}/api/v1/teachers/id/${teacherId}`,
+        teacherObj,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      )
       .then((response) => {
         console.log(response);
       })
@@ -39,9 +45,22 @@ const AddTeacher = () => {
       });
   };
 
+  const getTeacherDetails = async () => {
+    await axios
+      .get(`${variables.apiServer}/api/v1/teachers/id/${teacherId}`)
+      .then((response) => {
+        console.log(response);
+        setTeacherData(response.data);
+      });
+  };
+
+  useEffect(() => {
+    getTeacherDetails();
+  }, []);
+
   return (
     <>
-      <PageTitle>Add Teacher</PageTitle>
+      <PageTitle>Edit Teacher</PageTitle>
       <div>
         <div className="bg-gray-200 shadow-md rounded px-8 pt-6 pb-8 flex flex-col my-2 dark:bg-gray-800">
           <div className="-mx-3 md:flex mb-6">
@@ -56,7 +75,7 @@ const AddTeacher = () => {
                 className="appearance-none block w-full bg-grey-lighter text-grey-darker border border-red rounded py-3 px-4"
                 id="grid-first-name"
                 type="text"
-                placeholder="Jane"
+                placeholder={teacherData.first_name}
                 value={firstName}
                 onChange={(e) => {
                   setFirstName(e.target.value);
@@ -75,7 +94,7 @@ const AddTeacher = () => {
                 className="appearance-none block w-full bg-grey-lighter text-grey-darker border border-grey-lighter rounded py-3 px-4"
                 id="grid-last-name"
                 type="text"
-                placeholder="Doe"
+                placeholder={teacherData.last_name}
                 value={lastName}
                 onChange={(e) => {
                   setLastName(e.target.value);
@@ -114,7 +133,7 @@ const AddTeacher = () => {
                 id="grid-email"
                 type="email"
                 autoComplete="nope"
-                placeholder="example@example.com"
+                placeholder={teacherData.email}
                 value={email}
                 onChange={(e) => {
                   setEmail(e.target.value);
@@ -132,7 +151,7 @@ const AddTeacher = () => {
                 className="appearance-none block w-full bg-grey-lighter text-grey-darker border border-grey-lighter rounded py-3 px-4"
                 id="grid-city"
                 type="tel"
-                placeholder="07xxxxxxxx"
+                placeholder={teacherData.mobile}
                 pattern="[0-9]{10}"
                 value={mobile}
                 onChange={(e) => {
@@ -217,7 +236,7 @@ const AddTeacher = () => {
             </button>
             <button
               onClick={() => {
-                createTeacher();
+                editTeacher();
               }}
               className="mr-5 bg-green-600 hover:bg-green-800 text-white font-bold py-2 px-6 rounded-lg"
             >
@@ -230,4 +249,4 @@ const AddTeacher = () => {
   );
 };
 
-export default AddTeacher;
+export default EditTeacher;
