@@ -172,7 +172,7 @@ class StudentController {
     this.checkValidation(req);
 
     const { email, password: pass } = req.body;
-
+    
     const student = await StudentModel.findOne({ email });
 
     if (!student) {
