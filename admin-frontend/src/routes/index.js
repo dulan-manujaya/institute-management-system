@@ -23,6 +23,8 @@ const StudentAssignmentSubmissions = lazy(() =>
 const TeacherAdmission = lazy(() => import("../pages/AddTeacher"));
 const Teachers = lazy(() => import("../pages/Teachers"));
 const EditTeacher = lazy(() => import("../pages/EditTeacher"));
+const Courses = lazy(() => import("../pages/Courses"));
+const CreateCourse = lazy(() => import("../pages/CreateCourse"));
 
 /**
  * ⚠ These are internal routes!
@@ -114,6 +116,14 @@ const routes = [
   {
     path: "/blank",
     component: Blank,
+  },
+  {
+    path: "/courses",
+    component: Courses,
+  },
+  {
+    path: "/create-course",
+    component: CreateCourse,
   },
 ];
 

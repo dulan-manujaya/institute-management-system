@@ -12,7 +12,6 @@ const {
 
 router.get(
   "/",
-  adminAuth(),
   awaitHandlerFactory(teacherController.getAllTeachers)
 );
 router.get(

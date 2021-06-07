@@ -105,9 +105,19 @@ const routes = [
     ],
   },
   {
-    path: "/app/courses",
     icon: "CardsIcon",
     name: "Courses",
+    routes: [
+      // submenu
+      {
+        path: "/app/courses",
+        name: "View Courses",
+      },
+      {
+        path: "/app/create-course",
+        name: "Create New Course",
+      },
+    ],
   },
   {
     path: "/app/payments",
