@@ -79,11 +79,13 @@ class CourseModel {
   // Student
 
   getCoursesByStudentId = async (params = {}) => {
-    let sql = `SELECT C.*, EN.enrolled_date
+    let sql = `SELECT C.*, CONCAT(T.first_name, ' ' ,T.last_name) teacher_name
     FROM ${this.tableName} C
-    INNER JOIN enrollments EN
-    ON C.course_id = EN.course_id
-    WHERE EN.student_id = ${params.student_id} AND EN.is_accepted = 1;`;
+    INNER JOIN teacher T
+    ON T.teacher_id = C.teacher_id
+    LEFT JOIN enrollments EN
+    ON C.course_id = EN.course_id AND EN.student_id = ${params.student_id}
+    WHERE EN.enrollment_id IS NULL;`;
 
     return await query(sql);
   };

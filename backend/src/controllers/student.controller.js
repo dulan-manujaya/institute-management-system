@@ -125,6 +125,8 @@ class StudentController {
     var guardian_password = await this.generatePassword();
     req.body.guardian_password = guardian_password;
 
+    console.log(guardian_password);
+
     await this.hashPassword(req);
 
     const result = await StudentModel.create(req.body);

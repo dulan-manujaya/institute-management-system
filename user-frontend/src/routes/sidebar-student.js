@@ -27,7 +27,7 @@
     name: "Reports",
   },
   {
-    path: "/app/student/payment",
+    path: "/app/student/payments",
     icon: "MoneyIcon",
     name: "Payments",
   },

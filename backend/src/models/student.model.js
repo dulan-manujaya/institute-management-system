@@ -51,12 +51,12 @@ class StudentModel {
 
   findOne = async (params) => {
     const { columnSet, values } = multipleColumnSet(params);
-
-    const sql = `SELECT * FROM ${this.tableName}
+    const sql = `SELECT S.*, G.guardian_email, G.guardian_mobile FROM ${this.tableName} S
+    Inner Join ${this.guardianTableName} G
+    On G.guardian_id = S.guardian_id
         WHERE ${columnSet}`;
 
     const result = await query(sql, [...values]);
-
     // return back the first row (student)
     return result[0];
   };
@@ -83,15 +83,24 @@ class StudentModel {
   }) => {
     const guardian_sql =
       `INSERT INTO ${this.guardianTableName} ` +
-      `(email, password, mobile) VALUES (?,?,?) `;
+      `(guardian_email, guardian_password, guardian_mobile) VALUES (?,?,?) ` +
+      `ON DUPLICATE KEY UPDATE ` +
+      `email=?, mobile=?`;
 
-    const guardian_result = await query(guardian_sql, [
+    await query(guardian_sql, [
       guardian_email,
       guardian_password,
       guardian_mobile,
+      guardian_email,
+      guardian_mobile,
     ]);
 
-    var guard_id = guardian_result.insertId;
+    const guard_id_sql =
+      `Select guardian_id from ${this.guardianTableName} ` +
+      `WHERE guardian_email = '${guardian_email}'; `;
+
+    const guardian_id = await query(guard_id_sql, []);
+
     const sql =
       `INSERT INTO ${this.tableName} ` +
       `(email, password, first_name, last_name, avatar, mobile, gender, date_of_birth, guardian_id) ` +
@@ -106,7 +115,7 @@ class StudentModel {
       mobile,
       gender,
       date_of_birth,
-      guard_id,
+      guardian_id[0].guardian_id,
     ]);
     const affectedRows = result ? result.affectedRows : 0;
 

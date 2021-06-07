@@ -20,18 +20,21 @@ const ForgotPassword = () => {
   const [newPasswordHidden, setNewPasswordHidden] = useState(true);
 
   const confirmEmail = async () => {
-    const emailRegex = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+    const emailRegex =
+      /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
     if (!emailRegex.test(String(email).toLowerCase())) {
       alert("Please enter a valid email", "error");
     } else {
+      let type = localStorage.getItem("type");
       await axios
         .post(`${variables.apiServer}/api/v1/forgot-password/verifyEmail/`, {
-          type: `student`,
+          type: type,
           email: email,
         })
         .then((response) => {
           if (response.data.isExist == true) {
-            history.push("/login");
+            setEmailHidden(true);
+            setOTPHidden(false);
           } else {
             alert(response.data.message, "error");
           }
@@ -71,16 +74,16 @@ const ForgotPassword = () => {
     } else if (password != confirmPassword) {
       alert("Passwords dont match", "error");
     } else {
+      let type = localStorage.getItem("type");
       await axios
         .post(`${variables.apiServer}/api/v1/forgot-password/resetPassword/`, {
-          type: `student`,
+          type: type,
           email: email,
-          password: password
+          password: password,
         })
         .then((response) => {
           if (response.data.updated == true) {
-            setEmailHidden(true);
-            setOTPHidden(false);
+            history.push("/login");
           } else {
             alert(response.data.message, "error");
           }

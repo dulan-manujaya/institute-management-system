@@ -7,15 +7,10 @@ const StudentResults = lazy(() => import('../pages/student/Results'))
 const StudentExams = lazy(() => import('../pages/student/Exams'))
 const StudentCourses = lazy(() => import('../pages/student/Courses'))
 const StudentPayments = lazy(() => import('../pages/student/Payments'))
-const StudentEnrollment = lazy(() => import('../pages/student/Enrollments'))
 const TeacherCourses = lazy(() => import('../pages/teacher/Courses'))
 const TeacherStudents = lazy(() => import('../pages/teacher/Students'))
 const ParentChildren = lazy(() => import('../pages/parent/Children'))
-const Charts = lazy(() => import('../pages/Charts'))
-const Buttons = lazy(() => import('../pages/Buttons'))
-const PendingStudents = lazy(() => import('../pages/PendingStudents'))
 const Page404 = lazy(() => import('../pages/404'))
-const Blank = lazy(() => import('../pages/Blank'))
 
 /**
  * ⚠ These are internal routes!
@@ -53,10 +48,6 @@ const routes = [
     component: StudentPayments,
   },
   {
-    path: '/student/enrollment',
-    component: StudentEnrollment,
-  },
-  {
     path: '/teacher/courses',
     component: TeacherCourses,
   },
@@ -69,24 +60,8 @@ const routes = [
     component: ParentChildren,
   },
   {
-    path: '/charts',
-    component: Charts,
-  },
-  {
-    path: '/buttons',
-    component: Buttons,
-  },
-  {
-    path: '/pending-students',
-    component: PendingStudents,
-  },
-  {
     path: '/404',
     component: Page404,
-  },
-  {
-    path: '/blank',
-    component: Blank,
   },
 ]
 

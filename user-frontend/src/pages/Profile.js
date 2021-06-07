@@ -5,7 +5,9 @@ import PageTitle from "../components/Typography/PageTitle";
 const Profile = () => {
   const [studentId, setStudentId] = useState("0");
   const [studentObject, setStudentObject] = useState({});
-  const [studentRegisteredDate, setStudentRegisteredDate] = useState(new Date());
+  const [studentRegisteredDate, setStudentRegisteredDate] = useState(
+    new Date()
+  );
   const [studentBirthDate, setStudentBirthDate] = useState(new Date());
 
   const getStudentId = async () => {
@@ -22,6 +24,7 @@ const Profile = () => {
     const currStudent = await axios.get(
       "http://localhost:4000/api/v1/students/id/" + sid
     );
+    console.log(currStudent.data)
     setStudentId(sid);
     setStudentObject(currStudent.data);
     setStudentRegisteredDate(new Date(currStudent.data.registered_date));
@@ -32,7 +35,6 @@ const Profile = () => {
   }, []);
   return (
     <>
-    
       <PageTitle>Profile</PageTitle>
       <div className="bg-gray-800">
         <div className="container mx-auto my-5 p-5">
@@ -48,14 +50,16 @@ const Profile = () => {
                     alt=""
                   />
                 </div>
-                <h1 className="text-gray-100 font-bold text-xl leading-8 my-1">
+                <h1 className="text-gray-100 font-bold text-xl leading-8 mt-3">
                   {studentObject.first_name + " " + studentObject.last_name}
                 </h1>
 
                 <ul className="bg-gray-800 text-gray-200 hover:text-gray-200 hover:shadow py-2 mt-3 divide-y rounded shadow-sm">
                   <li className="flex items-center py-3">
                     <span>Member since</span>
-                    <span className="ml-auto">{studentRegisteredDate.toLocaleDateString()}</span>
+                    <span className="ml-auto">
+                      {studentRegisteredDate.toLocaleDateString()}
+                    </span>
                   </li>
                 </ul>
               </div>
@@ -71,7 +75,6 @@ const Profile = () => {
                     <svg
                       className="h-5"
                       xmlns="http://www.w3.org/2000/svg"
-                      a
                       fill="none"
                       viewBox="0 0 24 24"
                       stroke="currentColor"
@@ -86,11 +89,13 @@ const Profile = () => {
                   </span>
                   <span className="tracking-wide">About</span>
                 </div>
-                <div className="text-gray-100">
-                  <div className="grid md:grid-cols-2 text-sm">
-                    <div className="grid grid-cols-2">
+                <div className="text-gray-100 ">
+                  <div className="grid md:grid-cols-2 text-sm space-y-6">
+                    <div className="grid grid-cols-2 mt-6">
                       <div className="px-4 py-2 font-semibold">First Name</div>
-                      <div className="px-4 py-2">{studentObject.first_name}</div>
+                      <div className="px-4 py-2">
+                        {studentObject.first_name}
+                      </div>
                     </div>
                     <div className="grid grid-cols-2">
                       <div className="px-4 py-2 font-semibold">Last Name</div>
@@ -105,22 +110,6 @@ const Profile = () => {
                       <div className="px-4 py-2">{studentObject.mobile}</div>
                     </div>
                     <div className="grid grid-cols-2">
-                      <div className="px-4 py-2 font-semibold">
-                        Current Address
-                      </div>
-                      <div className="px-4 py-2">
-                        Beech Creek, PA, Pennsylvania
-                      </div>
-                    </div>
-                    <div className="grid grid-cols-2">
-                      <div className="px-4 py-2 font-semibold">
-                        Permanant Address
-                      </div>
-                      <div className="px-4 py-2">
-                        Arlington Heights, IL, Illinois
-                      </div>
-                    </div>
-                    <div className="grid grid-cols-2">
                       <div className="px-4 py-2 font-semibold">Email.</div>
                       <div className="px-4 py-2">
                         <a
@@ -133,13 +122,31 @@ const Profile = () => {
                     </div>
                     <div className="grid grid-cols-2">
                       <div className="px-4 py-2 font-semibold">Birthday</div>
-                      <div className="px-4 py-2">{studentBirthDate.toLocaleDateString()}</div>
+                      <div className="px-4 py-2">
+                        {studentBirthDate.toLocaleDateString()}
+                      </div>
+                    </div>
+                    <div className="grid grid-cols-2">
+                      <div className="px-4 py-2 font-semibold">
+                        Guardian Email
+                      </div>
+                      <div className="px-4 py-2">
+                        <a
+                          className="text-blue-800"
+                          href={`mailto:${studentObject.guardian_email}`}
+                        >
+                          {studentObject.guardian_email}
+                        </a>
+                      </div>
+                    </div>
+                    <div className="grid grid-cols-2">
+                      <div className="px-4 py-2 font-semibold">
+                        Guardian Contact No.
+                      </div>
+                      <div className="px-4 py-2">{studentObject.guardian_mobile}</div>
                     </div>
                   </div>
                 </div>
-                <button className="block w-full text-blue-800 text-sm font-semibold rounded-lg hover:bg-gray-800 focus:outline-none focus:shadow-outline focus:bg-gray-800 hover:shadow-xs p-3 my-4">
-                  Show Full Information
-                </button>
               </div>
               {/* End of about section */}
               <div className="my-4" />

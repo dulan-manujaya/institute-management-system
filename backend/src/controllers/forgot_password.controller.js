@@ -14,6 +14,7 @@ class forgotPasswordController {
   };
   verifyEmail = async (req, res, next) => {
     if (req.body.type == "student") {
+      
       const student = await ForgotPasswordModel.verifyStudentEmail({
         email: req.body.email,
       });

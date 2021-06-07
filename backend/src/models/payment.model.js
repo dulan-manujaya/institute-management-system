@@ -68,7 +68,7 @@ class PaymentModel {
     ON P.enrollment_id = EN.enrollment_id
     INNER JOIN courses C
     ON EN.course_id = C.course_id
-    WHERE EN.student_id = ${params.student_id} AND EN.is_accepted = 1;`;
+    WHERE EN.student_id = ${params.student_id};`;
     return await query(sql);
   };
 }
