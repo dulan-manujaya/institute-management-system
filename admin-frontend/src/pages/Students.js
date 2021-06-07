@@ -15,9 +15,10 @@ import {
   Button,
 } from "@windmill/react-ui";
 import variables from "../common/globalVariables";
-import { TeacherContext, GradeContext } from "../context/Context.Index";
+import { TeacherContext } from "../context/Context.Index";
 
 import PageTitle from "../components/Typography/PageTitle";
+import { TrashIcon } from "../icons";
 
 function Students() {
   const { loggedInUser } = useContext(TeacherContext);
@@ -47,6 +48,25 @@ function Students() {
     } catch (err) {
       console.log(err);
     }
+  };
+
+  const deleteStudent = async (id) => {
+    const token = sessionStorage.getItem("adminAccessToken");
+    await axios
+      .delete(`${variables.apiServer}/api/v1/students/id/${id}`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      })
+      .then((response) => {
+        console.log(response);
+      })
+      .catch((err) => {
+        console.log(err.response);
+      })
+      .finally(() => {
+        getAllStudents();
+      });
   };
 
   var numberOfAjaxCAllPending = 0;
@@ -192,6 +212,7 @@ function Students() {
                 <TableCell>Student</TableCell>
                 <TableCell>Mobile</TableCell>
                 <TableCell>Registered Date</TableCell>
+                <TableCell>Actions</TableCell>
               </tr>
             </TableHeader>
             <TableBody>
@@ -222,6 +243,23 @@ function Students() {
                     <span className="text-sm">
                       {new Date(user.registered_date).toLocaleDateString()}
                     </span>
+                  </TableCell>
+                  <TableCell>
+                    <Link to={`/app/student-details/${user.student_id}`}>
+                      <Button className="mr-4" size="small">
+                        Edit
+                      </Button>
+                    </Link>
+                    <Button
+                      layout="link"
+                      size="icon"
+                      aria-label="Delete"
+                      onClick={() => {
+                        deleteStudent(user.student_id);
+                      }}
+                    >
+                      <TrashIcon className="w-5 h-5" aria-hidden="true" />
+                    </Button>
                   </TableCell>
                 </TableRow>
               ))}
