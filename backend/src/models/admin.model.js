@@ -1,7 +1,7 @@
 const query = require("../db/db-connection");
 const { multipleColumnSet } = require("../utils/common.utils");
-class CourseModel {
-  tableName = "courses";
+class AdminModel {
+  tableName = "admin";
 
   find = async (params = {}) => {
     let sql = `SELECT * FROM ${this.tableName}`;
@@ -16,30 +16,29 @@ class CourseModel {
     return await query(sql, [...values]);
   };
 
-  findMyByGrade = async (params = {}) => {
-    let sql =
-      `SELECT * FROM ${this.tableName} ` +
-      `WHERE teacher_id = ${params.teacher_id} ` +
-      `AND grade_id = ${params.grade_id}`;
-
-    return await query(sql);
-  };
-
   findOne = async (params) => {
     const { columnSet, values } = multipleColumnSet(params);
 
     const sql = `SELECT * FROM ${this.tableName}
         WHERE ${columnSet}`;
+
     const result = await query(sql, [...values]);
 
+    // return back the first row (admin)
     return result[0];
   };
 
-  create = async ({ teacher_id, amount, course_name }) => {
+  create = async ({ email, password, first_name, last_name, mobile }) => {
     const sql = `INSERT INTO ${this.tableName}
-        (teacher_id, amount, course_name) VALUES (?,?,?)`;
+        (email, password, first_name, last_name, mobile) VALUES (?,?,?,?,?)`;
 
-    const result = await query(sql, [teacher_id, amount, course_name]);
+    const result = await query(sql, [
+      email,
+      password,
+      first_name,
+      last_name,
+      mobile,
+    ]);
     const affectedRows = result ? result.affectedRows : 0;
 
     return affectedRows;
@@ -48,7 +47,7 @@ class CourseModel {
   update = async (params, id) => {
     const { columnSet, values } = multipleColumnSet(params);
 
-    const sql = `UPDATE ${this.tableName} SET ${columnSet} WHERE course_id = ?`;
+    const sql = `UPDATE ${this.tableName} SET ${columnSet} WHERE admin_id = ?`;
 
     const result = await query(sql, [...values, id]);
 
@@ -57,26 +56,12 @@ class CourseModel {
 
   delete = async (id) => {
     const sql = `DELETE FROM ${this.tableName}
-        WHERE course_id = ?`;
+        WHERE admin_id = ?`;
     const result = await query(sql, [id]);
     const affectedRows = result ? result.affectedRows : 0;
 
     return affectedRows;
   };
-
-  // Student
-
-  getCoursesByStudentId = async (params = {}) => {
-    let sql = `SELECT C.*, CONCAT(T.first_name, ' ' ,T.last_name) teacher_name
-    FROM ${this.tableName} C
-    INNER JOIN teacher T
-    ON T.teacher_id = C.teacher_id
-    LEFT JOIN enrollments EN
-    ON C.course_id = EN.course_id AND EN.student_id = ${params.student_id}
-    WHERE EN.enrollment_id IS NULL;`;
-
-    return await query(sql);
-  };
 }
 
-module.exports = new CourseModel();
+module.exports = new AdminModel();

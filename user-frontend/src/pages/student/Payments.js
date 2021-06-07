@@ -30,8 +30,7 @@ import { EditIcon, TrashIcon, UploadIcon } from "../../icons";
 import ToastMessage from "../../messages/HandleMessages";
 
 const Payments = () => {
-  // const { loggedInUser } = useContext(TeacherContext);
-  const { loggedInUser } = useState();
+  const [studentId, setStudentId] = useState("0");
   const [courses, setCourses] = useState([]);
   const [assignmentCourse, setAssignmentCourse] = useState();
   const [deadline, setDeadline] = useState("");
@@ -45,6 +44,20 @@ const Payments = () => {
   const totalResults = response.length;
   const [page, setPage] = useState(1);
   const [data, setData] = useState([]);
+  const monthNames = [
+    "January",
+    "February",
+    "March",
+    "April",
+    "May",
+    "June",
+    "July",
+    "August",
+    "September",
+    "October",
+    "November",
+    "December",
+  ];
 
   const assignmentBody = {
     title: title,
@@ -64,29 +77,6 @@ const Payments = () => {
   function closeModal() {
     setIsModalOpen(false);
   }
-
-  const getAllSubmitted = async () => {
-    try {
-      const submissions = await axios.get(
-        `${variables.apiServer}/api/v1/assignments/myassignments/${loggedInUser.teacher_id}`,
-        {
-          headers: {
-            Authorization: `Bearer ${loggedInUser.token}`,
-          },
-        }
-      );
-      setData(
-        submissions.data.slice(
-          (page - 1) * resultsPerPage,
-          page * resultsPerPage
-        )
-      );
-      setResponse(submissions.data);
-      // setTotalResults(submissions.data.length);
-    } catch (err) {
-      console.log(err);
-    }
-  };
 
   const clearForm = () => {
     setFileName("");
@@ -120,13 +110,13 @@ const Payments = () => {
 
   const uploadAssignment = async () => {
     try {
-      console.log(assignmentBody);
+      const token = sessionStorage.getItem("studentAccessToken");
       const response = await axios.post(
         `${variables.apiServer}/api/v1/assignments`,
         assignmentBody,
         {
           headers: {
-            Authorization: `Bearer ${loggedInUser.token}`,
+            Authorization: `Bearer ${token}`,
           },
         }
       );
@@ -135,7 +125,7 @@ const Payments = () => {
       ToastMessage(response.data);
       clearForm();
       closeModal();
-      getAllSubmitted();
+      // getAllSubmitted();
     } catch (err) {
       console.log(err.response.data);
       if (err.response.data.message === "Validation failed") {
@@ -146,170 +136,98 @@ const Payments = () => {
     }
   };
 
-  const getAllCourses = async () => {
+  const getAllPayments = async () => {
     try {
-      const course = await axios.get(
-        `${variables.apiServer}/api/v1/courses/mycourses/${loggedInUser.teacher_id}`,
+      const token = sessionStorage.getItem("studentAccessToken");
+      const currStudent = await axios.get(
+        `${variables.apiServer}/api/v1/students/whoami`,
         {
           headers: {
-            Authorization: `Bearer ${loggedInUser.token}`,
+            Authorization: `Bearer ${token}`,
           },
         }
       );
-      console.log(course);
-      setCourses(course.data);
+      const sid = currStudent.data.student_id;
+      setStudentId(sid);
+      const payments = await axios.get(
+        `${variables.apiServer}/api/v1/payments/getByStudentId/${sid}`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      setData(
+        payments.data.slice((page - 1) * resultsPerPage, page * resultsPerPage)
+      );
+      setResponse(payments.data);
+      // setTotalResults(submissions.data.length);
     } catch (err) {
-      console.log(err.message);
+      console.log(err);
     }
   };
 
   useEffect(() => {
-    // getAllCourses();
-    // getAllSubmitted();
-    clearForm();
-  }, [loggedInUser]);
-
-  useEffect(() => {
-    if (deadline) {
-      console.log(deadline);
-      // setEndDate(deadline.toISOString().slice(0, 19).replace("T", " "));
-    }
-  }, [deadline]);
-
-  useEffect(() => {
-    getAllSubmitted();
-  }, [page]);
+    getAllPayments();
+  }, []);
 
   return (
     <>
       <PageTitle>Payments</PageTitle>
-      {/* <div className="mb-4">
-        <Button size="larger" onClick={openModal}>
-          Add New Assignment
-        </Button>
-      </div> */}
-      {!data ? (
-        <>
-          <Player
-            autoplay
-            loop
-            src="https://assets9.lottiefiles.com/packages/lf20_zxliqmhr.json"
-            style={{ height: "300px", width: "300px" }}
-          ></Player>
-          <div className="flex flex-col items-center">
-            <h1 className="text-6xl font-semibold text-gray-700 dark:text-gray-200">
-              No Assignments!
-            </h1>
-            <p className="text-gray-700 dark:text-gray-300 mt-4">
-              You have not uploaded any assignments yet.{" "}
-              <button
-                onClick={openModal}
-                className="text-purple-600 hover:underline dark:text-purple-300"
-              >
-                Upload your first assignment.
-              </button>
-            </p>
-          </div>
-        </>
-      ) : (
-        <>
-          <SectionTitle>Upcoming Payments</SectionTitle>
-          <TableContainer className="mb-4">
-            <Table>
-              <TableHeader>
-                <tr className="text-gray-700 dark:text-gray-200">
-                  <TableCell>Name</TableCell>
-                  <TableCell>Due Date</TableCell>
-                  <TableCell>Amount</TableCell>
-                  <TableCell>Actions</TableCell>
-                </tr>
-              </TableHeader>
-              <TableBody>
-                <TableRow key="1" className="text-gray-700 dark:text-gray-300">
-                  <TableCell>
-                    <span className="text-sm">July 2021</span>
-                  </TableCell>
-                  <TableCell>
-                    <span className="text-sm">01-Jul-2021</span>
-                  </TableCell>
-                  <TableCell>
-                    <span className="text-sm">Rs. 2000.00</span>
-                  </TableCell>
-                  <TableCell>
-                    <div className="flex items-center space-x-4">
-                      <Button size="small">Pay</Button>
-                    </div>
-                  </TableCell>
-                </TableRow>
-              </TableBody>
-            </Table>
-            <TableFooter>
-              <Pagination
-                totalResults={totalResults}
-                resultsPerPage={resultsPerPage}
-                label="Table navigation"
-                onChange={onPageChange}
-              />
-            </TableFooter>
-          </TableContainer>
-          <SectionTitle>Previous Payments</SectionTitle>
-          <TableContainer>
-            <Table>
-              <TableHeader>
-                <tr className="text-gray-700 dark:text-gray-200">
-                  <TableCell>Name</TableCell>
-                  <TableCell>Paid On</TableCell>
-                  <TableCell>Amount</TableCell>
-                  <TableCell>Actions</TableCell>
-                </tr>
-              </TableHeader>
-
-              <TableBody>
-                <TableRow key="1" className="text-gray-700 dark:text-gray-300">
-                  <TableCell>
-                    <span className="text-sm">May 2021</span>
-                  </TableCell>
-                  <TableCell>
-                    <span className="text-sm">01-May-2021</span>
-                  </TableCell>
-                  <TableCell>
-                    <span className="text-sm">Rs. 2000.00</span>
-                  </TableCell>
-                  <TableCell>
-                    <div className="flex items-center space-x-4">
-                      <Button size="small">View Receipt</Button>
-                    </div>
-                  </TableCell>
-                </TableRow>
-                <TableRow key="1" className="text-gray-700 dark:text-gray-300">
-                  <TableCell>
-                    <span className="text-sm">June 2021</span>
-                  </TableCell>
-                  <TableCell>
-                    <span className="text-sm">01-Jun-2021</span>
-                  </TableCell>
-                  <TableCell>
-                    <span className="text-sm">Rs. 2000.00</span>
-                  </TableCell>
-                  <TableCell>
-                    <div className="flex items-center space-x-4">
-                      <Button size="small">View Receipt</Button>
-                    </div>
-                  </TableCell>
-                </TableRow>
-              </TableBody>
-            </Table>
-            <TableFooter>
-              <Pagination
-                totalResults={totalResults}
-                resultsPerPage={resultsPerPage}
-                label="Table navigation"
-                onChange={onPageChange}
-              />
-            </TableFooter>
-          </TableContainer>
-        </>
-      )}
+      <>
+        <div className="mb-4">
+          <Button
+          className="float-right"
+            size="small"
+            onClick={() => openModal()}
+          >
+            Create Payment
+          </Button>
+        </div>
+        <TableContainer>
+          <Table>
+            <TableHeader>
+              <tr className="text-gray-700 dark:text-gray-200">
+                <TableCell>Course</TableCell>
+                <TableCell>Paid On</TableCell>
+                <TableCell>Amount</TableCell>
+              </tr>
+            </TableHeader>
+            <TableBody>
+              {!data
+                ? null
+                : data.map((payment, i) => (
+                    <TableRow
+                      key={i}
+                      className="text-gray-700 dark:text-gray-300"
+                    >
+                      <TableCell>
+                        <span className="text-sm">{`${payment.course_name} - ${
+                          monthNames[payment.paid_for_month]
+                        } ${payment.paid_for_year}`}</span>
+                      </TableCell>
+                      <TableCell>
+                        <span className="text-sm">
+                          {new Date(payment.paid_date).toLocaleDateString()}
+                        </span>
+                      </TableCell>
+                      <TableCell>
+                        <span className="text-sm">{`Rs. ${payment.amount}`}</span>
+                      </TableCell>
+                    </TableRow>
+                  ))}
+            </TableBody>
+          </Table>
+          <TableFooter>
+            <Pagination
+              totalResults={totalResults}
+              resultsPerPage={resultsPerPage}
+              label="Table navigation"
+              onChange={onPageChange}
+            />
+          </TableFooter>
+        </TableContainer>
+      </>
 
       {/* Add Assignment */}
       <Modal isOpen={isModalOpen} onClose={closeModal}>

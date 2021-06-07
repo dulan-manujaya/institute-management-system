@@ -1,6 +1,6 @@
 const { body } = require("express-validator");
 
-exports.createTeacherSchema = [
+exports.createAdminSchema = [
   body("first_name")
     .exists()
     .withMessage("Your first name is required")
@@ -27,14 +27,7 @@ exports.createTeacherSchema = [
     .isMobilePhone()
     .withMessage("Must be a valid mobile number")
     .trim(),
-  body("password")
-    .exists()
-    .withMessage("Password is required")
-    .notEmpty()
-    .isLength({ min: 6 })
-    .withMessage("Password must contain at least 6 characters")
-    .isLength({ max: 10 })
-    .withMessage("Password can contain max 10 characters"),
+  body("password").exists().withMessage("Password is required").notEmpty(),
   body("confirm_password")
     .exists()
     .custom((value, { req }) => value === req.body.password)
@@ -43,7 +36,7 @@ exports.createTeacherSchema = [
     ),
 ];
 
-exports.updateTeacherSchema = [
+exports.updateAdminSchema = [
   body("first_name")
     .optional()
     .isAlpha()
@@ -68,10 +61,6 @@ exports.updateTeacherSchema = [
   body("password")
     .optional()
     .notEmpty()
-    .isLength({ min: 6 })
-    .withMessage("Password must contain at least 6 characters")
-    .isLength({ max: 10 })
-    .withMessage("Password can contain max 10 characters")
     .custom((value, { req }) => !!req.body.confirm_password)
     .withMessage("Please confirm your password"),
   body("confirm_password")

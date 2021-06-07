@@ -33,20 +33,16 @@ class TeacherModel {
     password,
     first_name,
     last_name,
-    nic,
-    avatar,
     mobile,
   }) => {
     const sql = `INSERT INTO ${this.tableName}
-        (email, password, first_name, last_name, nic, avatar, mobile) VALUES (?,?,?,?,?,?,?)`;
+        (email, password, first_name, last_name, mobile) VALUES (?,?,?,?,?)`;
 
     const result = await query(sql, [
       email,
       password,
       first_name,
       last_name,
-      nic,
-      avatar,
       mobile,
     ]);
     const affectedRows = result ? result.affectedRows : 0;
@@ -57,7 +53,7 @@ class TeacherModel {
   update = async (params, id) => {
     const { columnSet, values } = multipleColumnSet(params);
 
-    const sql = `UPDATE ${this.tableName} SET ${columnSet} WHERE teahcer_id = ?`;
+    const sql = `UPDATE ${this.tableName} SET ${columnSet} WHERE teacher_id = ?`;
 
     const result = await query(sql, [...values, id]);
 

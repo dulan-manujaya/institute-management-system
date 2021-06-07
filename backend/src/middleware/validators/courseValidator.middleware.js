@@ -1,7 +1,6 @@
 const { body } = require("express-validator");
 
 exports.createCourseSchema = [
-  body("grade_id").exists().withMessage("Grade is required"),
   body("teacher_id").exists().withMessage("Teacher is required"),
   body("amount")
     .exists()
@@ -9,7 +8,6 @@ exports.createCourseSchema = [
     .isNumeric()
     .withMessage("Amount must be a number"),
   body("course_name").exists().withMessage("Course name is required"),
-  body("subject_id").exists().withMessage("Subject is required"),
 ];
 
 exports.updateCourseSchema = [

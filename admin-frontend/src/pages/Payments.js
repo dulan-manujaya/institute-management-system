@@ -78,7 +78,7 @@ function Charts() {
   const checkPaymentStatus = async () => {};
 
   const markPayment = async () => {
-    const token = sessionStorage.getItem("teacherAccessToken");
+    const token = sessionStorage.getItem("adminAccessToken");
     try {
       const response = await axios.post(
         `${variables.apiServer}/api/v1/payments`,

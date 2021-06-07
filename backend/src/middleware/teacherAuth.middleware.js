@@ -4,7 +4,7 @@ const jwt = require("jsonwebtoken");
 const dotenv = require("dotenv");
 dotenv.config();
 
-const auth = () => {
+const teacherAuth = () => {
   return async function (req, res, next) {
     try {
       const authHeader = req.headers.authorization;
@@ -45,4 +45,4 @@ const auth = () => {
   };
 };
 
-module.exports = auth;
+module.exports = teacherAuth;

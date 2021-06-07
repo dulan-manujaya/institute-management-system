@@ -64,37 +64,35 @@ const CreateAccount = () => {
 
   const setDefaultAvatar = () => {
     if (studentGender === "Male") {
-      setAvatarUrl("male-avatar.png");
+      setAvatarUrl(`${variables.apiServer}/public/student-avatars/male-avatar.png`);
     } else if (studentGender === "Female") {
-      setAvatarUrl("female-avatar.png");
+      setAvatarUrl(`${variables.apiServer}/public/student-avatars/female-avatar.png`);
     }
-  };
-
-  const getGrades = async () => {
-    try {
-      const grades = await axios.get(`${variables.apiServer}/api/v1/grades`);
-      setGrades(grades.data);
-    } catch (err) {
-      console.log(err);
-    }
-  };
-
-  const gradeSelect = (e) => {
-    // const selectedIndex = e.target.options.selectedIndex;
-    // setGradeId(e.target.options[selectedIndex].getAttribute("data-index"));
-    setGradeId(e.target.value);
-  };
-
-  const genderSelect = (e) => {
-    // const selectedIndex = e.target.options.selectedIndex;
-    // setGradeId(e.target.options[selectedIndex].getAttribute("data-index"));
-    setGradeId(e.target.value);
   };
 
   const handleUpload = (event) => {
     var file = event.target.files[0];
-    setAvatarUrl(currentDate + "-" + file.name);
+    setAvatarUrl(
+      `${variables.apiServer}/public/student-avatars/${file.name}`
+    );
     setAvatar(file);
+  };
+
+  const handleFileSubmission = async () => {
+    console.log(avatar)
+    const formData = new FormData();
+    formData.append("file", avatar);
+    try {
+      const response = await axios.post(
+        `${variables.apiServer}/api/v1/uploads/student-avatars`,
+        formData
+      );
+      if (response) {
+        console.log(response);
+      }
+    } catch (err) {
+      console.log(err);
+    }
   };
 
   const clearForm = () => {
@@ -167,7 +165,6 @@ const CreateAccount = () => {
 
   useEffect(() => {
     setDefaultAvatar();
-    getGrades();
   }, [studentGender]);
 
   return (
@@ -185,6 +182,7 @@ const CreateAccount = () => {
                 const isValid = formValidations();
                 if (isValid == true) {
                   console.log(studentAdmissionBody);
+                  await handleFileSubmission();
                   await axios
                     .post(
                       `${variables.apiServer}/api/v1/students/`,

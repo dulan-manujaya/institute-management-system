@@ -1,7 +1,7 @@
 {
   "name": "ims-user-portal",
   "version": "0.4.0",
-  "description": "Student front end",
+  "description": "User front end",
   "private": true,
   "scripts": {
     "tailwind:dev": "tailwindcss build src/assets/css/tailwind.css -o src/assets/css/tailwind.output.css",

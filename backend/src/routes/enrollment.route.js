@@ -2,6 +2,7 @@ const express = require("express");
 const router = express.Router();
 const enrollmentController = require("../controllers/enrollment.controller");
 const auth = require("../middleware/auth.middleware");
+const studentAuth = require("../middleware/studentAuth.middleware");
 const awaitHandlerFactory = require("../middleware/awaitHandlerFactory.middleware");
 
 const {
@@ -31,6 +32,7 @@ router.get(
 );
 router.get(
   "/student/:studentid",
+  studentAuth(),
   awaitHandlerFactory(enrollmentController.getMyEnrollmentsStudent)
 );
 router.get(

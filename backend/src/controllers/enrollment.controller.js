@@ -68,8 +68,7 @@ class EnrollmentController {
 
   getMyEnrollmentsStudent = async (req, res, next) => {
     let enrollmentList = await EnrollmentModel.findMy({
-      student_id: req.params.studentid,
-      is_accepted: true,
+      student_id: req.params.studentid
     });
     if (!enrollmentList.length) {
       throw new HttpException(204, "Enrollments not found");

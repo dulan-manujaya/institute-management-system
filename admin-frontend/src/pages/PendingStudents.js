@@ -46,9 +46,9 @@ function PendingStudents() {
 
   const getTeacherId = async () => {
     try {
-      const token = sessionStorage.getItem("teacherAccessToken");
+      const token = sessionStorage.getItem("adminAccessToken");
       const currTeacher = await axios.get(
-        `${variables.apiServer}/api/v1/teachers/whoami`,
+        `${variables.apiServer}/api/v1/admins/whoami`,
         {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -64,7 +64,7 @@ function PendingStudents() {
 
   const getAllPendingEnrollments = async () => {
     try {
-      const token = sessionStorage.getItem("teacherAccessToken");
+      const token = sessionStorage.getItem("adminAccessToken");
       const enrollments = await axios.get(
         `${variables.apiServer}/api/v1/enrollments/pending/${teacherId}`,
         {
@@ -87,7 +87,7 @@ function PendingStudents() {
 
   const markInitialPayment = async (stu_id) => {
     try {
-      const token = sessionStorage.getItem("teacherAccessToken");
+      const token = sessionStorage.getItem("adminAccessToken");
       const response = await axios.post(
         `${variables.apiServer}/api/v1/students/id/${stu_id}`,
         initialPaymentBody,
@@ -107,7 +107,7 @@ function PendingStudents() {
 
   const acceptEnrollment = async (enrollment_id) => {
     try {
-      const token = sessionStorage.getItem("teacherAccessToken");
+      const token = sessionStorage.getItem("adminAccessToken");
       const response = await axios.patch(
         `${variables.apiServer}/api/v1/enrollments/id/${enrollment_id}`,
         enrollAcceptBody,

@@ -20,7 +20,7 @@ class EnrollmentModel {
     let sql =
       `SELECT * FROM ${this.tableName} ` +
       `INNER JOIN courses ON courses.course_id=enrollments.course_id ` +
-      `WHERE is_accepted= ${params.is_accepted} AND student_id=${params.student_id}`;
+      `WHERE student_id=${params.student_id}`;
 
     return await query(sql);
   };
@@ -94,12 +94,22 @@ class EnrollmentModel {
     return result[0];
   };
 
-  create = async ({ course_id, student_id, is_accepted }) => {
-    const sql = `INSERT INTO ${this.tableName}
-        (course_id, student_id, is_accepted) VALUES (?,?,?)`;
+  create = async ({ course_id, student_id }) => {
+    var currDate = new Date();
 
-    const result = await query(sql, [course_id, student_id, is_accepted]);
-    // const affectedRows = result ? result.affectedRows : 0;
+    const sql = `INSERT INTO ${this.tableName}
+        (course_id, student_id) VALUES (?,?)`;
+
+    const result = await query(sql, [course_id, student_id]);
+
+    const paymentsql = `INSERT INTO payments
+    (enrollment_id, paid_for_month, paid_for_year) VALUES (?,?,?);`;
+
+    query(paymentsql, [
+      result.insertId,
+      currDate.getMonth(),
+      currDate.getFullYear(),
+    ]);
 
     return result;
   };
