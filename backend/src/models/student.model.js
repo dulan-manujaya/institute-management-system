@@ -85,7 +85,7 @@ class StudentModel {
       `INSERT INTO ${this.guardianTableName} ` +
       `(guardian_email, guardian_password, guardian_mobile) VALUES (?,?,?) ` +
       `ON DUPLICATE KEY UPDATE ` +
-      `email=?, mobile=?`;
+      `guardian_email=?, guardian_mobile=?`;
 
     await query(guardian_sql, [
       guardian_email,
