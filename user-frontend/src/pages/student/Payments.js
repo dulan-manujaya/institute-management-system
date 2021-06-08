@@ -167,8 +167,17 @@ const Payments = () => {
     }
   };
 
+  const getAllCourses = async () => {
+    const courses = await axios.get(
+      `${variables.apiServer}/api/v1/courses/`,
+      {}
+    );
+    setCourses(courses.data);
+  };
+
   useEffect(() => {
     getAllPayments();
+    getAllCourses();
   }, []);
 
   return (
@@ -177,7 +186,7 @@ const Payments = () => {
       <>
         <div className="mb-4">
           <Button
-          className="float-right"
+            className="float-right"
             size="small"
             onClick={() => openModal()}
           >
@@ -231,31 +240,18 @@ const Payments = () => {
 
       {/* Add Assignment */}
       <Modal isOpen={isModalOpen} onClose={closeModal}>
-        <ModalHeader>Submit Answer Sheet</ModalHeader>
+        <ModalHeader>Create Payment</ModalHeader>
         <ModalBody>
           <div className=" px-4 py-3 mb-8 bg-gray-200 rounded-lg shadow-md dark:bg-gray-800 ">
             <Label className="text-align: left max-w-md">
-              <span>Answer Sheet Title</span>
-              <Input
-                className="appearance-none block w-full bg-grey-lighter text-grey-darker border border-grey-lighter rounded py-3 px-4"
-                placeholder="Maths Geometry"
-                onChange={(e) => {
-                  setTitle(e.target.value);
-                }}
-              />
+              <span>Select Course</span>
+              <Select className="appearance-none block w-full bg-grey-lighter text-grey-darker border border-grey-lighter rounded py-3 px-4">
+                <option key={"-1"}>Please select a course</option>
+                {courses.map((course, i) => (
+                  <option key={course.course_id}>{course.course_name}</option>
+                ))}
+              </Select>
             </Label>
-            {/* <Label className="mt-4 text-align: left max-w-md">
-              <span>Select Deadline</span>
-              <br></br>
-              <DatePicker
-                className="appearance-none block w-full dark:bg-gray-700 text-grey-darker border border-grey-lighter dark:text-white rounded py-3 px-4"
-                selected={deadline}
-                onChange={(date) => {
-                  setDeadline(date);
-                  setEndDate(date.toISOString().slice(0, 19).replace("T", " "));
-                }}
-              />
-            </Label> */}
 
             <Label className="mt-4 text-align: left max-w-md">
               <span>Upload File</span>
