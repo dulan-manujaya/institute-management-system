@@ -1,7 +1,7 @@
 const query = require("../db/db-connection");
 const { multipleColumnSet } = require("../utils/common.utils");
 class ExamModel {
-  tableName = "exams";
+  tableName = "results";
   answerSubmissionTableName = "exam_answer_submissions";
 
   find = async (params = {}) => {
@@ -27,7 +27,7 @@ class ExamModel {
     return result[0];
   };
 
-  findSubmittedByCourse = async (params = {}) => {
+  findByExam = async (params = {}) => {
     let sql =
       `SELECT * FROM ${this.tableName} ` +
       `INNER JOIN courses ON courses.course_id=${this.tableName}.course_id ` +
@@ -35,11 +35,11 @@ class ExamModel {
     return await query(sql);
   };
 
-  create = async ({ course_id, exam_name }) => {
+  create = async ({ student_id, exam_id, marks }) => {
     const sql = `INSERT INTO ${this.tableName}
-        (course_id, exam_name) VALUES (?,?)`;
+        (student_id, exam_id, marks) VALUES (?,?,?)`;
 
-    const result = await query(sql, [course_id, exam_name]);
+    const result = await query(sql, [student_id, exam_id, marks]);
     const affectedRows = result ? result.affectedRows : 0;
 
     return affectedRows;

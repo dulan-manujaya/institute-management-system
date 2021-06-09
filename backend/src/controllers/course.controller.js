@@ -95,8 +95,6 @@ class CoursesController {
   updateCourse = async (req, res, next) => {
     this.checkValidation(req);
 
-    await this.hashPassword(req);
-
     const { confirm_password, ...restOfUpdates } = req.body;
 
     const result = await CourseModel.update(restOfUpdates, req.params.id);

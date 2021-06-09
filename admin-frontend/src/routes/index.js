@@ -25,6 +25,8 @@ const Teachers = lazy(() => import("../pages/Teachers"));
 const EditTeacher = lazy(() => import("../pages/EditTeacher"));
 const Courses = lazy(() => import("../pages/Courses"));
 const CreateCourse = lazy(() => import("../pages/CreateCourse"));
+const EditCourse = lazy(() => import("../pages/EditCourse"));
+const AddResults = lazy(() => import("../pages/AddResults"));
 
 /**
  * ⚠ These are internal routes!
@@ -40,6 +42,10 @@ const routes = [
   {
     path: "/dashboard", // the url
     component: Dashboard, // view rendered
+  },
+  {
+    path: "/add-results",
+    component: AddResults,
   },
   {
     path: "/student-admission",
@@ -60,6 +66,10 @@ const routes = [
   {
     path: "/student-details/:studentid",
     component: StudentDetails,
+  },
+  {
+    path: "/course-details/:courseid",
+    component: EditCourse,
   },
   {
     path: "/course-admission",

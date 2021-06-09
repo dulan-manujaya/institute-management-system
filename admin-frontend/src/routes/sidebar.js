@@ -35,74 +35,56 @@ const routes = [
         path: "/app/student-admission",
         name: "Student Admissions",
       },
-      {
-        path: "/app/course-admission",
-        name: "Course Enrollments",
-      },
-      {
-        path: "/app/pending-enrollments",
-        name: "Pending Enrollments",
-      },
+      // {
+      //   path: "/app/course-admission",
+      //   name: "Course Enrollments",
+      // },
+      // {
+      //   path: "/app/pending-enrollments",
+      //   name: "Pending Enrollments",
+      // },
       {
         path: "/app/students",
         name: "Student Details",
       },
-      {
-        path: "/app/404",
-        name: "Blocked Students",
-      },
+      // {
+      //   path: "/app/404",
+      //   name: "Blocked Students",
+      // },
     ],
   },
-  {
-    icon: "DownloadIcon",
-    name: "Download Center",
-    routes: [
-      // submenu
-      {
-        path: "/app/assignments",
-        name: "Assignments",
-      },
-      {
-        path: "/app/course-material",
-        name: "Course Materials",
-      },
-      {
-        path: "/app/student-assignment-submissions",
-        name: "Student Submissions",
-      },
-      {
-        path: "/app/404",
-        name: "Other",
-      },
-    ],
-  },
+  // {
+  //   icon: "DownloadIcon",
+  //   name: "Download Center",
+  //   routes: [
+  //     // submenu
+  //     {
+  //       path: "/app/assignments",
+  //       name: "Assignments",
+  //     },
+  //     {
+  //       path: "/app/course-material",
+  //       name: "Course Materials",
+  //     },
+  //     {
+  //       path: "/app/student-assignment-submissions",
+  //       name: "Student Submissions",
+  //     },
+  //     {
+  //       path: "/app/404",
+  //       name: "Other",
+  //     },
+  //   ],
+  // },
   // {
   //   path: "/app/chat",
   //   icon: "ChatIcon",
   //   name: "Conversations",
   // },
   {
-    icon: "FormsIcon",
-    name: "Exam Center",
-    routes: [
-      // submenu
-      {
-        path: "/app/exams",
-        name: "Exams",
-      },
-      {
-        path: "/app/create-exam",
-        name: "Create New Exam",
-      },
-      {
-        path: "/app/student-exam-submissions",
-        name: "Answer Submissions",
-      },
-      {
-        path: "/app/student-exam-grades",
-        name: "Student Exam Gradings",
-      },
-    ],
+    path: "/app/add-results", // the url
+    icon: "FormsIcon", // the component being exported from icons/index.js
+    name: "Results", // name that appear in Sidebar
   },
   {
     icon: "CardsIcon",
@@ -119,11 +101,11 @@ const routes = [
       },
     ],
   },
-  {
-    path: "/app/payments",
-    icon: "ChartsIcon",
-    name: "Payments",
-  },
+  // {
+  //   path: "/app/payments",
+  //   icon: "ChartsIcon",
+  //   name: "Payments",
+  // },
   // {
   //   path: "/app/buttons",
   //   icon: "ButtonsIcon",
