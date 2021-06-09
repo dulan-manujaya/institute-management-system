@@ -66,7 +66,7 @@ class ExamController {
     }
   };
 
-  creatExam = async (req, res, next) => {
+  createExam = async (req, res, next) => {
     this.checkValidation(req);
     const result = await ExamModel.create(req.body);
 
@@ -77,27 +77,27 @@ class ExamController {
     res.status(201).send("Exam was created!");
   };
 
-  updateExam = async (req, res, next) => {
-    this.checkValidation(req);
+  // updateExam = async (req, res, next) => {
+  //   this.checkValidation(req);
 
-    const { ...restOfUpdates } = req.body;
+  //   const { ...restOfUpdates } = req.body;
 
-    const result = await ExamModel.update(restOfUpdates, req.params.id);
+  //   const result = await ExamModel.update(restOfUpdates, req.params.id);
 
-    if (!result) {
-      throw new HttpException(404, "Something went wrong");
-    }
+  //   if (!result) {
+  //     throw new HttpException(404, "Something went wrong");
+  //   }
 
-    const { affectedRows, changedRows, info } = result;
+  //   const { affectedRows, changedRows, info } = result;
 
-    const message = !affectedRows
-      ? "Exam not found"
-      : affectedRows && changedRows
-      ? "Exam updated successfully"
-      : "Updated failed";
+  //   const message = !affectedRows
+  //     ? "Exam not found"
+  //     : affectedRows && changedRows
+  //     ? "Exam updated successfully"
+  //     : "Updated failed";
 
-    res.send({ message, info });
-  };
+  //   res.send({ message, info });
+  // };
 
   deleteExam = async (req, res, next) => {
     const result = await ExamModel.delete(req.params.id);
