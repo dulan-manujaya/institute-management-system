@@ -19,6 +19,7 @@ const paymentRouter = require("./routes/payment.route");
 const courseMaterialRouter = require("./routes/courseMaterial.route");
 const examRouter = require("./routes/exam.route");
 const adminRouter = require("./routes/admin.route");
+const resultRouter = require("./routes/result.route");
 
 // Init express
 const app = express();
@@ -67,6 +68,7 @@ app.use(`/api/v1/payments`, paymentRouter);
 app.use(`/api/v1/coursematerials`, courseMaterialRouter);
 app.use(`/api/v1/exams`, examRouter);
 app.use(`/api/v1/admins`, adminRouter);
+app.use(`/api/v1/results`, resultRouter);
 
 app.post("/api/v1/uploads/:type", upload.single("file"), (req, res) => {
   res.status(200).send("File Uploaded Successfully");

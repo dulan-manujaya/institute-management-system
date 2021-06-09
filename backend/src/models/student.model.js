@@ -21,9 +21,8 @@ class StudentModel {
     let sql =
       `SELECT * FROM ${this.tableName} s ` +
       `INNER JOIN enrollments e ON e.student_id = s.student_id ` +
-      `INNER JOIN courses c ON c.course_id = e.course_id ` +
-      `WHERE e.is_accepted=1 ` +
-      `AND e.course_id=${params.course_id}`;
+      `WHERE e.course_id=${params.course_id}`;
+    console.log(sql);
 
     return await query(sql);
   };
