@@ -67,7 +67,7 @@ class ExamModel {
   // Student
 
   getResultsByStudentId = async (params = {}) => {
-    let sql = `SELECT C.course_name, E.exam_name, R.marks 
+    let sql = `SELECT C.course_name, C.course_id, E.exam_name, R.marks 
     FROM results R 
     INNER JOIN exams E
     ON E.exam_id = R.exam_id

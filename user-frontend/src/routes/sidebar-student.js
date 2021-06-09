@@ -27,9 +27,15 @@ const routes = [
     name: "Payments",
   },
   {
-    path: "/app/exams",
     icon: "ChartsIcon",
     name: "Reports",
+    routes: [
+      // submenu
+      {
+        path: "/app/student/reports/results",
+        name: "Results",
+      },
+    ],
   },
 ];
 
