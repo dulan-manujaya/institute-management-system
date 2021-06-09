@@ -10,9 +10,11 @@ import {
   TableRow,
   TableFooter,
   Pagination,
+  Button,
 } from "@windmill/react-ui";
 import variables from "../common/globalVariables";
 import PageTitle from "../components/Typography/PageTitle";
+import { TrashIcon } from "../icons";
 
 const Courses = () => {
   const [page, setPage] = useState(1);
@@ -38,6 +40,22 @@ const Courses = () => {
     }
   };
 
+  const deleteCourse = async (id) => {
+    const token = sessionStorage.getItem("adminAccessToken");
+    await axios
+      .delete(`${variables.apiServer}/api/v1/courses/id/${id}`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      })
+      .then((response) => {
+        console.log(response);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+
   useEffect(() => {
     getAllCourses();
   }, []);
@@ -51,6 +69,7 @@ const Courses = () => {
             <tr>
               <TableCell>Name</TableCell>
               <TableCell>Amount</TableCell>
+              <TableCell>Actions</TableCell>
             </tr>
           </TableHeader>
           {data ? (
@@ -58,12 +77,27 @@ const Courses = () => {
               {data.map((course, i) => (
                 <TableRow key={i}>
                   <TableCell>
-                    <Link to={`/app/course-details/${course.course_id}`}>
-                      <span className="text-sm">{course.course_name}</span>
-                    </Link>
+                    <span className="text-sm">{course.course_name}</span>
                   </TableCell>
                   <TableCell>
                     <span className="text-sm">LKR {course.amount}</span>
+                  </TableCell>
+                  <TableCell>
+                    <Link to={`/app/course-details/${course.course_id}`}>
+                      <Button className="mr-4" size="small">
+                        Edit
+                      </Button>
+                    </Link>
+                    <Button
+                      layout="link"
+                      size="icon"
+                      aria-label="Delete"
+                      onClick={() => {
+                        deleteCourse(course.course_id);
+                      }}
+                    >
+                      <TrashIcon className="w-5 h-5" aria-hidden="true" />
+                    </Button>
                   </TableCell>
                 </TableRow>
               ))}
