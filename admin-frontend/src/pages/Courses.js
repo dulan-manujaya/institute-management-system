@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
+import { Link } from "react-router-dom";
 import {
   TableBody,
   TableContainer,
@@ -8,10 +9,7 @@ import {
   TableCell,
   TableRow,
   TableFooter,
-  Avatar,
   Pagination,
-  Select,
-  Button,
 } from "@windmill/react-ui";
 import variables from "../common/globalVariables";
 import PageTitle from "../components/Typography/PageTitle";
@@ -60,12 +58,13 @@ const Courses = () => {
               {data.map((course, i) => (
                 <TableRow key={i}>
                   <TableCell>
-                    <span className="text-sm">{course.course_name}</span>
+                    <Link to={`/app/course-details/${course.course_id}`}>
+                      <span className="text-sm">{course.course_name}</span>
+                    </Link>
                   </TableCell>
                   <TableCell>
                     <span className="text-sm">LKR {course.amount}</span>
                   </TableCell>
-                  
                 </TableRow>
               ))}
             </TableBody>
