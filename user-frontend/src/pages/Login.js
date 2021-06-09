@@ -181,7 +181,7 @@ const Login = () => {
                       type="radio"
                       className="form-radio h-5 w-5 text-gray-600"
                       name="userType"
-                      value="student "
+                      value="student"
                       checked={userType === "student" ? true : false}
                       onClick={(e) => changeUserType(e.target.value)}
                     />

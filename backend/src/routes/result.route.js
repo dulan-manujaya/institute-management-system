@@ -44,6 +44,12 @@ router.get(
   awaitHandlerFactory(resultController.getMyExamsByCourse)
 );
 
+router.get(
+  "/student/:studentid",
+  studentAuth(),
+  awaitHandlerFactory(resultController.getByStudentId)
+);
+
 // router.get(
 //   "/getExamAnswerSubmissionsByStudentId/:studentId",
 //   studentAuth(),
