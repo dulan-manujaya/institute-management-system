@@ -5,7 +5,7 @@
  * If you're looking to actual Router routes, go to
  * `routes/index.js`
  */
- const routes = [
+const routes = [
   {
     path: "/app/dashboard", // the url
     icon: "HomeIcon", // the component being exported from icons/index.js
@@ -22,14 +22,14 @@
     name: "Results",
   },
   {
-    path: "/app/exams",
-    icon: "ChartsIcon",
-    name: "Reports",
-  },
-  {
     path: "/app/student/payments",
     icon: "MoneyIcon",
     name: "Payments",
+  },
+  {
+    path: "/app/exams",
+    icon: "ChartsIcon",
+    name: "Reports",
   },
 ];
 

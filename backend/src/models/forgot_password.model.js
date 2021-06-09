@@ -3,6 +3,7 @@ const { multipleColumnSet } = require("../utils/common.utils");
 class ForgotPasswordModel {
   studentTable = "student";
   teacherTable = "teacher";
+  guardianTable = "guardian";
   otpTable = "forgot_password_otp";
 
   verifyStudentEmail = async (params) => {
@@ -25,6 +26,17 @@ class ForgotPasswordModel {
     const result = await query(sql, [...values]);
 
     // return back the first row (teacher)
+    return result[0];
+  };
+
+  verifyParentEmail = async (params) => {
+    const { columnSet, values } = multipleColumnSet(params);
+    const sql = `SELECT * FROM ${this.guardianTable}
+        WHERE ${columnSet}`;
+
+    const result = await query(sql, [...values]);
+
+    // return back the first row (parent)
     return result[0];
   };
 
@@ -80,6 +92,15 @@ class ForgotPasswordModel {
       SET
       password = '${params.password}'
       WHERE email = '${params.email}';`;
+      const result = await query(sql);
+      const affectedRows = result ? result.affectedRows : 0;
+      return affectedRows;
+    }
+    if (params.type == "parent") {
+      const sql = `UPDATE ${this.guardianTable}
+      SET
+      guardian_password = '${params.password}'
+      WHERE guardian_email = '${params.email}';`;
       const result = await query(sql);
       const affectedRows = result ? result.affectedRows : 0;
       return affectedRows;

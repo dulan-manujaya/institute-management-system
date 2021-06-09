@@ -4,7 +4,6 @@ import { lazy } from 'react'
 const Dashboard = lazy(() => import('../pages/Dashboard'))
 const Profile = lazy(() => import('../pages/Profile'))
 const StudentResults = lazy(() => import('../pages/student/Results'))
-const StudentExams = lazy(() => import('../pages/student/Exams'))
 const StudentCourses = lazy(() => import('../pages/student/Courses'))
 const StudentPayments = lazy(() => import('../pages/student/Payments'))
 const TeacherCourses = lazy(() => import('../pages/teacher/Courses'))
@@ -34,10 +33,6 @@ const routes = [
   {
     path: '/student/results',
     component: StudentResults,
-  },
-  {
-    path: '/student/exams',
-    component: StudentExams,
   },
   {
     path: '/student/courses',

@@ -32,12 +32,12 @@ import ToastMessage from "../../messages/HandleMessages";
 const Courses = () => {
   const [studentId, setStudentId] = useState("0");
 
-  const [enrollmentsResponse, setEnrollmentResponse] = useState("");
+  const [enrollmentsResponse, setEnrollmentResponse] = useState([]);
   const totalEnrollmentResults = enrollmentsResponse.length;
   const [enrollmentsPage, setEnrollmentsPage] = useState(1);
   const [enrollmentsData, setEnrollmentsData] = useState([]);
 
-  const [coursesResponse, setCoursesResponse] = useState("");
+  const [coursesResponse, setCoursesResponse] = useState([]);
   const totalCoursesResults = coursesResponse.length;
   const [coursesPage, setCoursesPage] = useState(1);
   const [coursesData, setCoursesData] = useState([]);
@@ -136,7 +136,25 @@ const Courses = () => {
   useEffect(() => {
     getAllEnrollments();
     getAllCourses();
+  }, [enrollmentsPage]);
+
+  useEffect(() => {
+    setEnrollmentsData(
+      enrollmentsResponse.slice(
+        (enrollmentsPage - 1) * resultsPerPage,
+        enrollmentsPage * resultsPerPage
+      )
+    );
   }, []);
+
+  useEffect(() => {
+    setCoursesData(
+      coursesResponse.slice(
+        (coursesPage - 1) * resultsPerPage,
+        coursesPage * resultsPerPage
+      )
+    );
+  }, [coursesPage]);
   return (
     <>
       <PageTitle>Courses</PageTitle>

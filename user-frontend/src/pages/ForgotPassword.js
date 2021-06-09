@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useHistory } from "react-router-dom";
 import axios from "axios";
 import variables from "../common/globalVariables";
@@ -11,6 +11,7 @@ import OTPInput from "../components/OTPInput";
 
 const ForgotPassword = () => {
   const history = useHistory();
+  const [userType, setUserType] = useState();
   const [email, setEmail] = useState("");
   const [otp, setOTP] = useState("");
   const [password, setPassword] = useState("");
@@ -25,10 +26,9 @@ const ForgotPassword = () => {
     if (!emailRegex.test(String(email).toLowerCase())) {
       alert("Please enter a valid email", "error");
     } else {
-      let type = localStorage.getItem("type");
       await axios
         .post(`${variables.apiServer}/api/v1/forgot-password/verifyEmail/`, {
-          type: type,
+          type: userType,
           email: email,
         })
         .then((response) => {
@@ -93,6 +93,12 @@ const ForgotPassword = () => {
         });
     }
   };
+
+  useEffect(() => {
+    let type = localStorage.getItem("type");
+    localStorage.setItem("type", type);
+    setUserType(type);
+  }, []);
   return (
     <div className="flex items-center min-h-screen p-6 bg-gray-50 dark:bg-gray-900">
       <div className="flex-1 h-full max-w-4xl mx-auto overflow-hidden bg-white rounded-lg shadow-xl dark:bg-gray-800">

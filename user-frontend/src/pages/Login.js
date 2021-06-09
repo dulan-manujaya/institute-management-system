@@ -3,6 +3,7 @@ import axios from "axios";
 import { useHistory, Link } from "react-router-dom";
 import ImageLight from "../assets/img/login-office.jpeg";
 import ImageDark from "../assets/img/login-office-dark.jpeg";
+import variables from "../common/globalVariables";
 import { TwitterIcon } from "../icons";
 import {
   Label,
@@ -18,11 +19,9 @@ import {
 
 const Login = () => {
   const history = useHistory();
-  const [userType, setUserType] = useState("student");
+  const [userType, setUserType] = useState();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [studentId, setStudentId] = useState("");
-  const [isOpen, setIsOpen] = useState(false);
 
   const changeUserType = (value) => {
     setUserType(value);
@@ -32,25 +31,45 @@ const Login = () => {
     email: email,
     password: password,
   };
-  // function radioClick(e) {
-  //   setUserType(e.target.value);
-  //   console.log(e.target.value);
-  // }
 
   const getStudentId = async () => {
     try {
       const token = sessionStorage.getItem("studentAccessToken");
-      const currStudent = await axios.get(
-        "http://localhost:4000/api/v1/students/whoami",
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
-      const sid = currStudent.data.student_id;
-      setStudentId(sid);
-      console.log(studentId);
+      await axios.get(`${variables.apiServer}/api/v1/students/whoami`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      history.push("/app/dashboard");
+    } catch (err) {
+      console.log(err);
+      history.push("/login");
+    }
+  };
+
+  const getTeacherId = async () => {
+    try {
+      const token = sessionStorage.getItem("teacherAccessToken");
+      await axios.get(`${variables.apiServer}/api/v1/teachers/whoami`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      history.push("/app/dashboard");
+    } catch (err) {
+      console.log(err);
+      history.push("/login");
+    }
+  };
+
+  const getParentId = async () => {
+    try {
+      const token = sessionStorage.getItem("parentAccessToken");
+      await axios.get(`${variables.apiServer}/api/v1/parents/whoami`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
       history.push("/app/dashboard");
     } catch (err) {
       console.log(err);
@@ -68,22 +87,63 @@ const Login = () => {
   }
 
   const loginFunction = async () => {
-    try {
-      const response = await axios.post(
-        "http://localhost:4000/api/v1/students/login",
-        loginBody
-      );
-      console.log(response.data.token);
-      sessionStorage.setItem("studentAccessToken", response.data.token);
-      history.push("/app/dashboard");
-    } catch (err) {
-      // Handle Error Here
-      console.error(err);
+    if (userType == "student") {
+      try {
+        const response = await axios.post(
+          `${variables.apiServer}/api/v1/students/login`,
+          loginBody
+        );
+        sessionStorage.setItem("studentAccessToken", response.data.token);
+        history.push("/app/dashboard");
+      } catch (err) {
+        // Handle Error Here
+        console.error(err);
+      }
+    }
+    if (userType == "teacher") {
+      try {
+        const response = await axios.post(
+          `${variables.apiServer}/api/v1/teachers/login`,
+          loginBody
+        );
+        sessionStorage.setItem("teacherAccessToken", response.data.token);
+        history.push("/app/dashboard");
+      } catch (err) {
+        // Handle Error Here
+        console.error(err);
+      }
+    }
+    if (userType == "parent") {
+      try {
+        const response = await axios.post(
+          `${variables.apiServer}/api/v1/parents/login`,
+          loginBody
+        );
+        sessionStorage.setItem("parentAccessToken", response.data.token);
+        history.push("/app/dashboard");
+      } catch (err) {
+        // Handle Error Here
+        console.error(err);
+      }
     }
   };
 
   useEffect(() => {
-    getStudentId();
+    let type =
+      localStorage.getItem("type") == undefined || null
+        ? "student"
+        : localStorage.getItem("type");
+    localStorage.setItem("type", type);
+    setUserType(type);
+    if (type == "student") {
+      getStudentId();
+    }
+    if (type == "teacher") {
+      getTeacherId();
+    }
+    if (type == "teacher") {
+      getParentId();
+    }
   }, []);
 
   return (
@@ -121,8 +181,8 @@ const Login = () => {
                       type="radio"
                       className="form-radio h-5 w-5 text-gray-600"
                       name="userType"
-                      value="student"
-                      defaultChecked
+                      value="student "
+                      checked={userType === "student" ? true : false}
                       onClick={(e) => changeUserType(e.target.value)}
                     />
                     <span className="ml-2 mr-2">Student</span>
@@ -134,6 +194,7 @@ const Login = () => {
                       className="form-radio h-5 w-5 text-gray-600"
                       name="userType"
                       value="teacher"
+                      checked={userType === "teacher" ? true : false}
                       onClick={(e) => changeUserType(e.target.value)}
                     />
                     <span className="ml-2 mr-2">Teacher</span>
@@ -145,6 +206,7 @@ const Login = () => {
                       className="form-radio h-5 w-5 text-gray-600"
                       name="userType"
                       value="parent"
+                      checked={userType === "parent" ? true : false}
                       onClick={(e) => changeUserType(e.target.value)}
                     />
                     <span className="ml-2">Parent</span>
@@ -189,7 +251,10 @@ const Login = () => {
                     Forgot your password?
                   </Link>
                 </p>
-                <p className="mt-1" hidden = {userType != "student" ? true : false }>
+                <p
+                  className="mt-1"
+                  hidden={userType != "student" ? true : false}
+                >
                   <Link
                     className="text-sm font-medium text-purple-600 dark:text-purple-400 hover:underline"
                     to="/create-account"

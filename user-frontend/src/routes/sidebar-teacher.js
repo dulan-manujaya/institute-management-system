@@ -12,16 +12,6 @@
     name: "Dashboard", // name that appear in Sidebar
   },
   {
-    path: "/app/teacher/courses",
-    icon: "CardsIcon",
-    name: "Courses",
-  },
-  {
-    path: "/app/teacher/students",
-    icon: "PeopleIcon",
-    name: "Students",
-  },
-  {
     path: "/app/exams",
     icon: "ChartsIcon",
     name: "Reports",

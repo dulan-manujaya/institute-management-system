@@ -13,7 +13,7 @@ router.get("/", awaitHandlerFactory(paymentController.getAllPayments));
 router.get("/id/:id", awaitHandlerFactory(paymentController.getPaymentById));
 router.post(
   "/",
-  auth(),
+  studentAuth(),
   createPaymentSchema,
   awaitHandlerFactory(paymentController.createPayment)
 );
@@ -29,6 +29,12 @@ router.get(
   "/getByStudentId/:studentId",
   studentAuth(),
   awaitHandlerFactory(paymentController.getByStudentId)
+);
+
+router.post(
+  "/getLatestPaymentDate/",
+  studentAuth(),
+  awaitHandlerFactory(paymentController.getLatestPaymentDate)
 );
 
 module.exports = router;
