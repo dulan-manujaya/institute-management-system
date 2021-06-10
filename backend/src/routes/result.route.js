@@ -3,6 +3,8 @@ const router = express.Router();
 const resultController = require("../controllers/results.controller");
 const adminAuth = require("../middleware/adminAuth.middleware");
 const studentAuth = require("../middleware/studentAuth.middleware");
+const teacherAuth = require("../middleware/teacherAuth.middleware");
+const parentAuth = require("../middleware/parentAuth.middleware");
 const awaitHandlerFactory = require("../middleware/awaitHandlerFactory.middleware");
 
 const {
@@ -50,10 +52,16 @@ router.get(
   awaitHandlerFactory(resultController.getByStudentId)
 );
 
-// router.get(
-//   "/getExamAnswerSubmissionsByStudentId/:studentId",
-//   studentAuth(),
-//   awaitHandlerFactory(resultController.getExamAnswerSubmissonsByStudentId)
-// );
+router.get(
+  "/teacher/:teacherid",
+  teacherAuth(),
+  awaitHandlerFactory(resultController.getByTeacherId)
+);
+
+router.get(
+  "/parent/:parentid",
+  parentAuth(),
+  awaitHandlerFactory(resultController.getByParentId)
+);
 
 module.exports = router;

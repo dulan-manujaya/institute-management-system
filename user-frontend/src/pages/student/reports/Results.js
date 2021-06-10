@@ -90,8 +90,6 @@ const Results = () => {
   };
 
   const dynamicSearch = () => {
-    console.log(courseId)
-    console.log(marksFilter)
     if (courseId == "All") {
       if (marksFilter == "All") {
         return resultsData;

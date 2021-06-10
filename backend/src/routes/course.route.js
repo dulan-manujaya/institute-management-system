@@ -2,7 +2,9 @@ const express = require("express");
 const router = express.Router();
 const courseController = require("../controllers/course.controller");
 const adminAuth = require("../middleware/adminAuth.middleware");
-const studentadminAuth = require("../middleware/studentAuth.middleware");
+const studentAuth = require("../middleware/studentAuth.middleware");
+const teacherAuth = require("../middleware/teacherAuth.middleware");
+const parentAuth = require("../middleware/parentAuth.middleware");
 const awaitHandlerFactory = require("../middleware/awaitHandlerFactory.middleware");
 
 const {
@@ -46,8 +48,24 @@ router.delete(
 
 router.get(
   "/getByStudentId/:studentId",
-  studentadminAuth(),
+  studentAuth(),
   awaitHandlerFactory(courseController.getByStudentId)
+);
+
+// Teacher
+
+router.get(
+  "/getByTeacherId/:teacherId",
+  teacherAuth(),
+  awaitHandlerFactory(courseController.getByTeacherId)
+);
+
+// Parent
+
+router.get(
+  "/getByParentId/:parentId",
+  parentAuth(),
+  awaitHandlerFactory(courseController.getByParentId)
 );
 
 module.exports = router;

@@ -12,9 +12,15 @@
     name: "Dashboard", // name that appear in Sidebar
   },
   {
-    path: "/app/exams",
     icon: "ChartsIcon",
     name: "Reports",
+    routes: [
+      // submenu
+      {
+        path: "/app/teacher/reports/results",
+        name: "Results",
+      },
+    ],
   },
 ];
 

@@ -172,7 +172,7 @@ class StudentController {
     this.checkValidation(req);
 
     const { email, password: pass } = req.body;
-    
+
     const student = await StudentModel.findOne({ email });
 
     if (!student) {
@@ -242,6 +242,40 @@ class StudentController {
       res.send({
         isExist: true,
       });
+    }
+  };
+
+  //Teacher
+
+  getByTeacherId = async (req, res, next) => {
+    let studentsList = await StudentModel.getStudentsByTeacherId({
+      teacher_id: req.params.teacherId,
+    });
+    if (!studentsList.length) {
+      throw new HttpException(204, "Students not found");
+    } else {
+      studentsList = studentsList.map((student) => {
+        return student;
+      });
+
+      res.send(studentsList);
+    }
+  };
+  
+  //Parent
+
+  getByParentId = async (req, res, next) => {
+    let studentsList = await StudentModel.getStudentsByParentId({
+      guardian_id: req.params.parentId,
+    });
+    if (!studentsList.length) {
+      throw new HttpException(204, "Students not found");
+    } else {
+      studentsList = studentsList.map((student) => {
+        return student;
+      });
+
+      res.send(studentsList);
     }
   };
 }

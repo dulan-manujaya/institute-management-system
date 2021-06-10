@@ -3,6 +3,8 @@ const router = express.Router();
 const studentController = require("../controllers/student.controller");
 const studentAuth = require("../middleware/studentAuth.middleware");
 const adminAuth = require("../middleware/adminAuth.middleware");
+const teacherAuth = require("../middleware/teacherAuth.middleware");
+const parentAuth = require("../middleware/parentAuth.middleware");
 const awaitHandlerFactory = require("../middleware/awaitHandlerFactory.middleware");
 
 const {
@@ -60,5 +62,21 @@ router.post(
   "/login",
   validateLogin,
   awaitHandlerFactory(studentController.studentLogin)
+);
+
+//Teacher
+
+router.get(
+  "/getByTeacherId/:teacherId",
+  teacherAuth(),
+  awaitHandlerFactory(studentController.getByTeacherId)
+);
+
+//Parent
+
+router.get(
+  "/getByParentId/:parentId",
+  parentAuth(),
+  awaitHandlerFactory(studentController.getByParentId)
 );
 module.exports = router;

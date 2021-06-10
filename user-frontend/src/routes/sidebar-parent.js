@@ -12,9 +12,15 @@ const routes = [
     name: "Dashboard", // name that appear in Sidebar
   },
   {
-    path: "/app/exams",
     icon: "ChartsIcon",
     name: "Reports",
+    routes: [
+      // submenu
+      {
+        path: "/app/parent/reports/results",
+        name: "Results",
+      },
+    ],
   },
 ];
 

@@ -1,16 +1,21 @@
-import { lazy } from 'react'
+import { lazy } from "react";
 
 // use lazy for better code splitting, a.k.a. load faster
-const Dashboard = lazy(() => import('../pages/Dashboard'))
-const Profile = lazy(() => import('../pages/Profile'))
-const StudentResults = lazy(() => import('../pages/student/Results'))
-const StudentReportResults = lazy(() => import('../pages/student/reports/Results'))
-const StudentCourses = lazy(() => import('../pages/student/Courses'))
-const StudentPayments = lazy(() => import('../pages/student/Payments'))
-const TeacherCourses = lazy(() => import('../pages/teacher/Courses'))
-const TeacherStudents = lazy(() => import('../pages/teacher/Students'))
-const ParentChildren = lazy(() => import('../pages/parent/Children'))
-const Page404 = lazy(() => import('../pages/404'))
+const Dashboard = lazy(() => import("../pages/Dashboard"));
+const Profile = lazy(() => import("../pages/Profile"));
+const StudentResults = lazy(() => import("../pages/student/Results"));
+const StudentResultsReport = lazy(() =>
+  import("../pages/student/reports/Results")
+);
+const StudentCourses = lazy(() => import("../pages/student/Courses"));
+const StudentPayments = lazy(() => import("../pages/student/Payments"));
+const TeacherResultsReport = lazy(() =>
+  import("../pages/teacher/reports/Results")
+);
+const ParentResultsReport = lazy(() =>
+  import("../pages/parent/reports/Results")
+);
+const Page404 = lazy(() => import("../pages/404"));
 
 /**
  * ⚠ These are internal routes!
@@ -24,45 +29,41 @@ const Page404 = lazy(() => import('../pages/404'))
  */
 const routes = [
   {
-    path: '/dashboard', // the url
+    path: "/dashboard", // the url
     component: Dashboard, // view rendered
   },
   {
-    path: '/profile',
+    path: "/profile",
     component: Profile,
   },
   {
-    path: '/student/results',
+    path: "/student/results",
     component: StudentResults,
   },
   {
-    path: '/student/courses',
+    path: "/student/courses",
     component: StudentCourses,
   },
   {
-    path: '/student/payments',
+    path: "/student/payments",
     component: StudentPayments,
   },
   {
-    path: '/student/reports/results',
-    component: StudentReportResults,
+    path: "/student/reports/results",
+    component: StudentResultsReport,
   },
   {
-    path: '/teacher/courses',
-    component: TeacherCourses,
+    path: "/teacher/reports/results",
+    component: TeacherResultsReport,
   },
   {
-    path: '/teacher/students',
-    component: TeacherStudents,
+    path: "/parent/reports/results",
+    component: ParentResultsReport,
   },
   {
-    path: '/parent/children',
-    component: ParentChildren,
-  },
-  {
-    path: '/404',
+    path: "/404",
     component: Page404,
   },
-]
+];
 
-export default routes
+export default routes;

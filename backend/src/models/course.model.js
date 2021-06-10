@@ -77,6 +77,29 @@ class CourseModel {
 
     return await query(sql);
   };
+
+  // Teacher
+  getCoursesByTeacherId = async (params = {}) => {
+    let sql = `SELECT *
+    FROM ${this.tableName}    
+    WHERE teacher_id = ${params.teacher_id};`;
+
+    return await query(sql);
+  };
+
+  // Parent
+
+  getCoursesByParentId = async (params = {}) => {
+    let sql = `SELECT DISTINCT C.* 
+    FROM ${this.tableName} C
+    INNER JOIN enrollments E
+    ON E.course_id = C.course_id
+    INNER JOIN student S
+    ON S.student_id = E.student_id
+    WHERE S.guardian_id = ${params.guardian_id};`;
+
+    return await query(sql);
+  };
 }
 
 module.exports = new CourseModel();
