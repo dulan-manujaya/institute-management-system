@@ -20,10 +20,12 @@ import variables from "../common/globalVariables";
 const MarkAttendance = () => {
   const [courseId, setCourseId] = useState("");
   const [courses, setCourses] = useState([]);
+  const [courseName, setCourseName] = useState("");
   const [students, setStudents] = useState([]);
   const [data, setData] = useState([]);
   const [totalResults, setTotalResults] = useState(0);
   const [page, setPage] = useState(1);
+  const [guardianId, setGuardianId] = useState("");
   const resultsPerPage = 9;
 
   const getCourses = async () => {
@@ -32,6 +34,29 @@ const MarkAttendance = () => {
       .then((response) => {
         console.log(response);
         setCourses(response.data);
+      });
+  };
+
+  const sendNotification = async (g_id) => {
+    const token = sessionStorage.getItem("adminAccessToken");
+    await axios
+      .post(
+        `${variables.apiServer}/api/v1/notifications`,
+        {
+          guardian_id: g_id,
+          message: `Your child has been attended on ${new Date().toLocaleDateString()}`,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      )
+      .then((response) => {
+        console.log(response);
+      })
+      .catch((error) => {
+        console.log(error.response);
       });
   };
 
@@ -51,8 +76,17 @@ const MarkAttendance = () => {
           },
         }
       )
-      .then((response) => {
+      .then(async (response) => {
         console.log(response);
+        await axios
+          .get(`${variables.apiServer}/api/v1/students/id/${id}`)
+          .then((response) => {
+            console.log(response.data);
+            sendNotification(response.data.guardian_id);
+          })
+          .catch((error) => {
+            console.log(error.response);
+          });
       })
       .catch((error) => {
         console.log(error.response);
@@ -117,12 +151,13 @@ const MarkAttendance = () => {
               id="grid-course"
               onChange={(e) => {
                 setCourseId(e.target.value);
+                setCourseName(e.target.getAttribute("x"));
               }}
               value={courseId}
             >
               <option>Select Course</option>
               {courses.map((course, i) => (
-                <option key={i} value={course.course_id}>
+                <option key={i} value={course.course_id} x={course.course_name}>
                   {course.course_name}
                 </option>
               ))}

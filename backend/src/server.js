@@ -21,6 +21,7 @@ const examRouter = require("./routes/exam.route");
 const adminRouter = require("./routes/admin.route");
 const resultRouter = require("./routes/result.route");
 const attendanceRouter = require("./routes/attendance.route");
+const notificationRouter = require("./routes/notification.route");
 
 // Init express
 const app = express();
@@ -71,6 +72,7 @@ app.use(`/api/v1/exams`, examRouter);
 app.use(`/api/v1/admins`, adminRouter);
 app.use(`/api/v1/results`, resultRouter);
 app.use(`/api/v1/attendance`, attendanceRouter);
+app.use(`/api/v1/notifications`, notificationRouter);
 
 app.post("/api/v1/uploads/:type", upload.single("file"), (req, res) => {
   res.status(200).send("File Uploaded Successfully");

@@ -14,7 +14,7 @@ router.get(
   awaitHandlerFactory(attendanceController.getAttendanceByCourse)
 );
 router.get(
-  "/student/id",
+  "/student/:id",
   awaitHandlerFactory(attendanceController.getAttendanceByStudent)
 );
 router.get(
