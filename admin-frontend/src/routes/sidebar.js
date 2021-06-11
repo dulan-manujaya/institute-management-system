@@ -87,6 +87,11 @@ const routes = [
     name: "Results", // name that appear in Sidebar
   },
   {
+    path: "/app/mark-attendance",
+    icon: "PeopleIcon",
+    name: "Attendance",
+  },
+  {
     icon: "CardsIcon",
     name: "Courses",
     routes: [
