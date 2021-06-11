@@ -45,6 +45,22 @@ class forgotPasswordController {
         });
       }
     }
+    else if (req.body.type == "parent") {
+      const parent = await ForgotPasswordModel.verifyParentEmail({
+        guardian_email: req.body.email,
+      });
+      if (!parent) {
+        res.send({
+          isExist: false,
+          message: "This email doesn't belong to any parent!",
+        });
+      } else {
+        await ForgotPasswordModel.insertOTP(req.body.email);
+        res.send({
+          isExist: true,
+        });
+      }
+    }
   };
   verifyOTP = async (req, res, next) => {
     const isValid = await ForgotPasswordModel.verifyOTP({

@@ -7,6 +7,7 @@ const fs = require("fs-extra");
 const HttpException = require("./utils/HttpException.utils");
 const errorMiddleware = require("./middleware/error.middleware");
 const teacherRouter = require("./routes/teacher.route");
+const parentRouter = require("./routes/parent.route");
 const studentRouter = require("./routes/student.route");
 const forgotPasswordRouter = require("./routes/forgot_password.route");
 const courseRouter = require("./routes/course.route");
@@ -58,6 +59,7 @@ app.use("/public", express.static(path.join(__dirname, "/public")));
 const port = Number(process.env.PORT || 4000);
 
 app.use(`/api/v1/teachers`, teacherRouter);
+app.use(`/api/v1/parents`, parentRouter);
 app.use(`/api/v1/students`, studentRouter);
 app.use(`/api/v1/forgot-password`, forgotPasswordRouter);
 app.use(`/api/v1/courses`, courseRouter);

@@ -24,9 +24,17 @@ function Header() {
   const history = useHistory();
   const { mode, toggleMode } = useContext(WindmillContext);
   const { toggleSidebar } = useContext(SidebarContext);
+  const [userType, setUserType] = useState();
+
   const [studentId, setStudentId] = useState("0");
   const [studentName, setStudentName] = useState("");
   const [studentAvatar, setStudentAvatar] = useState("");
+
+  const [teacherId, setTeacherId] = useState("0");
+  const [teacherName, setTeacherName] = useState("");
+
+  const [parentId, setParentId] = useState("0");
+  const [parentEmail, setParentEmail] = useState("");
 
   const [isNotificationsMenuOpen, setIsNotificationsMenuOpen] = useState(false);
   const [isProfileMenuOpen, setIsProfileMenuOpen] = useState(false);
@@ -48,37 +56,65 @@ function Header() {
       );
       const sid = currStudent.data.student_id;
       setStudentId(sid);
+      const fName = currStudent.data.first_name;
+      const lName = currStudent.data.last_name;
+      const fullname = fName + " " + lName;
+      setStudentName(fullname);
+      setStudentAvatar(currStudent.data.avatar);
     } catch (err) {
       console.log(err);
       history.push("/login");
     }
   };
 
-  const getStudentDetails = async () => {
-    await getStudentId();
+  const getTeacherId = async () => {
     try {
-      const token = sessionStorage.getItem("studentAccessToken");
-
-      const currentStudent = await axios.get(
-        "http://localhost:4000/api/v1/students/id" + `/${studentId}`,
+      const token = sessionStorage.getItem("teacherAccessToken");
+      const currTeacher = await axios.get(
+        "http://localhost:4000/api/v1/teachers/whoami",
         {
           headers: {
             Authorization: `Bearer ${token}`,
           },
         }
       );
-      const fName = currentStudent.data.first_name;
-      const lName = currentStudent.data.last_name;
+      const tid = currTeacher.data.teacher_id;
+      const fName = currTeacher.data.first_name;
+      const lName = currTeacher.data.last_name;
       const fullname = fName + " " + lName;
-      setStudentName(fullname);
-      setStudentAvatar(currentStudent.data.avatar);
+      setTeacherName(fullname);
+      setTeacherId(tid);
     } catch (err) {
       console.log(err);
+      history.push("/login");
+    }
+  };
+
+  const getParentId = async () => {
+    try {
+      const token = sessionStorage.getItem("parentAccessToken");
+      const currParent = await axios.get(
+        "http://localhost:4000/api/v1/parents/whoami",
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      const pid = currParent.data.guardian_id;
+      const pemail = currParent.data.guardian_email;
+      setParentEmail(pemail);
+      setParentId(pid);
+    } catch (err) {
+      console.log(err);
+      history.push("/login");
     }
   };
 
   const logOut = () => {
     sessionStorage.removeItem("studentAccessToken");
+    sessionStorage.removeItem("teacherAccessToken");
+    sessionStorage.removeItem("parentAccessToken");
     window.location.reload();
   };
 
@@ -87,8 +123,22 @@ function Header() {
   };
 
   useEffect(() => {
-    getStudentDetails();
-  }, [studentId]);
+    let type =
+      localStorage.getItem("type") == undefined || null
+        ? "student"
+        : localStorage.getItem("type");
+    localStorage.setItem("type", type);
+    setUserType(type);
+    if (type == "student") {
+      getStudentId();
+    }
+    if (type == "teacher") {
+      getTeacherId();
+    }
+    if (type == "parent") {
+      getParentId();
+    }
+  }, [studentId, teacherId, parentId]);
 
   return (
     <header className="z-40 py-4 bg-white shadow-bottom dark:bg-gray-800">
@@ -126,28 +176,39 @@ function Header() {
               aria-haspopup="true"
             >
               <a className="mr-6 text-lg font-bold text-gray-800 dark:text-gray-200">
-                {studentName}
+                {userType == "student"
+                  ? studentName
+                  : userType == "teacher"
+                  ? teacherName
+                  : parentEmail}
               </a>
-
-              <Avatar
-                className="align-middle"
-                src={studentAvatar}
-                alt=""
-                aria-hidden="true"
-              />
+              <div hidden={userType != "student"}>
+                <Avatar
+                  className="align-middle"
+                  src={studentAvatar}
+                  alt=""
+                  aria-hidden="true"
+                />
+              </div>
             </button>
             <Dropdown
               align="right"
               isOpen={isProfileMenuOpen}
               onClose={() => setIsProfileMenuOpen(false)}
             >
-              <DropdownItem onClick={() => profile()}>
-                <OutlinePersonIcon
-                  className="w-4 h-4 mr-3"
-                  aria-hidden="true"
-                />
-                <span>Profile</span>
-              </DropdownItem>
+              <div hidden={userType != "student"}>
+                <DropdownItem
+                  onClick={() => profile()}
+                  hidden={userType != "student"}
+                >
+                  <OutlinePersonIcon
+                    className="w-4 h-4 mr-3"
+                    aria-hidden="true"
+                  />
+                  <span>Profile</span>
+                </DropdownItem>
+              </div>
+
               <DropdownItem onClick={() => logOut()}>
                 <OutlineLogoutIcon
                   className="w-4 h-4 mr-3"

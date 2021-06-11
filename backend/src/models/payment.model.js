@@ -62,14 +62,31 @@ class PaymentModel {
   // Student
 
   getPaymentsByStudentId = async (params = {}) => {
-    let sql = `SELECT P.*, C.course_name, C.amount 
+    let sql = `SELECT P.*, C.course_id, C.course_name, C.amount 
     FROM ${this.tableName} P
     INNER JOIN enrollments EN
     ON P.enrollment_id = EN.enrollment_id
     INNER JOIN courses C
     ON EN.course_id = C.course_id
-    WHERE EN.student_id = ${params.student_id};`;
+    WHERE EN.student_id = ${params.student_id}
+    ORDER BY P.payment_id;`;
     return await query(sql);
+  };
+
+  getLatestPaymentDate = async (params = {}) => {
+    const sql = `SELECT *
+    FROM payments
+    WHERE paid_date=
+    (
+    SELECT MAX(paid_date) 
+    FROM payments P
+    INNER JOIN enrollments E
+    ON E.enrollment_id = P.enrollment_id 
+    WHERE E.course_id = ${params.course_id} AND E.student_id = ${params.student_id}
+    );`;
+    const result = await query(sql);
+
+    return result[0];
   };
 }
 

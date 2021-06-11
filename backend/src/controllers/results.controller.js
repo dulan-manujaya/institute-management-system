@@ -133,20 +133,54 @@ class ResultController {
 
   // Student
 
-  // getByStudentId = async (req, res, next) => {
-  //   let coursesList = await ResultModel.getCoursesByStudentId({
-  //     student_id: req.params.studentId,
-  //   });
-  //   if (!coursesList.length) {
-  //     throw new HttpException(204, "Results not found");
-  //   } else {
-  //     coursesList = coursesList.map((result) => {
-  //       return result;
-  //     });
+  getByStudentId = async (req, res, next) => {
+    let resultsList = await ResultModel.getResultsByStudentId({
+      student_id: req.params.studentid,
+    });
+    if (!resultsList.length) {
+      throw new HttpException(204, "Results not found");
+    } else {
+      resultsList = resultsList.map((result) => {
+        return result;
+      });
 
-  //     res.send(coursesList);
-  //   }
-  // };
+      res.send(resultsList);
+    }
+  };
+
+  //Teacher
+
+  getByTeacherId = async (req, res, next) => {
+    let resultsList = await ResultModel.getResultsByTeacherId({
+      teacher_id: req.params.teacherid,
+    });
+    if (!resultsList.length) {
+      throw new HttpException(204, "Results not found");
+    } else {
+      resultsList = resultsList.map((result) => {
+        return result;
+      });
+
+      res.send(resultsList);
+    }
+  };
+
+  //Parent
+
+  getByParentId = async (req, res, next) => {
+    let resultsList = await ResultModel.getResultsByParentId({
+      guardian_id: req.params.parentid,
+    });
+    if (!resultsList.length) {
+      throw new HttpException(204, "Results not found");
+    } else {
+      resultsList = resultsList.map((result) => {
+        return result;
+      });
+
+      res.send(resultsList);
+    }
+  };
 }
 
 module.exports = new ResultController();

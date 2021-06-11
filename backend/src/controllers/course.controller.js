@@ -145,6 +145,40 @@ class CoursesController {
       res.send(coursesList);
     }
   };
+
+  //Teacher
+
+  getByTeacherId = async (req, res, next) => {
+    let coursesList = await CourseModel.getCoursesByTeacherId({
+      teacher_id: req.params.teacherId,
+    });
+    if (!coursesList.length) {
+      throw new HttpException(204, "Courses not found");
+    } else {
+      coursesList = coursesList.map((course) => {
+        return course;
+      });
+
+      res.send(coursesList);
+    }
+  };
+
+  //Parent
+
+  getByParentId = async (req, res, next) => {
+    let coursesList = await CourseModel.getCoursesByParentId({
+      guardian_id: req.params.parentId,
+    });
+    if (!coursesList.length) {
+      throw new HttpException(204, "Courses not found");
+    } else {
+      coursesList = coursesList.map((course) => {
+        return course;
+      });
+
+      res.send(coursesList);
+    }
+  };
 }
 
 module.exports = new CoursesController();

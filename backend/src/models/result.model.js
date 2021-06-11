@@ -66,45 +66,45 @@ class ExamModel {
 
   // Student
 
-  getExamsByStudentId = async (params = {}) => {
-    let sql = `SELECT EX.*, C.course_name, DATE_ADD(EX.exam_date, INTERVAL EX.exam_duration MINUTE) exam_end_date
-    FROM ${this.tableName} EX 
-    INNER JOIN enrollments EN 
-    ON EX.course_id = EN.course_id 
-    INNER JOIN courses C 
-    ON EX.course_id = C.course_id
-    LEFT JOIN ${this.answerSubmissionTableName} EXAS
-    ON EXAS.exam_id = EX.exam_id AND EXAS.student_id = EN.student_id
-    WHERE EXAS.exam_id IS NULL 
-    AND EN.student_id=${params.student_id} AND EN.is_accepted = 1 
-    ORDER BY exam_date DESC`;
+  getResultsByStudentId = async (params = {}) => {
+    let sql = `SELECT C.course_name, C.course_id, E.exam_name, R.marks 
+    FROM results R 
+    INNER JOIN exams E
+    ON E.exam_id = R.exam_id
+    INNER JOIN courses C
+    ON E.course_id = C.course_id
+    WHERE R.student_id = ${params.student_id}`;
     return await query(sql);
   };
 
-  getExamAnswerSubmissonsByStudentId = async (params = {}) => {
-    let sql = `SELECT EX.*, C.course_name, DATE_ADD(EX.exam_date, INTERVAL EX.exam_duration MINUTE) exam_end_date, EXAS.answer_sheet_url
-    FROM ${this.answerSubmissionTableName} EXAS
-    INNER JOIN  ${this.tableName} EX 
-    ON EXAS.exam_id = EX.exam_id
-    INNER JOIN enrollments EN 
-    ON EX.course_id = EN.course_id 
-    INNER JOIN courses C 
-    ON EX.course_id = C.course_id
-    WHERE EN.student_id=${params.student_id} AND EN.is_accepted = 1 
-    ORDER BY exam_date DESC`;
+  // Teacher
+
+  getResultsByTeacherId = async (params = {}) => {
+    let sql = `SELECT C.course_name, C.course_id, E.exam_name, CONCAT (S.first_name, ' ', S.last_name) as student_name, S.student_id, R.marks 
+    FROM results R 
+    INNER JOIN exams E
+    ON E.exam_id = R.exam_id
+    INNER JOIN courses C
+    ON E.course_id = C.course_id
+    INNER JOIN student S
+    ON S.student_id = R.student_id
+    WHERE C.teacher_id = ${params.teacher_id} `;
     return await query(sql);
   };
 
-  createExamAnswerSubmission = async ({
-    exam_id,
-    student_id,
-    answer_sheet_url,
-  }) => {
-    const sql = `INSERT INTO ${this.answerSubmissionTableName}
-        (exam_id, student_id, answer_sheet_url) VALUES (?,?,?)`;
-    const result = await query(sql, [exam_id, student_id, answer_sheet_url]);
-    const affectedRows = result ? result.affectedRows : 0;
-    return affectedRows;
+   // Parent
+
+   getResultsByParentId = async (params = {}) => {
+    let sql = `SELECT C.course_name, C.course_id, E.exam_name, CONCAT (S.first_name, ' ', S.last_name) as student_name, S.student_id, R.marks 
+    FROM results R 
+    INNER JOIN exams E
+    ON E.exam_id = R.exam_id
+    INNER JOIN courses C
+    ON E.course_id = C.course_id
+    INNER JOIN student S
+    ON S.student_id = R.student_id
+    WHERE S.guardian_id = ${params.guardian_id} `;
+    return await query(sql);
   };
 }
 

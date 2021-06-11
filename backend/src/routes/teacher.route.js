@@ -2,6 +2,7 @@ const express = require("express");
 const router = express.Router();
 const teacherController = require("../controllers/teacher.controller");
 const adminAuth = require("../middleware/adminAuth.middleware");
+const teacherAuth = require("../middleware/teacherAuth.middleware");
 const awaitHandlerFactory = require("../middleware/awaitHandlerFactory.middleware");
 
 const {
@@ -25,7 +26,7 @@ router.get(
 );
 router.get(
   "/whoami",
-  adminAuth(),
+  teacherAuth(),
   awaitHandlerFactory(teacherController.getCurrentTeacher)
 );
 router.post(

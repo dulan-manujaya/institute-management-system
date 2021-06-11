@@ -143,6 +143,30 @@ class StudentModel {
 
     return affectedRows;
   };
+
+  //Teacher
+
+  getStudentsByTeacherId = async (params = {}) => {
+    let sql = `SELECT DISTINCT S.student_id, CONCAT (S.first_name, ' ', S.last_name) as student_name
+    FROM ${this.tableName} S
+    INNER JOIN enrollments E
+    ON E.student_id = S.student_id
+    INNER JOIN courses C
+    ON E.course_id = C.course_id
+    WHERE C.teacher_id = ${params.teacher_id} `;
+
+    return await query(sql);
+  };
+
+  //Parent
+
+  getStudentsByParentId = async (params = {}) => {
+    let sql = `SELECT S.student_id, CONCAT (S.first_name, ' ', S.last_name) as student_name
+    FROM ${this.tableName} S
+    WHERE S.guardian_id = ${params.guardian_id} `;
+
+    return await query(sql);
+  };
 }
 
 module.exports = new StudentModel();

@@ -1,4 +1,4 @@
-import React, { lazy } from "react";
+import React, { lazy, useEffect } from "react";
 import {
   BrowserRouter as Router,
   Switch,
@@ -13,6 +13,10 @@ const CreateAccount = lazy(() => import("./pages/CreateAccount"));
 const ForgotPassword = lazy(() => import("./pages/ForgotPassword"));
 
 function App() {
+  useEffect(() => {
+    localStorage.setItem("theme", "dark");
+  }, []);
+
   return (
     <>
       <Router>

@@ -99,6 +99,19 @@ class PaymentController {
       res.send(paymentsList);
     }
   };
+
+  getLatestPaymentDate = async (req, res, next) => {
+    let payment = await PaymentModel.getLatestPaymentDate({
+      student_id: req.body.student_id,
+      course_id: req.body.course_id,
+    });
+    if (!payment) {
+      throw new HttpException(204, "Payment not found");
+    } else {
+      const { password, ...paymentWithoutPassword } = payment;
+      res.send(paymentWithoutPassword);
+    }
+  };
 }
 
 module.exports = new PaymentController();
