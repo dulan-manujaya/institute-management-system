@@ -54,6 +54,54 @@ class AttendanceModel {
 
     return affectedRows;
   };
+
+  // Teacher
+
+  getStudentAttendanceByTeacherId = async (params = {}) => {
+    if (params.course_id == "All") {
+      let sql = `SELECT A.*, C.course_name, CONCAT (S.first_name, ' ', S.last_name) as student_name
+      FROM attendance A
+      INNER JOIN courses C
+      ON A.course_id = C.course_id
+      INNER JOIN student S
+      ON S.student_id = A.student_id
+      WHERE C.teacher_id = ${params.teacher_id} AND att_date BETWEEN '${params.from_date}' AND '${params.to_date}'`;
+      return await query(sql);
+    } else {
+      let sql = `SELECT A.*, C.course_name, CONCAT (S.first_name, ' ', S.last_name) as student_name
+      FROM attendance A
+      INNER JOIN courses C
+      ON A.course_id = C.course_id
+      INNER JOIN student S
+      ON S.student_id = A.student_id
+      WHERE C.teacher_id = ${params.teacher_id} AND A.course_id = ${params.course_id} AND att_date BETWEEN '${params.from_date}' AND '${params.to_date} '`;
+      return await query(sql);
+    }
+  };
+  
+  // Parent
+
+  getStudentAttendanceByParentId = async (params = {}) => {
+    if (params.course_id == "All") {
+      let sql = `SELECT A.*, C.course_name, CONCAT (S.first_name, ' ', S.last_name) as student_name
+      FROM attendance A
+      INNER JOIN courses C
+      ON A.course_id = C.course_id
+      INNER JOIN student S
+      ON S.student_id = A.student_id
+      WHERE S.guardian_id = ${params.guardian_id} AND att_date BETWEEN '${params.from_date}' AND '${params.to_date}'`;
+      return await query(sql);
+    } else {
+      let sql = `SELECT A.*, C.course_name, CONCAT (S.first_name, ' ', S.last_name) as student_name
+      FROM attendance A
+      INNER JOIN courses C
+      ON A.course_id = C.course_id
+      INNER JOIN student S
+      ON S.student_id = A.student_id
+      WHERE S.guardian_id = ${params.guardian_id} AND A.course_id = ${params.course_id} AND att_date BETWEEN '${params.from_date}' AND '${params.to_date} '`;
+      return await query(sql);
+    }
+  };
 }
 
 module.exports = new AttendanceModel();

@@ -20,6 +20,10 @@
         path: "/app/teacher/reports/results",
         name: "Results",
       },
+      {
+        path: "/app/teacher/reports/attendance",
+        name: "Attendance",
+      }
     ],
   },
 ];

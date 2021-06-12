@@ -12,8 +12,14 @@ const StudentPayments = lazy(() => import("../pages/student/Payments"));
 const TeacherResultsReport = lazy(() =>
   import("../pages/teacher/reports/Results")
 );
+const TeacherAttendanceReport = lazy(() =>
+  import("../pages/teacher/reports/Attendance")
+);
 const ParentResultsReport = lazy(() =>
   import("../pages/parent/reports/Results")
+);
+const ParentAttendanceReport = lazy(() =>
+  import("../pages/parent/reports/Attendance")
 );
 const Page404 = lazy(() => import("../pages/404"));
 
@@ -57,8 +63,16 @@ const routes = [
     component: TeacherResultsReport,
   },
   {
+    path: "/teacher/reports/attendance",
+    component: TeacherAttendanceReport,
+  },
+  {
     path: "/parent/reports/results",
     component: ParentResultsReport,
+  },
+  {
+    path: "/parent/reports/attendance",
+    component: ParentAttendanceReport,
   },
   {
     path: "/404",

@@ -8,6 +8,7 @@ import {
   TableHeader,
   TableRow,
   Select,
+  Input,
   Button,
 } from "@windmill/react-ui";
 import axios from "axios";
@@ -18,43 +19,44 @@ import SectionTitle from "../../../components/Typography/SectionTitle";
 import { jsPDF } from "jspdf";
 import "jspdf-autotable";
 
-const Results = () => {
-  const [teacherId, setTeacherId] = useState("0");
+const Attendance = () => {
   const [courses, setCourses] = useState([]);
   const [students, setStudents] = useState([]);
 
-  const [resultsResponse, setResultResponse] = useState([]);
-  const totalResults = resultsResponse.length;
-  const [resultsPage, setResultsPage] = useState(1);
-  const [resultsData, setResultsData] = useState([]);
+  const [attendanceResponse, setattendanceResponse] = useState([]);
+  const totalResults = attendanceResponse.length;
+  const [attendancePage, setAttendancePage] = useState(1);
+  const [attendanceData, setAttendanceData] = useState([]);
 
-  const [marksFilter, setMarksFilter] = useState("All");
+  const [fromDate, setFromDate] = useState(new Date("10/23/2015"));
+  const [toDate, setToDate] = useState(new Date());
+
   const [courseId, setCourseId] = useState("All");
   const [studentId, setStudentId] = useState("All");
 
   const resultsPerPage = 10;
 
   function onResultsPageChange(p) {
-    setResultsPage(p);
+    setAttendancePage(p);
   }
 
-  const getAllResults = async () => {
+  const getAllAttendance = async () => {
     try {
-      const token = sessionStorage.getItem("teacherAccessToken");
-      const currTeacher = await axios.get(
-        "http://localhost:4000/api/v1/teachers/whoami",
+      const token = sessionStorage.getItem("parentAccessToken");
+      const currParent = await axios.get(
+        "http://localhost:4000/api/v1/parents/whoami",
         {
           headers: {
             Authorization: `Bearer ${token}`,
           },
         }
       );
-      const tid = currTeacher.data.teacher_id;
-      setTeacherId(tid);
-      var results = await axios.post(
-        `${variables.apiServer}/api/v1/results/teacher/${tid}`,
+      const pid = currParent.data.guardian_id;
+      var attendance = await axios.post(
+        `${variables.apiServer}/api/v1/attendance/parent/StudentAttendance/${pid}`,
         {
-          studentId: studentId,
+          fromDate: fromDate.toISOString().substring(0, 10),
+          toDate: toDate.toISOString().substring(0, 10),
           courseId: courseId,
         },
         {
@@ -63,43 +65,36 @@ const Results = () => {
           },
         }
       );
-      if (marksFilter != "All") {
-        if (marksFilter == "<50") {
-          results.data = results.data.filter((result) => result.marks < 50);
-        }
-        if (marksFilter == ">50") {
-          results.data = results.data.filter((result) => result.marks >= 50);
-        }
-        if (marksFilter == ">75") {
-          results.data = results.data.filter((result) => result.marks >= 75);
-        }
+      if (studentId != "All") {
+        attendance.data = attendance.data.filter(
+          (attendance) => attendance.student_id == studentId
+        );
       }
-      setResultsData(
-        results.data.slice(
-          (resultsPage - 1) * resultsPerPage,
-          resultsPage * resultsPerPage
+      setAttendanceData(
+        attendance.data.slice(
+          (attendancePage - 1) * resultsPerPage,
+          attendancePage * resultsPerPage
         )
       );
-      setResultResponse(results.data);
+      setattendanceResponse(attendance.data);
     } catch (err) {
       console.log(err);
     }
   };
 
   const getAllCourses = async () => {
-    const token = sessionStorage.getItem("teacherAccessToken");
-    const currTeacher = await axios.get(
-      "http://localhost:4000/api/v1/teachers/whoami",
+    const token = sessionStorage.getItem("parentAccessToken");
+    const currParent = await axios.get(
+      "http://localhost:4000/api/v1/parents/whoami",
       {
         headers: {
           Authorization: `Bearer ${token}`,
         },
       }
     );
-    const tid = currTeacher.data.teacher_id;
-    setTeacherId(tid);
+    const pid = currParent.data.guardian_id;
     const courses = await axios.get(
-      `${variables.apiServer}/api/v1/courses/getByTeacherId/${tid}`,
+      `${variables.apiServer}/api/v1/courses/getByParentId/${pid}`,
       {
         headers: {
           Authorization: `Bearer ${token}`,
@@ -110,19 +105,18 @@ const Results = () => {
   };
 
   const getAllStudents = async () => {
-    const token = sessionStorage.getItem("teacherAccessToken");
-    const currTeacher = await axios.get(
-      "http://localhost:4000/api/v1/teachers/whoami",
+    const token = sessionStorage.getItem("parentAccessToken");
+    const currParent = await axios.get(
+      "http://localhost:4000/api/v1/parents/whoami",
       {
         headers: {
           Authorization: `Bearer ${token}`,
         },
       }
     );
-    const tid = currTeacher.data.teacher_id;
-    setTeacherId(tid);
+    const pid = currParent.data.guardian_id;
     const students = await axios.get(
-      `${variables.apiServer}/api/v1/students/getByTeacherId/${tid}`,
+      `${variables.apiServer}/api/v1/students/getByParentId/${pid}`,
       {
         headers: {
           Authorization: `Bearer ${token}`,
@@ -133,40 +127,61 @@ const Results = () => {
   };
 
   useEffect(() => {
-    getAllResults();
+    getAllAttendance();
     getAllCourses();
     getAllStudents();
-  }, [resultsPage]);
+  }, [attendancePage]);
 
   useEffect(() => {
-    setResultsData(
-      resultsResponse.slice(
-        (resultsPage - 1) * resultsPerPage,
-        resultsPage * resultsPerPage
+    setAttendanceData(
+      attendanceResponse.slice(
+        (attendancePage - 1) * resultsPerPage,
+        attendancePage * resultsPerPage
       )
     );
-  }, [resultsPage]);
+  }, [attendancePage]);
 
   const generatePDF = () => {
     const doc = new jsPDF();
-    var col = ["Course", "Exam", "Student", "Marks"];
+    var col = ["Date", "Course", "Student"];
     var rows = [];
-    resultsResponse.map((item) => {
+    attendanceResponse.map((item) => {
       rows.push([
+        new Date(item.att_date).toLocaleDateString(),
         item.course_name,
-        item.exam_name,
         item.student_name,
-        item.marks,
       ]);
     });
     doc.autoTable(col, rows);
-    doc.save("Teacher - Student Results.pdf");
+    doc.save("Parent - Student Attendance.pdf");
   };
 
   return (
     <>
-      <PageTitle>Results</PageTitle>
+      <PageTitle>Attendance</PageTitle>
       <div className="grid grid-cols-3 gap-4 mb-4">
+        <div>
+          <SectionTitle>From Date</SectionTitle>
+          <Input
+            className="appearance-none block w-full bg-grey-lighter text-grey-darker border border-grey-lighter rounded py-3 px-4"
+            type="date"
+            value={fromDate.toISOString().substring(0, 10)}
+            max={toDate.toISOString().substring(0, 10)}
+            onChange={(e) => {
+              setFromDate(new Date(e.target.value));
+            }}
+          />
+          <SectionTitle>To Date</SectionTitle>
+          <Input
+            className="appearance-none block w-full bg-grey-lighter text-grey-darker border border-grey-lighter rounded py-3 px-4"
+            type="date"
+            value={toDate.toISOString().substring(0, 10)}
+            min={fromDate.toISOString().substring(0, 10)}
+            onChange={(e) => {
+              setToDate(new Date(e.target.value));
+            }}
+          />
+        </div>
         <div>
           <SectionTitle>Courses</SectionTitle>
           <Select
@@ -177,10 +192,7 @@ const Results = () => {
           >
             <option key={"-1"}>All</option>
             {courses.map((enrollment, i) => (
-              <option
-                key={enrollment.enrollment_id}
-                value={enrollment.course_id}
-              >
+              <option key={enrollment.course_id} value={enrollment.course_id}>
                 {enrollment.course_name}
               </option>
             ))}
@@ -202,59 +214,37 @@ const Results = () => {
             ))}
           </Select>
         </div>
-        <div>
-          <SectionTitle>Mark Range</SectionTitle>
-          <Select
-            className="appearance-none block w-full bg-grey-lighter text-grey-darker border border-grey-lighter rounded py-3 px-4"
-            onChange={(e) => {
-              setMarksFilter(e.target.value);
-            }}
-          >
-            <option key="-1">All</option>
-            <option key="1" value="<50">
-              Below 50
-            </option>
-            <option key="2" value=">50">
-              Above 50
-            </option>
-            <option key="3" value=">75">
-              Above 75
-            </option>
-          </Select>
-        </div>
       </div>
-      <Button onClick={() => getAllResults()} className="my-4 w-1/4">
+      <Button onClick={() => getAllAttendance()} className="my-4 w-1/4">
         Apply Filters
       </Button>
       <TableContainer className="mb-4">
         <Table>
           <TableHeader>
             <tr className="text-gray-700 dark:text-gray-200">
+              <TableCell>Date</TableCell>
               <TableCell>Course</TableCell>
-              <TableCell>Exam</TableCell>
               <TableCell>Student</TableCell>
-              <TableCell>Marks</TableCell>
             </tr>
           </TableHeader>
           <TableBody>
-            {!resultsData
+            {!attendanceData
               ? null
-              : resultsData.map((result, i) => (
+              : attendanceData.map((attendance, i) => (
                   <TableRow
                     key={i}
                     className="text-gray-700 dark:text-gray-300"
                   >
                     <TableCell>
-                      <span className="text-sm">{result.course_name}</span>
+                      <span className="text-sm">
+                        {new Date(attendance.att_date).toLocaleDateString()}
+                      </span>
                     </TableCell>
                     <TableCell>
-                      <span className="text-sm">{result.exam_name}</span>
+                      <span className="text-sm">{attendance.course_name}</span>
                     </TableCell>
                     <TableCell>
-                      <span className="text-sm">{result.student_name}</span>
-                    </TableCell>
-                    <TableCell>
-                      <span className="text-sm">{result.marks}</span>
+                      <span className="text-sm">{attendance.student_name}</span>
                     </TableCell>
                   </TableRow>
                 ))}
@@ -276,4 +266,4 @@ const Results = () => {
   );
 };
 
-export default Results;
+export default Attendance;

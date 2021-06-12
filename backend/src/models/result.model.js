@@ -67,44 +67,133 @@ class ExamModel {
   // Student
 
   getResultsByStudentId = async (params = {}) => {
-    let sql = `SELECT C.course_name, C.course_id, E.exam_name, R.marks 
-    FROM results R 
-    INNER JOIN exams E
-    ON E.exam_id = R.exam_id
-    INNER JOIN courses C
-    ON E.course_id = C.course_id
-    WHERE R.student_id = ${params.student_id}`;
-    return await query(sql);
+    if (params.course_id == "All") {
+      let sql = `SELECT C.course_name, C.course_id, E.exam_name, R.marks 
+      FROM results R 
+      INNER JOIN exams E
+      ON E.exam_id = R.exam_id
+      INNER JOIN courses C
+      ON E.course_id = C.course_id
+      WHERE R.student_id = ${params.student_id}`;
+      return await query(sql);
+    } else {
+      let sql = `SELECT C.course_name, C.course_id, E.exam_name, R.marks 
+      FROM results R 
+      INNER JOIN exams E
+      ON E.exam_id = R.exam_id
+      INNER JOIN courses C
+      ON E.course_id = C.course_id
+      WHERE R.student_id = ${params.student_id} AND E.course_id = ${params.course_id}`;
+      return await query(sql);
+    }
   };
 
   // Teacher
 
   getResultsByTeacherId = async (params = {}) => {
-    let sql = `SELECT C.course_name, C.course_id, E.exam_name, CONCAT (S.first_name, ' ', S.last_name) as student_name, S.student_id, R.marks 
-    FROM results R 
-    INNER JOIN exams E
-    ON E.exam_id = R.exam_id
-    INNER JOIN courses C
-    ON E.course_id = C.course_id
-    INNER JOIN student S
-    ON S.student_id = R.student_id
-    WHERE C.teacher_id = ${params.teacher_id} `;
-    return await query(sql);
+    if (params.course_id == "All") {
+      if (params.student_id == "All") {
+        let sql = `SELECT C.course_name, C.course_id, E.exam_name, CONCAT (S.first_name, ' ', S.last_name) as student_name, S.student_id, R.marks 
+        FROM results R 
+        INNER JOIN exams E
+        ON E.exam_id = R.exam_id
+        INNER JOIN courses C
+        ON E.course_id = C.course_id
+        INNER JOIN student S
+        ON S.student_id = R.student_id
+        WHERE C.teacher_id = ${params.teacher_id} `;
+        return await query(sql);
+      } else {
+        let sql = `SELECT C.course_name, C.course_id, E.exam_name, CONCAT (S.first_name, ' ', S.last_name) as student_name, S.student_id, R.marks 
+        FROM results R 
+        INNER JOIN exams E
+        ON E.exam_id = R.exam_id
+        INNER JOIN courses C
+        ON E.course_id = C.course_id
+        INNER JOIN student S
+        ON S.student_id = R.student_id
+        WHERE C.teacher_id = ${params.teacher_id} AND R.student_id = ${params.student_id}`;
+        return await query(sql);
+      }
+    } else {
+      if (params.student_id == "All") {
+        let sql = `SELECT C.course_name, C.course_id, E.exam_name, CONCAT (S.first_name, ' ', S.last_name) as student_name, S.student_id, R.marks 
+        FROM results R 
+        INNER JOIN exams E
+        ON E.exam_id = R.exam_id
+        INNER JOIN courses C
+        ON E.course_id = C.course_id
+        INNER JOIN student S
+        ON S.student_id = R.student_id
+        WHERE C.teacher_id = ${params.teacher_id} AND E.course_id = ${params.course_id}`;
+        return await query(sql);
+      } else {
+        let sql = `SELECT C.course_name, C.course_id, E.exam_name, CONCAT (S.first_name, ' ', S.last_name) as student_name, S.student_id, R.marks 
+        FROM results R 
+        INNER JOIN exams E
+        ON E.exam_id = R.exam_id
+        INNER JOIN courses C
+        ON E.course_id = C.course_id
+        INNER JOIN student S
+        ON S.student_id = R.student_id
+        WHERE C.teacher_id = ${params.teacher_id}  AND R.student_id = ${params.student_id} AND E.course_id = ${params.course_id}`;
+        return await query(sql);
+      }
+    }
   };
 
-   // Parent
+  // Parent
 
-   getResultsByParentId = async (params = {}) => {
-    let sql = `SELECT C.course_name, C.course_id, E.exam_name, CONCAT (S.first_name, ' ', S.last_name) as student_name, S.student_id, R.marks 
-    FROM results R 
-    INNER JOIN exams E
-    ON E.exam_id = R.exam_id
-    INNER JOIN courses C
-    ON E.course_id = C.course_id
-    INNER JOIN student S
-    ON S.student_id = R.student_id
-    WHERE S.guardian_id = ${params.guardian_id} `;
-    return await query(sql);
+  getResultsByParentId = async (params = {}) => {
+    if (params.course_id == "All") {
+      if (params.student_id == "All") {
+        let sql = `SELECT C.course_name, C.course_id, E.exam_name, CONCAT (S.first_name, ' ', S.last_name) as student_name, S.student_id, R.marks 
+        FROM results R 
+        INNER JOIN exams E
+        ON E.exam_id = R.exam_id
+        INNER JOIN courses C
+        ON E.course_id = C.course_id
+        INNER JOIN student S
+        ON S.student_id = R.student_id
+        WHERE S.guardian_id = ${params.guardian_id} `;
+        return await query(sql);
+      } else {
+        let sql = `SELECT C.course_name, C.course_id, E.exam_name, CONCAT (S.first_name, ' ', S.last_name) as student_name, S.student_id, R.marks 
+        FROM results R 
+        INNER JOIN exams E
+        ON E.exam_id = R.exam_id
+        INNER JOIN courses C
+        ON E.course_id = C.course_id
+        INNER JOIN student S
+        ON S.student_id = R.student_id
+        WHERE S.guardian_id = ${params.guardian_id} AND R.student_id = ${params.student_id} `;
+        return await query(sql);
+      }
+    } else {
+      if (params.student_id == "All") {
+        let sql = `SELECT C.course_name, C.course_id, E.exam_name, CONCAT (S.first_name, ' ', S.last_name) as student_name, S.student_id, R.marks 
+        FROM results R 
+        INNER JOIN exams E
+        ON E.exam_id = R.exam_id
+        INNER JOIN courses C
+        ON E.course_id = C.course_id
+        INNER JOIN student S
+        ON S.student_id = R.student_id
+        WHERE S.guardian_id = ${params.guardian_id} AND E.course_id = ${params.course_id} `;
+        return await query(sql);
+      } else {
+        let sql = `SELECT C.course_name, C.course_id, E.exam_name, CONCAT (S.first_name, ' ', S.last_name) as student_name, S.student_id, R.marks 
+        FROM results R 
+        INNER JOIN exams E
+        ON E.exam_id = R.exam_id
+        INNER JOIN courses C
+        ON E.course_id = C.course_id
+        INNER JOIN student S
+        ON S.student_id = R.student_id
+        WHERE S.guardian_id = ${params.guardian_id} AND R.student_id = ${params.student_id} AND E.course_id = ${params.course_id}`;
+        return await query(sql);
+      }
+    }
   };
 }
 
