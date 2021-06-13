@@ -29,6 +29,7 @@ export const SuccessMessages = {
   assignmentCreated: "Assignment has been submitted successfully.",
   courseMaterialCreated: "CourseMaterial has been submitted successfully.",
   courseCreated: "Course has been created successfully",
+  attendanceCreated: "Attendance has been submitted successfully",
 };
 
 export const InfoMessages = {

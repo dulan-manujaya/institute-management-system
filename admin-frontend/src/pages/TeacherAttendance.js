@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import {
-  Select,
   TableBody,
   TableContainer,
   Table,
@@ -13,6 +12,8 @@ import {
   Button,
   Label,
 } from "@windmill/react-ui";
+import ToastMessage from "../messages/HandleMessages";
+import { ToastContainer } from "react-toastify";
 
 import PageTitle from "../components/Typography/PageTitle";
 import variables from "../common/globalVariables";
@@ -23,29 +24,6 @@ const MarkTeacherAttendance = () => {
   const [totalResults, setTotalResults] = useState(0);
   const [page, setPage] = useState(1);
   const resultsPerPage = 9;
-
-  const sendNotification = async (g_id) => {
-    const token = sessionStorage.getItem("adminAccessToken");
-    await axios
-      .post(
-        `${variables.apiServer}/api/v1/notifications`,
-        {
-          guardian_id: g_id,
-          message: `Your child has been attended on ${new Date().toLocaleDateString()}`,
-        },
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      )
-      .then((response) => {
-        console.log(response);
-      })
-      .catch((error) => {
-        console.log(error.response);
-      });
-  };
 
   const markAsAttended = async (id) => {
     const token = sessionStorage.getItem("adminAccessToken");
@@ -64,15 +42,7 @@ const MarkTeacherAttendance = () => {
       )
       .then(async (response) => {
         console.log(response);
-        await axios
-          .get(`${variables.apiServer}/api/v1/teachers/id/${id}`)
-          .then((response) => {
-            console.log(response.data);
-            // sendNotification(response.data.guardian_id);
-          })
-          .catch((error) => {
-            console.log(error.response);
-          });
+        ToastMessage(response.data);
       })
       .catch((error) => {
         console.log(error.response);
@@ -176,6 +146,7 @@ const MarkTeacherAttendance = () => {
           />
         </TableFooter>
       </TableContainer>
+      <ToastContainer />
     </>
   );
 };

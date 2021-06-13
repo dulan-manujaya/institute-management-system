@@ -83,6 +83,9 @@ const ToastMessage = (toast_msg) => {
     case /Course Material was created/.test(toast_msg):
       alert(SuccessMessages.courseMaterialCreated, "success");
       break;
+    case /Attendance was created/.test(toast_msg):
+      alert(SuccessMessages.attendanceCreated, "success");
+      break;
     // Info
     case /Enrollment has been deleted/.test(toast_msg):
       alert(InfoMessages.enrollmentDeleted, "info");

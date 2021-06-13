@@ -16,6 +16,8 @@ import {
 
 import PageTitle from "../components/Typography/PageTitle";
 import variables from "../common/globalVariables";
+import ToastMessage from "../messages/HandleMessages";
+import { ToastContainer } from "react-toastify";
 
 const MarkAttendance = () => {
   const [courseId, setCourseId] = useState("");
@@ -78,6 +80,7 @@ const MarkAttendance = () => {
       )
       .then(async (response) => {
         console.log(response);
+        ToastMessage(response.data);
         await axios
           .get(`${variables.apiServer}/api/v1/students/id/${id}`)
           .then((response) => {
@@ -219,6 +222,7 @@ const MarkAttendance = () => {
           />
         </TableFooter>
       </TableContainer>
+      <ToastContainer />
     </>
   );
 };
