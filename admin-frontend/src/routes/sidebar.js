@@ -92,6 +92,11 @@ const routes = [
     name: "Attendance",
   },
   {
+    path: "/app/mark-teacher-attendance",
+    icon: "PeopleIcon",
+    name: "Teacher Attendance",
+  },
+  {
     icon: "CardsIcon",
     name: "Courses",
     routes: [

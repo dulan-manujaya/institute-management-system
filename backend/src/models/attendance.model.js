@@ -2,6 +2,7 @@ const query = require("../db/db-connection");
 const { multipleColumnSet } = require("../utils/common.utils");
 class AttendanceModel {
   tableName = "attendance";
+  tableName2 = "teacher_attendance";
 
   find = async (params = {}) => {
     let sql = `SELECT * FROM ${this.tableName}`;
@@ -31,6 +32,16 @@ class AttendanceModel {
         (student_id, course_id, att_date) VALUES (?,?,?)`;
 
     const result = await query(sql, [student_id, course_id, att_date]);
+    const affectedRows = result ? result.affectedRows : 0;
+
+    return affectedRows;
+  };
+
+  createTeacher = async ({ teacher_id, att_date }) => {
+    const sql = `INSERT INTO ${this.tableName2}
+        (teacher_id, att_date) VALUES (?,?)`;
+
+    const result = await query(sql, [teacher_id, att_date]);
     const affectedRows = result ? result.affectedRows : 0;
 
     return affectedRows;
