@@ -28,6 +28,9 @@ const CreateCourse = lazy(() => import("../pages/CreateCourse"));
 const EditCourse = lazy(() => import("../pages/EditCourse"));
 const AddResults = lazy(() => import("../pages/AddResults"));
 const MarkAttendance = lazy(() => import("../pages/MarkAttendance"));
+const StudentResultsReport = lazy(() =>
+  import("../pages/StudentResultsReport")
+);
 
 /**
  * ⚠ These are internal routes!
@@ -51,6 +54,10 @@ const routes = [
   {
     path: "/student-admission",
     component: StudentAdmission,
+  },
+  {
+    path: "/student-marks-reports",
+    component: StudentResultsReport,
   },
   {
     path: "/mark-attendance",

@@ -13,6 +13,7 @@ exports.createCourseSchema = [
 exports.updateCourseSchema = [
   body("amount").optional(),
   body("course_name").optional(),
+  body("description").optional(),
   body()
     .custom((value) => {
       return !!Object.keys(value).length;
@@ -20,7 +21,7 @@ exports.updateCourseSchema = [
     .withMessage("Please provide required field to update")
     .custom((value) => {
       const updates = Object.keys(value);
-      const allowUpdates = ["amount", "course_name"];
+      const allowUpdates = ["amount", "course_name", "description"];
       return updates.every((update) => allowUpdates.includes(update));
     })
     .withMessage("Invalid updates!"),

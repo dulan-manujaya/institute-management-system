@@ -11,11 +11,13 @@ const CreateCourse = () => {
   const [teachers, setTeachers] = useState([]);
   const [amount, setAmount] = useState(0);
   const [courseName, setCourseName] = useState("");
+  const [description, setDescription] = useState("");
 
   const courseObject = {
     teacher_id: teacherId,
     amount: amount,
     course_name: courseName,
+    description: description,
   };
 
   const getTeachers = async () => {
@@ -106,6 +108,21 @@ const CreateCourse = () => {
                 </option>
               ))}
             </Select>
+          </div>
+          <div className="md:w-full px-3 mb-6 md:mb-0">
+            <label className="block uppercase tracking-wide text-gray-900 dark:text-gray-200 text-xs font-bold mb-2">
+              Course Description
+            </label>
+            <Input
+              className="appearance-none block w-full bg-grey-lighter text-grey-darker border border-red rounded py-3 px-4"
+              type="text"
+              placeholder="Description about the course"
+              value={description}
+              onChange={(e) => {
+                setDescription(e.target.value);
+              }}
+            />
+            {/* {!submitted ? null : !studentFirstName ? <FormFillError /> : null} */}
           </div>
         </div>
         <div className="flex justify-end space-x-4 mt-4">

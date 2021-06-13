@@ -106,6 +106,21 @@ const routes = [
       },
     ],
   },
+  {
+    icon: "FormsIcon",
+    name: "Reports",
+    routes: [
+      // submenu
+      {
+        path: "/app/student-marks-reports",
+        name: "Result Reports",
+      },
+      {
+        path: "/app/create-course",
+        name: "Create New Course",
+      },
+    ],
+  },
   // {
   //   path: "/app/payments",
   //   icon: "ChartsIcon",
