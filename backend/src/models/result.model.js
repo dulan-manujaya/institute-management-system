@@ -17,6 +17,16 @@ class ExamModel {
     return await query(sql, [...values]);
   };
 
+  findAll = async (params = {}) => {
+    let sql =
+      `SELECT * FROM ${this.tableName} ` +
+      ` INNER JOIN exams E ON E.exam_id = ${this.tableName}.exam_id ` +
+      ` INNER JOIN courses C ON E.course_id = C.course_id ` +
+      ` INNER JOIN student S ON S.student_id = ${this.tableName}.student_id`;
+
+    return await query(sql);
+  };
+
   findOne = async (params) => {
     const { columnSet, values } = multipleColumnSet(params);
 
