@@ -35,11 +35,16 @@ class CourseModel {
     return result[0];
   };
 
-  create = async ({ teacher_id, amount, course_name }) => {
+  create = async ({ teacher_id, amount, course_name, description }) => {
     const sql = `INSERT INTO ${this.tableName}
-        (teacher_id, amount, course_name) VALUES (?,?,?)`;
+        (teacher_id, amount, course_name, description) VALUES (?,?,?,?)`;
 
-    const result = await query(sql, [teacher_id, amount, course_name]);
+    const result = await query(sql, [
+      teacher_id,
+      amount,
+      course_name,
+      description,
+    ]);
     const affectedRows = result ? result.affectedRows : 0;
 
     return affectedRows;

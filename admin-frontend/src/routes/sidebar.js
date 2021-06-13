@@ -92,6 +92,11 @@ const routes = [
     name: "Attendance",
   },
   {
+    path: "/app/mark-teacher-attendance",
+    icon: "PeopleIcon",
+    name: "Teacher Attendance",
+  },
+  {
     icon: "CardsIcon",
     name: "Courses",
     routes: [
@@ -99,6 +104,21 @@ const routes = [
       {
         path: "/app/courses",
         name: "View Courses",
+      },
+      {
+        path: "/app/create-course",
+        name: "Create New Course",
+      },
+    ],
+  },
+  {
+    icon: "FormsIcon",
+    name: "Reports",
+    routes: [
+      // submenu
+      {
+        path: "/app/student-marks-reports",
+        name: "Result Reports",
       },
       {
         path: "/app/create-course",

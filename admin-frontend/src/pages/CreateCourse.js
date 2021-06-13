@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { Input, Select } from "@windmill/react-ui";
 import axios from "axios";
+import ToastMessage from "../messages/HandleMessages";
+import { ToastContainer } from "react-toastify";
 
 import variables from "../common/globalVariables";
 
@@ -9,13 +11,15 @@ import PageTitle from "../components/Typography/PageTitle";
 const CreateCourse = () => {
   const [teacherId, setTeacherId] = useState("");
   const [teachers, setTeachers] = useState([]);
-  const [amount, setAmount] = useState(0);
+  const [amount, setAmount] = useState("");
   const [courseName, setCourseName] = useState("");
+  const [description, setDescription] = useState("");
 
   const courseObject = {
     teacher_id: teacherId,
     amount: amount,
     course_name: courseName,
+    description: description,
   };
 
   const getTeachers = async () => {
@@ -37,9 +41,13 @@ const CreateCourse = () => {
       })
       .then((response) => {
         console.log(response);
+        ToastMessage(response.data);
       })
       .catch((error) => {
         console.log(error.response);
+        if (error.response) {
+          ToastMessage(error.response.data.message);
+        }
       });
   };
 
@@ -107,6 +115,21 @@ const CreateCourse = () => {
               ))}
             </Select>
           </div>
+          <div className="md:w-full px-3 mb-6 md:mb-0">
+            <label className="block uppercase tracking-wide text-gray-900 dark:text-gray-200 text-xs font-bold mb-2">
+              Course Description
+            </label>
+            <Input
+              className="appearance-none block w-full bg-grey-lighter text-grey-darker border border-red rounded py-3 px-4"
+              type="text"
+              placeholder="Description about the course"
+              value={description}
+              onChange={(e) => {
+                setDescription(e.target.value);
+              }}
+            />
+            {/* {!submitted ? null : !studentFirstName ? <FormFillError /> : null} */}
+          </div>
         </div>
         <div className="flex justify-end space-x-4 mt-4">
           <button
@@ -125,6 +148,7 @@ const CreateCourse = () => {
           </button>
         </div>
       </div>
+      <ToastContainer />
     </>
   );
 };

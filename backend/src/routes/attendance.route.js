@@ -6,6 +6,7 @@ const awaitHandlerFactory = require("../middleware/awaitHandlerFactory.middlewar
 
 const {
   createAttendanceSchema,
+  createTeacherAttendanceSchema,
 } = require("../middleware/validators/attendanceValidator.middleware");
 
 router.get("/", awaitHandlerFactory(attendanceController.getAllAttendance));
@@ -26,6 +27,12 @@ router.post(
   adminAuth(),
   createAttendanceSchema,
   awaitHandlerFactory(attendanceController.createAttendance)
+);
+router.post(
+  "/teacher",
+  adminAuth(),
+  createTeacherAttendanceSchema,
+  awaitHandlerFactory(attendanceController.createTeacherAttendance)
 );
 // router.patch(
 //   "/id/:id",
