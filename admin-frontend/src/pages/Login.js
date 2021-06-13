@@ -93,6 +93,11 @@ const Login = () => {
             </div>
             <main className="flex items-center justify-center p-6 sm:p-12 md:w-1/2">
               <div className="w-full">
+                <div className="flex justify-center">
+                  <h1 className="text-xl font-semibold text-gray-600 dark:text-gray-300 inline-flex items-center">
+                    Benchmark Education Institute
+                  </h1>
+                </div>
                 {/* <h1 className="mb-4 text-xl font-semibold text-gray-700 dark:text-gray-200">
                   Login as:
                 </h1>
