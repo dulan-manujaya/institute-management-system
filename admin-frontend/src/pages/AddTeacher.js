@@ -1,6 +1,8 @@
 import React, { useState } from "react";
 import { Input } from "@windmill/react-ui";
 import axios from "axios";
+import ToastMessage from "../messages/HandleMessages";
+import { ToastContainer } from "react-toastify";
 
 import variables from "../common/globalVariables";
 
@@ -33,6 +35,7 @@ const AddTeacher = () => {
       })
       .then((response) => {
         console.log(response);
+        ToastMessage(response.data);
       })
       .catch((error) => {
         console.log(error.response);
@@ -226,6 +229,7 @@ const AddTeacher = () => {
           </div>
         </div>
       </div>
+      <ToastContainer />
     </>
   );
 };

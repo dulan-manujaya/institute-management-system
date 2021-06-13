@@ -68,6 +68,9 @@ const ToastMessage = (toast_msg) => {
     case /Course was created/.test(toast_msg):
       alert(SuccessMessages.courseCreated, "success");
       break;
+    case /Teacher was created/.test(toast_msg):
+      alert(SuccessMessages.teacherCreated, "success");
+      break;
     case /Enrollment is created/.test(toast_msg):
       alert(SuccessMessages.enrollmentCreated, "success");
       break;
