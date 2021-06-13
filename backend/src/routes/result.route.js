@@ -46,19 +46,23 @@ router.get(
   awaitHandlerFactory(resultController.getMyExamsByCourse)
 );
 
-router.get(
+router.post(
   "/student/:studentid",
   studentAuth(),
   awaitHandlerFactory(resultController.getByStudentId)
 );
 
-router.get(
+// Teacher
+
+router.post(
   "/teacher/:teacherid",
   teacherAuth(),
   awaitHandlerFactory(resultController.getByTeacherId)
 );
 
-router.get(
+// Parent
+
+router.post(
   "/parent/:parentid",
   parentAuth(),
   awaitHandlerFactory(resultController.getByParentId)

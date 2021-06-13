@@ -18,9 +18,10 @@ import {
 } from "@windmill/react-ui";
 import axios from "axios";
 import React, { useContext, useEffect, useState } from "react";
-import { ToastContainer } from "react-toastify";
 import variables from "../../common/globalVariables";
 import PageTitle from "../../components/Typography/PageTitle";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const Payments = () => {
   const [studentId, setStudentId] = useState("0");
@@ -61,6 +62,21 @@ const Payments = () => {
   function closeModal() {
     setIsModalOpen(false);
   }
+
+  const alert = (message, type) => {
+    console.log(type);
+    console.log(message);
+    toast(message, {
+      position: "top-right",
+      autoClose: 5000,
+      hideProgressBar: true,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: false,
+      progress: undefined,
+      type: type,
+    });
+  };
 
   const getAllPayments = async () => {
     try {
@@ -166,7 +182,9 @@ const Payments = () => {
         }
       )
       .then((response) => {
+        alert(response.data, "success");
         closeModal();
+        setLatestPayment("");
         getAllPayments();
         getAllEnrollments();
       })
@@ -180,9 +198,7 @@ const Payments = () => {
   }, []);
 
   useEffect(() => {
-    setData(
-      response.slice((page - 1) * resultsPerPage, page * resultsPerPage)
-    );
+    setData(response.slice((page - 1) * resultsPerPage, page * resultsPerPage));
   }, [page]);
 
   return (

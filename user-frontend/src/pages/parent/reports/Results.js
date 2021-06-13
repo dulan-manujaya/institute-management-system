@@ -8,12 +8,15 @@ import {
   TableHeader,
   TableRow,
   Select,
+  Button,
 } from "@windmill/react-ui";
 import axios from "axios";
 import React, { useContext, useEffect, useState } from "react";
 import variables from "../../../common/globalVariables";
 import PageTitle from "../../../components/Typography/PageTitle";
 import SectionTitle from "../../../components/Typography/SectionTitle";
+import { jsPDF } from "jspdf";
+import "jspdf-autotable";
 
 const Results = () => {
   const [parentId, setParentId] = useState("0");
@@ -48,14 +51,29 @@ const Results = () => {
       );
       const pid = currParent.data.guardian_id;
       setParentId(pid);
-      const results = await axios.get(
+      var results = await axios.post(
         `${variables.apiServer}/api/v1/results/parent/${pid}`,
+        {
+          studentId: studentId,
+          courseId: courseId,
+        },
         {
           headers: {
             Authorization: `Bearer ${token}`,
           },
         }
       );
+      if (marksFilter != "All") {
+        if (marksFilter == "<50") {
+          results.data = results.data.filter((result) => result.marks < 50);
+        }
+        if (marksFilter == ">50") {
+          results.data = results.data.filter((result) => result.marks >= 50);
+        }
+        if (marksFilter == ">75") {
+          results.data = results.data.filter((result) => result.marks >= 75);
+        }
+      }
       setResultsData(
         results.data.slice(
           (resultsPage - 1) * resultsPerPage,
@@ -114,96 +132,6 @@ const Results = () => {
     setStudents(students.data);
   };
 
-  const dynamicSearch = () => {
-    if (courseId == "All") {
-      if (studentId == "All") {
-        if (marksFilter == "All") {
-          return resultsData;
-        }
-        if (marksFilter == "<50") {
-          return resultsData.filter((result) => result.marks < 50);
-        }
-        if (marksFilter == ">50") {
-          return resultsData.filter((result) => result.marks >= 50);
-        }
-        if (marksFilter == ">75") {
-          return resultsData.filter((result) => result.marks >= 75);
-        }
-      } else {
-        if (marksFilter == "All") {
-          return resultsData.filter((result) => result.student_id == studentId);
-        }
-        if (marksFilter == "<50") {
-          return resultsData.filter(
-            (result) => result.student_id == studentId && result.marks < 50
-          );
-        }
-        if (marksFilter == ">50") {
-          return resultsData.filter(
-            (result) => result.student_id == studentId && result.marks >= 50
-          );
-        }
-        if (marksFilter == ">75") {
-          return resultsData.filter(
-            (result) => result.student_id == studentId && result.marks >= 75
-          );
-        }
-      }
-    } else {
-      if (studentId == "All") {
-        if (marksFilter == "All") {
-          return resultsData.filter((result) => result.course_id == courseId);
-        }
-        if (marksFilter == "<50") {
-          return resultsData.filter(
-            (result) => result.course_id == courseId && result.marks < 50
-          );
-        }
-        if (marksFilter == ">50") {
-          return resultsData.filter(
-            (result) => result.course_id == courseId && result.marks >= 50
-          );
-        }
-        if (marksFilter == ">75") {
-          return resultsData.filter(
-            (result) => result.course_id == courseId && result.marks >= 75
-          );
-        }
-      } else {
-        if (marksFilter == "All") {
-          return resultsData.filter(
-            (result) =>
-              result.student_id == studentId && result.student_id == studentId
-          );
-        }
-        if (marksFilter == "<50") {
-          return resultsData.filter(
-            (result) =>
-              result.course_id == courseId &&
-              result.student_id == studentId &&
-              result.marks < 50
-          );
-        }
-        if (marksFilter == ">50") {
-          return resultsData.filter(
-            (result) =>
-              result.course_id == courseId &&
-              result.student_id == studentId &&
-              result.marks >= 50
-          );
-        }
-        if (marksFilter == ">75") {
-          return resultsData.filter(
-            (result) =>
-              result.course_id == courseId &&
-              result.student_id == studentId &&
-              result.marks >= 75
-          );
-        }
-      }
-    }
-  };
-
   useEffect(() => {
     getAllResults();
     getAllCourses();
@@ -218,6 +146,23 @@ const Results = () => {
       )
     );
   }, [resultsPage]);
+
+  const generatePDF = () => {
+    const doc = new jsPDF();
+    var col = ["Course", "Exam", "Student", "Marks"];
+    var rows = [];
+    resultsResponse.map((item) => {
+      rows.push([
+        item.course_name,
+        item.exam_name,
+        item.student_name,
+        item.marks,
+      ]);
+    });
+    doc.autoTable(col, rows);
+    doc.save("Parent - Student Results.pdf");
+  };
+
   return (
     <>
       <PageTitle>Results</PageTitle>
@@ -278,6 +223,9 @@ const Results = () => {
           </Select>
         </div>
       </div>
+      <Button onClick={() => getAllResults()} className="my-4 w-1/4">
+        Apply Filters
+      </Button>
       <TableContainer className="mb-4">
         <Table>
           <TableHeader>
@@ -289,9 +237,9 @@ const Results = () => {
             </tr>
           </TableHeader>
           <TableBody>
-            {!dynamicSearch()
+            {!resultsData
               ? null
-              : dynamicSearch().map((result, i) => (
+              : resultsData.map((result, i) => (
                   <TableRow
                     key={i}
                     className="text-gray-700 dark:text-gray-300"
@@ -321,6 +269,9 @@ const Results = () => {
           />
         </TableFooter>
       </TableContainer>
+      <Button onClick={() => generatePDF()} className="my-4 w-1/4">
+        Print
+      </Button>
     </>
   );
 };

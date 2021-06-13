@@ -7,7 +7,7 @@ dotenv.config();
 /******************************************************************************
  *                              Course Controller
  ******************************************************************************/
-class CoursesController {
+class AttendanceController {
   getAllAttendance = async (req, res, next) => {
     let attendanceList = await AttendanceModel.find();
     if (!attendanceList.length) {
@@ -109,6 +109,46 @@ class CoursesController {
       throw new HttpException(400, "Validation failed", errors);
     }
   };
+
+  //Teacher
+
+  getStudentAttendanceByTeacherId = async (req, res, next) => {
+    let attendanceList = await AttendanceModel.getStudentAttendanceByTeacherId({
+      teacher_id: req.params.teacherid,
+      from_date: req.body.fromDate,
+      to_date: req.body.toDate,
+      course_id: req.body.courseId,
+    });
+    if (!attendanceList.length) {
+      throw new HttpException(204, "Attendance not found");
+    } else {
+      attendanceList = attendanceList.map((attendance) => {
+        return attendance;
+      });
+
+      res.send(attendanceList);
+    }
+  };
+
+  //Parent
+
+  getStudentAttendanceByParentId = async (req, res, next) => {
+    let attendanceList = await AttendanceModel.getStudentAttendanceByParentId({
+      guardian_id: req.params.parentid,
+      from_date: req.body.fromDate,
+      to_date: req.body.toDate,
+      course_id: req.body.courseId,
+    });
+    if (!attendanceList.length) {
+      throw new HttpException(204, "Attendance not found");
+    } else {
+      attendanceList = attendanceList.map((attendance) => {
+        return attendance;
+      });
+
+      res.send(attendanceList);
+    }
+  };
 }
 
-module.exports = new CoursesController();
+module.exports = new AttendanceController();

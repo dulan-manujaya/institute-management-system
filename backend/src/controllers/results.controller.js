@@ -136,6 +136,7 @@ class ResultController {
   getByStudentId = async (req, res, next) => {
     let resultsList = await ResultModel.getResultsByStudentId({
       student_id: req.params.studentid,
+      course_id: req.body.courseId,
     });
     if (!resultsList.length) {
       throw new HttpException(204, "Results not found");
@@ -153,6 +154,8 @@ class ResultController {
   getByTeacherId = async (req, res, next) => {
     let resultsList = await ResultModel.getResultsByTeacherId({
       teacher_id: req.params.teacherid,
+      course_id: req.body.courseId,
+      student_id: req.body.studentId
     });
     if (!resultsList.length) {
       throw new HttpException(204, "Results not found");
@@ -170,6 +173,8 @@ class ResultController {
   getByParentId = async (req, res, next) => {
     let resultsList = await ResultModel.getResultsByParentId({
       guardian_id: req.params.parentid,
+      course_id: req.body.courseId,
+      student_id: req.body.studentId,
     });
     if (!resultsList.length) {
       throw new HttpException(204, "Results not found");

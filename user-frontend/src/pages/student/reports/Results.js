@@ -8,12 +8,15 @@ import {
   TableHeader,
   TableRow,
   Select,
+  Button,
 } from "@windmill/react-ui";
 import axios from "axios";
 import React, { useContext, useEffect, useState } from "react";
 import variables from "../../../common/globalVariables";
 import PageTitle from "../../../components/Typography/PageTitle";
 import SectionTitle from "../../../components/Typography/SectionTitle";
+import { jsPDF } from "jspdf";
+import "jspdf-autotable";
 
 const Results = () => {
   const [studentId, setStudentId] = useState("0");
@@ -46,14 +49,28 @@ const Results = () => {
       );
       const sid = currStudent.data.student_id;
       setStudentId(sid);
-      const results = await axios.get(
+      const results = await axios.post(
         `${variables.apiServer}/api/v1/results/student/${sid}`,
+        {
+          courseId: courseId,
+        },
         {
           headers: {
             Authorization: `Bearer ${token}`,
           },
         }
       );
+      if (marksFilter != "All") {
+        if (marksFilter == "<50") {
+          results.data = results.data.filter((result) => result.marks < 50);
+        }
+        if (marksFilter == ">50") {
+          results.data = results.data.filter((result) => result.marks >= 50);
+        }
+        if (marksFilter == ">75") {
+          results.data = results.data.filter((result) => result.marks >= 75);
+        }
+      }
       setResultsData(
         results.data.slice(
           (resultsPage - 1) * resultsPerPage,
@@ -89,42 +106,6 @@ const Results = () => {
     setEnrollments(enrollments.data);
   };
 
-  const dynamicSearch = () => {
-    if (courseId == "All") {
-      if (marksFilter == "All") {
-        return resultsData;
-      }
-      if (marksFilter == "<50") {
-        return resultsData.filter((result) => result.marks < 50);
-      }
-      if (marksFilter == ">50") {
-        return resultsData.filter((result) => result.marks >= 50);
-      }
-      if (marksFilter == ">75") {
-        return resultsData.filter((result) => result.marks >= 75);
-      }
-    } else {
-      if (marksFilter == "All") {
-        return resultsData.filter((result) => result.course_id == courseId);
-      }
-      if (marksFilter == "<50") {
-        return resultsData.filter(
-          (result) => result.course_id == courseId && result.marks < 50
-        );
-      }
-      if (marksFilter == ">50") {
-        return resultsData.filter(
-          (result) => result.course_id == courseId && result.marks >= 50
-        );
-      }
-      if (marksFilter == ">75") {
-        return resultsData.filter(
-          (result) => result.course_id == courseId && result.marks >= 75
-        );
-      }
-    }
-  };
-
   useEffect(() => {
     getAllResults();
     getAllEnrollments();
@@ -138,6 +119,18 @@ const Results = () => {
       )
     );
   }, [resultsPage]);
+
+  const generatePDF = () => {
+    const doc = new jsPDF();
+    var col = ["Course", "Exam", "Marks"];
+    var rows = [];
+    resultsResponse.map((item) => {
+      rows.push([item.course_name, item.exam_name, item.marks]);
+    });
+    doc.autoTable(col, rows);
+    doc.save("Student - Results.pdf");
+  };
+
   return (
     <>
       <PageTitle>Results</PageTitle>
@@ -150,9 +143,7 @@ const Results = () => {
               setCourseId(e.target.value);
             }}
           >
-            <option key={"-1"}>
-              All
-            </option>
+            <option key={"-1"}>All</option>
             {enrollments.map((enrollment, i) => (
               <option
                 key={enrollment.enrollment_id}
@@ -184,6 +175,9 @@ const Results = () => {
           </Select>
         </div>
       </div>
+      <Button onClick={() => getAllResults()} className="my-4 w-1/4">
+        Apply Filters
+      </Button>
       <TableContainer className="mb-4">
         <Table>
           <TableHeader>
@@ -194,9 +188,9 @@ const Results = () => {
             </tr>
           </TableHeader>
           <TableBody>
-            {!dynamicSearch()
+            {!resultsData
               ? null
-              : dynamicSearch().map((result, i) => (
+              : resultsData.map((result, i) => (
                   <TableRow
                     key={i}
                     className="text-gray-700 dark:text-gray-300"
@@ -223,6 +217,9 @@ const Results = () => {
           />
         </TableFooter>
       </TableContainer>
+      <Button onClick={() => generatePDF()} className="my-4 w-1/4">
+        Print
+      </Button>
     </>
   );
 };

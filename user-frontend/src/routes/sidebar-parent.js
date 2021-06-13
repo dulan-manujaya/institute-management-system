@@ -20,6 +20,10 @@ const routes = [
         path: "/app/parent/reports/results",
         name: "Results",
       },
+      {
+        path: "/app/parent/reports/attendance",
+        name: "Attendance",
+      }
     ],
   },
 ];
