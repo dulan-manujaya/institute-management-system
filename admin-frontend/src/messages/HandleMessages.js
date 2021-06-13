@@ -22,6 +22,9 @@ const ToastMessage = (toast_msg) => {
     case /Incorrect integer value: '' for column 'student_id'/.test(toast_msg):
       alert(ErrorMessages.noStudentId, "error");
       break;
+    case /Validation failed/.test(toast_msg):
+      alert(ErrorMessages.validationFailed, "error");
+      break;
     case /Incorrect integer value: '' for column 'course_id'/.test(toast_msg):
       alert(ErrorMessages.noCourseId, "error");
       break;
@@ -62,6 +65,9 @@ const ToastMessage = (toast_msg) => {
       alert(ErrorMessages.deadline, "error");
       break;
     //Success
+    case /Course was created/.test(toast_msg):
+      alert(SuccessMessages.courseCreated, "success");
+      break;
     case /Enrollment is created/.test(toast_msg):
       alert(SuccessMessages.enrollmentCreated, "success");
       break;

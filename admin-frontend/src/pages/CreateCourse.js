@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { Input, Select } from "@windmill/react-ui";
 import axios from "axios";
+import ToastMessage from "../messages/HandleMessages";
+import { ToastContainer } from "react-toastify";
 
 import variables from "../common/globalVariables";
 
@@ -9,7 +11,7 @@ import PageTitle from "../components/Typography/PageTitle";
 const CreateCourse = () => {
   const [teacherId, setTeacherId] = useState("");
   const [teachers, setTeachers] = useState([]);
-  const [amount, setAmount] = useState(0);
+  const [amount, setAmount] = useState("");
   const [courseName, setCourseName] = useState("");
   const [description, setDescription] = useState("");
 
@@ -39,9 +41,13 @@ const CreateCourse = () => {
       })
       .then((response) => {
         console.log(response);
+        ToastMessage(response.data);
       })
       .catch((error) => {
         console.log(error.response);
+        if (error.response) {
+          ToastMessage(error.response.data.message);
+        }
       });
   };
 
@@ -142,6 +148,7 @@ const CreateCourse = () => {
           </button>
         </div>
       </div>
+      <ToastContainer />
     </>
   );
 };

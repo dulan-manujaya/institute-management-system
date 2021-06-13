@@ -7,7 +7,11 @@ exports.createCourseSchema = [
     .withMessage("Amount is required")
     .isNumeric()
     .withMessage("Amount must be a number"),
-  body("course_name").exists().withMessage("Course name is required"),
+  body("course_name")
+    .exists()
+    .withMessage("Course name is required")
+    .notEmpty()
+    .withMessage("Course name cannot be empty"),
 ];
 
 exports.updateCourseSchema = [
