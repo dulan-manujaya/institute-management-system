@@ -41,7 +41,7 @@ class PaymentController {
       throw new HttpException(500, "Something went wrong");
     }
 
-    res.status(201).send("Payment is made!");
+    res.status(201).send("Payment successful!");
   };
 
   //   updateGrade = async (req, res, next) => {

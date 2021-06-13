@@ -1,14 +1,7 @@
 import { Player } from "@lottiefiles/react-lottie-player";
 import {
   Button,
-  Input,
-  Label,
-  Modal,
-  ModalBody,
-  ModalFooter,
-  ModalHeader,
   Pagination,
-  Select,
   Table,
   TableBody,
   TableCell,
@@ -19,15 +12,11 @@ import {
 } from "@windmill/react-ui";
 import axios from "axios";
 import React, { useContext, useEffect, useState } from "react";
-import DatePicker from "react-datepicker";
-import "react-datepicker/dist/react-datepicker.css";
-import { ToastContainer } from "react-toastify";
 import variables from "../../common/globalVariables";
 import PageTitle from "../../components/Typography/PageTitle";
 import SectionTitle from "../../components/Typography/SectionTitle";
-// import { TeacherContext } from "../context/Context.Index";
-import { EditIcon, TrashIcon, UploadIcon } from "../../icons";
-import ToastMessage from "../../messages/HandleMessages";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const Courses = () => {
   const [studentId, setStudentId] = useState("0");
@@ -51,6 +40,20 @@ const Courses = () => {
   function onCoursesPageChange(p) {
     setCoursesPage(p);
   }
+
+  const alert = (message, type) => {
+    console.log(type);
+    toast(message, {
+      position: "top-right",
+      autoClose: 5000,
+      hideProgressBar: true,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: false,
+      progress: undefined,
+      type: type,
+    });
+  };
 
   const getAllEnrollments = async () => {
     try {
@@ -124,10 +127,11 @@ const Courses = () => {
       course_id: course_id,
     };
     try {
-      const response = await axios.post(
-        `${variables.apiServer}/api/v1/enrollments/`,
-        enrollmentBody
-      );
+      await axios
+        .post(`${variables.apiServer}/api/v1/enrollments/`, enrollmentBody)
+        .then((response) => {
+          alert(response.data.message, "success");
+        });
       getAllEnrollments();
       getAllCourses();
     } catch (err) {}
@@ -158,99 +162,103 @@ const Courses = () => {
   return (
     <>
       <PageTitle>Courses</PageTitle>
-
-      <>
-        <SectionTitle>Enrolled Courses</SectionTitle>
-        <TableContainer className="mb-4">
-          <Table>
-            <TableHeader>
-              <tr className="text-gray-700 dark:text-gray-200">
-                <TableCell>Title</TableCell>
-                <TableCell>Enrolled Date</TableCell>
-                {/* <TableCell>Actions</TableCell> */}
-              </tr>
-            </TableHeader>
-            <TableBody>
-              {!enrollmentsData
-                ? null
-                : enrollmentsData.map((enrollment, i) => (
-                    <TableRow
-                      key={i}
-                      className="text-gray-700 dark:text-gray-300"
-                    >
-                      <TableCell>
-                        <span className="text-sm">
-                          {enrollment.course_name}
-                        </span>
-                      </TableCell>
-                      <TableCell>
-                        <span className="text-sm">
-                          {new Date(
-                            enrollment.enrolled_date
-                          ).toLocaleDateString()}
-                        </span>
-                      </TableCell>
-                    </TableRow>
-                  ))}
-            </TableBody>
-          </Table>
-          <TableFooter>
-            <Pagination
-              totalResults={totalEnrollmentResults}
-              resultsPerPage={resultsPerPage}
-              label="Table navigation"
-              onChange={onEnrollmentsPageChange}
-            />
-          </TableFooter>
-        </TableContainer>
-        <SectionTitle>Other Courses</SectionTitle>
-        <TableContainer className="mb-4">
-          <Table>
-            <TableHeader>
-              <tr className="text-gray-700 dark:text-gray-200">
-                <TableCell>Title</TableCell>
-                <TableCell>Tutor</TableCell>
-                <TableCell>Actions</TableCell>
-              </tr>
-            </TableHeader>
-            <TableBody>
-              {!coursesData
-                ? null
-                : coursesData.map((course, i) => (
-                    <TableRow
-                      key={i}
-                      className="text-gray-700 dark:text-gray-300"
-                    >
-                      <TableCell>
-                        <span className="text-sm">{course.course_name}</span>
-                      </TableCell>
-                      <TableCell>
-                        <span className="text-sm">{course.teacher_name}</span>
-                      </TableCell>
-                      <TableCell>
-                        <div className="flex items-center space-x-4">
-                          <Button
-                            size="small"
-                            onClick={(e) => createEnrollment(course.course_id)}
-                          >
-                            Enroll
-                          </Button>
-                        </div>
-                      </TableCell>
-                    </TableRow>
-                  ))}
-            </TableBody>
-          </Table>
-          <TableFooter>
-            <Pagination
-              totalResults={totalCoursesResults}
-              resultsPerPage={resultsPerPage}
-              label="Table navigation"
-              onChange={onCoursesPageChange}
-            />
-          </TableFooter>
-        </TableContainer>
-      </>
+      <SectionTitle>Enrolled Courses</SectionTitle>
+      <TableContainer className="mb-4">
+        <Table>
+          <TableHeader>
+            <tr className="text-gray-700 dark:text-gray-200">
+              <TableCell>Title</TableCell>
+              <TableCell>Description</TableCell>
+              <TableCell>Enrolled Date</TableCell>
+              {/* <TableCell>Actions</TableCell> */}
+            </tr>
+          </TableHeader>
+          <TableBody>
+            {!enrollmentsData
+              ? null
+              : enrollmentsData.map((enrollment, i) => (
+                  <TableRow
+                    key={i}
+                    className="text-gray-700 dark:text-gray-300"
+                  >
+                    <TableCell>
+                      <span className="text-sm">{enrollment.course_name}</span>
+                    </TableCell>
+                    <TableCell>
+                      <span className="text-sm">{enrollment.description}</span>
+                    </TableCell>
+                    <TableCell>
+                      <span className="text-sm">
+                        {new Date(
+                          enrollment.enrolled_date
+                        ).toLocaleDateString()}
+                      </span>
+                    </TableCell>
+                  </TableRow>
+                ))}
+          </TableBody>
+        </Table>
+        <TableFooter>
+          <Pagination
+            totalResults={totalEnrollmentResults}
+            resultsPerPage={resultsPerPage}
+            label="Table navigation"
+            onChange={onEnrollmentsPageChange}
+          />
+        </TableFooter>
+      </TableContainer>
+      <SectionTitle>Other Courses</SectionTitle>
+      <TableContainer className="mb-4">
+        <Table>
+          <TableHeader>
+            <tr className="text-gray-700 dark:text-gray-200">
+              <TableCell>Title</TableCell>
+              <TableCell>Description</TableCell>
+              <TableCell>Tutor</TableCell>
+              <TableCell>Actions</TableCell>
+            </tr>
+          </TableHeader>
+          <TableBody>
+            {!coursesData
+              ? null
+              : coursesData.map((course, i) => (
+                  <TableRow
+                    key={i}
+                    className="text-gray-700 dark:text-gray-300"
+                  >
+                    <TableCell>
+                      <span className="text-sm">{course.course_name}</span>
+                    </TableCell>
+                    <TableCell>
+                      <span className="text-sm">{course.description}</span>
+                    </TableCell>
+                    <TableCell>
+                      <span className="text-sm">{course.teacher_name}</span>
+                    </TableCell>
+                    <TableCell>
+                      <div className="flex items-center space-x-4">
+                        <Button
+                          size="small"
+                          onClick={(e) => createEnrollment(course.course_id)}
+                        >
+                          Enroll
+                        </Button>
+                      </div>
+                    </TableCell>
+                  </TableRow>
+                ))}
+          </TableBody>
+        </Table>
+        <TableFooter>
+          <Pagination
+            totalResults={totalCoursesResults}
+            resultsPerPage={resultsPerPage}
+            label="Table navigation"
+            onChange={onCoursesPageChange}
+          />
+        </TableFooter>
+      </TableContainer>
+      <ToastContainer />
     </>
   );
 };

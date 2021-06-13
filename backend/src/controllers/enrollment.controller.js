@@ -173,7 +173,7 @@ class EnrollmentController {
 
     const response = {
       newId: result.insertId,
-      message: "Enrollment is created successfully!",
+      message: "Successfully enrolled to course!",
     };
 
     if (!result) {

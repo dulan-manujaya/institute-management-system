@@ -67,7 +67,7 @@ class CourseModel {
   // Student
 
   getCoursesByStudentId = async (params = {}) => {
-    let sql = `SELECT C.*, CONCAT(T.first_name, ' ' ,T.last_name) teacher_name
+    let sql = `SELECT C.*, CONCAT(T.first_name, ' ' ,T.last_name) teacher_name, C.description
     FROM ${this.tableName} C
     INNER JOIN teacher T
     ON T.teacher_id = C.teacher_id

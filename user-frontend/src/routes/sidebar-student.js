@@ -16,11 +16,11 @@ const routes = [
     icon: "CardsIcon",
     name: "Courses",
   },
-  {
-    path: "/app/student/results",
-    icon: "FormsIcon",
-    name: "Results",
-  },
+  // {
+  //   path: "/app/student/results",
+  //   icon: "FormsIcon",
+  //   name: "Results",
+  // },
   {
     path: "/app/student/payments",
     icon: "MoneyIcon",
