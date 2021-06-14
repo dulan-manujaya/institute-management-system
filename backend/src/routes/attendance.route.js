@@ -13,6 +13,11 @@ const {
 
 router.get("/", awaitHandlerFactory(attendanceController.getAllAttendance));
 router.post(
+  "/teacher/dates",
+  adminAuth(),
+  awaitHandlerFactory(attendanceController.getTeacherAttendanceByDates)
+);
+router.post(
   "/dates",
   adminAuth(),
   awaitHandlerFactory(attendanceController.getStudentAttendanceByDates)
