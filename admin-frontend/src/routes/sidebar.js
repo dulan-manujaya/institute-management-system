@@ -121,8 +121,8 @@ const routes = [
         name: "Result Reports",
       },
       {
-        path: "/app/create-course",
-        name: "Create New Course",
+        path: "/app/student-attendance-reports",
+        name: "Student Attendance Reports",
       },
     ],
   },
