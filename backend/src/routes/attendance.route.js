@@ -12,6 +12,11 @@ const {
 } = require("../middleware/validators/attendanceValidator.middleware");
 
 router.get("/", awaitHandlerFactory(attendanceController.getAllAttendance));
+router.post(
+  "/dates",
+  adminAuth(),
+  awaitHandlerFactory(attendanceController.getStudentAttendanceByDates)
+);
 router.get(
   "/course/:id",
   awaitHandlerFactory(attendanceController.getAttendanceByCourse)
