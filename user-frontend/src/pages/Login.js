@@ -174,6 +174,11 @@ const Login = () => {
             </div>
             <main className="flex items-center justify-center p-6 sm:p-12 md:w-1/2">
               <div className="w-full">
+                <div className="flex justify-center">
+                  <h1 className="text-xl font-semibold text-gray-600 dark:text-gray-300 inline-flex items-center">
+                    Benchmark Education Institute
+                  </h1>
+                </div>
                 <div className="flex justify-center p-6">
                   <Label className="inline-flex items-center mt-3" radio>
                     <Input
