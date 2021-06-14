@@ -30,6 +30,7 @@ const AddResults = lazy(() => import("../pages/AddResults"));
 const MarkAttendance = lazy(() => import("../pages/MarkAttendance"));
 const MarkTeacherAttendance = lazy(() => import("../pages/TeacherAttendance"));
 const Results = lazy(() => import("../pages/reports/Results"));
+const PaymentsReports = lazy(() => import("../pages/reports/Payments"));
 const Attendance = lazy(() => import("../pages/reports/Attendance"));
 const TeacherAttendance = lazy(() =>
   import("../pages/reports/TeacherAttendance")
@@ -65,6 +66,10 @@ const routes = [
   {
     path: "/student-attendance-reports",
     component: Attendance,
+  },
+  {
+    path: "/payment-reports",
+    component: PaymentsReports,
   },
   {
     path: "/teacher-attendance-reports",

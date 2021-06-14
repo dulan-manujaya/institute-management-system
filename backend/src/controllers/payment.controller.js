@@ -22,6 +22,20 @@ class PaymentController {
     }
   };
 
+  getAllPaymentReports = async (req, res, next) => {
+    let paymentList = await PaymentModel.findAll();
+    if (!paymentList.length) {
+      throw new HttpException(204, "Payments not found");
+    } else {
+      paymentList = paymentList.map((grade) => {
+        const { password, ...paymentWithoutPassword } = grade;
+        return paymentWithoutPassword;
+      });
+
+      res.send(paymentList);
+    }
+  };
+
   getPaymentById = async (req, res, next) => {
     const payment = await PaymentModel.findOne({
       payment_id: req.params.id,

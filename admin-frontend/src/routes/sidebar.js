@@ -128,6 +128,10 @@ const routes = [
         path: "/app/teacher-attendance-reports",
         name: "Teacher Attendance Reports",
       },
+      {
+        path: "/app/payment-reports",
+        name: "Payment Reports",
+      },
     ],
   },
   // {
