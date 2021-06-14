@@ -98,6 +98,22 @@ class AttendanceController {
     }
   };
 
+  getTeacherAttendanceByDates = async (req, res, next) => {
+    let attendanceList = await AttendanceModel.getTeacherAttendanceByDates({
+      from_date: req.body.fromDate,
+      to_date: req.body.toDate,
+    });
+    if (!attendanceList.length) {
+      throw new HttpException(204, "Attendance not found");
+    } else {
+      attendanceList = attendanceList.map((attendance) => {
+        return attendance;
+      });
+
+      res.send(attendanceList);
+    }
+  };
+
   createAttendance = async (req, res, next) => {
     this.checkValidation(req);
     const result = await AttendanceModel.create(req.body);

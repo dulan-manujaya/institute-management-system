@@ -66,6 +66,16 @@ class AttendanceModel {
     return affectedRows;
   };
 
+  getTeacherAttendanceByDates = async (params = {}) => {
+    let sql = `SELECT A.*, CONCAT (T.first_name, ' ', T.last_name) as teacher_name
+      FROM teacher_attendance A
+      INNER JOIN teacher T
+      ON T.teacher_id = A.teacher_id
+      WHERE att_date BETWEEN '${params.from_date}' AND '${params.to_date}'`;
+    console.log(sql);
+    return await query(sql);
+  };
+
   getStudentAttendanceByDates = async (params = {}) => {
     if (params.course_id == "All") {
       let sql = `SELECT A.*, C.course_name, CONCAT (S.first_name, ' ', S.last_name) as student_name

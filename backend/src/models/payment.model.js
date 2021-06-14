@@ -16,6 +16,16 @@ class PaymentModel {
     return await query(sql, [...values]);
   };
 
+  findAll = async (params = {}) => {
+    let sql =
+      `SELECT * FROM ${this.tableName} ` +
+      `INNER JOIN enrollments E ON E.enrollment_id = ${this.tableName}.enrollment_id ` +
+      `INNER JOIN courses C ON C.course_id = E.course_id ` +
+      `INNER JOIN student S ON S.student_id = E.student_id`;
+
+    return await query(sql);
+  };
+
   findOne = async (params) => {
     const { columnSet, values } = multipleColumnSet(params);
 
