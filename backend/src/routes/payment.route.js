@@ -10,6 +10,10 @@ const {
 } = require("../middleware/validators/paymentValidator.middleware");
 
 router.get("/", awaitHandlerFactory(paymentController.getAllPayments));
+router.get(
+  "/reports",
+  awaitHandlerFactory(paymentController.getAllPaymentReports)
+);
 router.get("/id/:id", awaitHandlerFactory(paymentController.getPaymentById));
 router.post(
   "/",
