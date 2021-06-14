@@ -81,6 +81,23 @@ class AttendanceController {
     }
   };
 
+  getStudentAttendanceByDates = async (req, res, next) => {
+    let attendanceList = await AttendanceModel.getStudentAttendanceByDates({
+      from_date: req.body.fromDate,
+      to_date: req.body.toDate,
+      course_id: req.body.courseId,
+    });
+    if (!attendanceList.length) {
+      throw new HttpException(204, "Attendance not found");
+    } else {
+      attendanceList = attendanceList.map((attendance) => {
+        return attendance;
+      });
+
+      res.send(attendanceList);
+    }
+  };
+
   createAttendance = async (req, res, next) => {
     this.checkValidation(req);
     const result = await AttendanceModel.create(req.body);
@@ -92,34 +109,15 @@ class AttendanceController {
     res.status(201).send("Attendance was created!");
   };
 
-  updateCourse = async (req, res, next) => {
+  createTeacherAttendance = async (req, res, next) => {
     this.checkValidation(req);
-
-    const { confirm_password, ...restOfUpdates } = req.body;
-
-    const result = await AttendanceModel.update(restOfUpdates, req.params.id);
+    const result = await AttendanceModel.createTeacher(req.body);
 
     if (!result) {
-      throw new HttpException(404, "Something went wrong");
+      throw new HttpException(500, "Something went wrong");
     }
 
-    const { affectedRows, changedRows, info } = result;
-
-    const message = !affectedRows
-      ? "Course not found"
-      : affectedRows && changedRows
-      ? "Course updated successfully"
-      : "Updated failed";
-
-    res.send({ message, info });
-  };
-
-  deleteCourse = async (req, res, next) => {
-    const result = await AttendanceModel.delete(req.params.id);
-    if (!result) {
-      throw new HttpException(204, "Course not found");
-    }
-    res.send("Course has been deleted");
+    res.status(201).send("Attendance was created!");
   };
 
   checkValidation = (req) => {

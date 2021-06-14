@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import {
-  Select,
   TableBody,
   TableContainer,
   Table,
@@ -13,63 +12,26 @@ import {
   Button,
   Label,
 } from "@windmill/react-ui";
-
-import PageTitle from "../components/Typography/PageTitle";
-import variables from "../common/globalVariables";
 import ToastMessage from "../messages/HandleMessages";
 import { ToastContainer } from "react-toastify";
 
-const MarkAttendance = () => {
-  const [courseId, setCourseId] = useState("");
-  const [courses, setCourses] = useState([]);
-  const [courseName, setCourseName] = useState("");
-  const [students, setStudents] = useState([]);
+import PageTitle from "../components/Typography/PageTitle";
+import variables from "../common/globalVariables";
+
+const MarkTeacherAttendance = () => {
+  const [teachers, setTeachers] = useState([]);
   const [data, setData] = useState([]);
   const [totalResults, setTotalResults] = useState(0);
   const [page, setPage] = useState(1);
-  const [guardianId, setGuardianId] = useState("");
   const resultsPerPage = 9;
-
-  const getCourses = async () => {
-    await axios
-      .get(`${variables.apiServer}/api/v1/courses`)
-      .then((response) => {
-        console.log(response);
-        setCourses(response.data);
-      });
-  };
-
-  const sendNotification = async (g_id) => {
-    const token = sessionStorage.getItem("adminAccessToken");
-    await axios
-      .post(
-        `${variables.apiServer}/api/v1/notifications`,
-        {
-          guardian_id: g_id,
-          message: `Your child has been attended on ${new Date().toLocaleDateString()}`,
-        },
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      )
-      .then((response) => {
-        console.log(response);
-      })
-      .catch((error) => {
-        console.log(error.response);
-      });
-  };
 
   const markAsAttended = async (id) => {
     const token = sessionStorage.getItem("adminAccessToken");
     await axios
       .post(
-        `${variables.apiServer}/api/v1/attendance`,
+        `${variables.apiServer}/api/v1/attendance/teacher`,
         {
-          course_id: courseId,
-          student_id: id,
+          teacher_id: id,
           att_date: new Date().toISOString().slice(0, 19).replace("T", " "),
         },
         {
@@ -81,25 +43,16 @@ const MarkAttendance = () => {
       .then(async (response) => {
         console.log(response);
         ToastMessage(response.data);
-        await axios
-          .get(`${variables.apiServer}/api/v1/students/id/${id}`)
-          .then((response) => {
-            console.log(response.data);
-            sendNotification(response.data.guardian_id);
-          })
-          .catch((error) => {
-            console.log(error.response);
-          });
       })
       .catch((error) => {
         console.log(error.response);
       });
   };
 
-  const getStudentsByCourse = async (id) => {
+  const getTeachers = async (id) => {
     const token = sessionStorage.getItem("adminAccessToken");
     await axios
-      .get(`${variables.apiServer}/api/v1/students/course/${id}`, {
+      .get(`${variables.apiServer}/api/v1/teachers`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -126,47 +79,18 @@ const MarkAttendance = () => {
   };
 
   useEffect(() => {
-    getCourses();
-  }, []);
-
-  useEffect(() => {
-    setStudents(data.slice((page - 1) * resultsPerPage, page * resultsPerPage));
+    setTeachers(data.slice((page - 1) * resultsPerPage, page * resultsPerPage));
   }, [page, data]);
 
   useEffect(() => {
-    getStudentsByCourse(courseId);
-  }, [courseId]);
+    getTeachers();
+  }, []);
 
   return (
     <>
-      <PageTitle>Mark Attendance</PageTitle>
+      <PageTitle>Mark Teacher Attendance</PageTitle>
       <div className="bg-gray-200 shadow-md rounded px-8 pt-6 pb-8 flex flex-col my-2 dark:bg-gray-800">
         <div className="-mx-3 md:flex mb-6">
-          <div className="md:w-full px-3">
-            <label
-              className="block uppercase tracking-wide text-gray-900 dark:text-gray-200 text-xs font-bold mb-2"
-              htmlFor="grid-course-amount"
-            >
-              Course
-            </label>
-            <Select
-              className="block appearance-none w-full bg-grey-lighter border border-grey-lighter text-grey-darker py-3 px-4 pr-8 rounded"
-              id="grid-course"
-              onChange={(e) => {
-                setCourseId(e.target.value);
-                setCourseName(e.target.getAttribute("x"));
-              }}
-              value={courseId}
-            >
-              <option>Select Course</option>
-              {courses.map((course, i) => (
-                <option key={i} value={course.course_id} x={course.course_name}>
-                  {course.course_name}
-                </option>
-              ))}
-            </Select>
-            {/* {!submitted ? null : !studentLastName ? <FormFillError /> : null} */}
-          </div>
           <div className="md:w-full px-3 mb-6 md:mb-0">
             <label
               className="block uppercase tracking-wide text-gray-900 dark:text-gray-200 text-xs font-bold mb-2"
@@ -190,17 +114,17 @@ const MarkAttendance = () => {
           </TableHeader>
           {data ? (
             <TableBody>
-              {students.map((student, i) => (
+              {teachers.map((teacher, i) => (
                 <TableRow key={i}>
                   <TableCell>
                     <span className="text-sm">
-                      {student.first_name} {student.last_name}
+                      {teacher.first_name} {teacher.last_name}
                     </span>
                   </TableCell>
                   <TableCell>
                     <Button
                       onClick={() => {
-                        markAsAttended(student.student_id);
+                        markAsAttended(teacher.teacher_id);
                       }}
                       className="mr-4"
                       size="small"
@@ -227,4 +151,4 @@ const MarkAttendance = () => {
   );
 };
 
-export default MarkAttendance;
+export default MarkTeacherAttendance;

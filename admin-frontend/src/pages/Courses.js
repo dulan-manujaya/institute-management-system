@@ -69,6 +69,7 @@ const Courses = () => {
             <tr>
               <TableCell>Name</TableCell>
               <TableCell>Amount</TableCell>
+              <TableCell>Description</TableCell>
               <TableCell>Actions</TableCell>
             </tr>
           </TableHeader>
@@ -81,6 +82,9 @@ const Courses = () => {
                   </TableCell>
                   <TableCell>
                     <span className="text-sm">LKR {course.amount}</span>
+                  </TableCell>
+                  <TableCell>
+                    <span className="text-sm">{course.description}</span>
                   </TableCell>
                   <TableCell>
                     <Link to={`/app/course-details/${course.course_id}`}>

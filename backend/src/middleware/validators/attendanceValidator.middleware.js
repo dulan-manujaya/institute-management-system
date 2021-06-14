@@ -6,6 +6,11 @@ exports.createAttendanceSchema = [
   body("att_date").exists().withMessage("Date is required"),
 ];
 
+exports.createTeacherAttendanceSchema = [
+  body("teacher_id").exists().withMessage("Teacher is required"),
+  body("att_date").exists().withMessage("Date is required"),
+];
+
 // exports.updateAttendanceSchema = [
 //   body("amount").optional(),
 //   body("course_name").optional(),

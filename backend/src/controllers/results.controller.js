@@ -9,7 +9,7 @@ dotenv.config();
  ******************************************************************************/
 class ResultController {
   getAllReults = async (req, res, next) => {
-    let resultList = await ResultModel.find();
+    let resultList = await ResultModel.findAll();
     if (!resultList.length) {
       throw new HttpException(204, "Results not found");
     } else {
@@ -155,7 +155,7 @@ class ResultController {
     let resultsList = await ResultModel.getResultsByTeacherId({
       teacher_id: req.params.teacherid,
       course_id: req.body.courseId,
-      student_id: req.body.studentId
+      student_id: req.body.studentId,
     });
     if (!resultsList.length) {
       throw new HttpException(204, "Results not found");

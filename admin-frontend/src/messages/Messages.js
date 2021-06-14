@@ -1,4 +1,5 @@
 export const ErrorMessages = {
+  validationFailed: "Validation failed",
   noStudentId: "Please select a student to continue.",
   noCourseId: "Please select a course to continue.",
   noGradeId: "Please select a grade to continue.",
@@ -27,6 +28,9 @@ export const SuccessMessages = {
   studentCreated: "Student has been created successfully.",
   assignmentCreated: "Assignment has been submitted successfully.",
   courseMaterialCreated: "CourseMaterial has been submitted successfully.",
+  courseCreated: "Course has been created successfully",
+  attendanceCreated: "Attendance has been submitted successfully",
+  teacherCreated: "Teacher has been created successfully",
 };
 
 export const InfoMessages = {
