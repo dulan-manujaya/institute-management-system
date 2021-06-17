@@ -111,7 +111,7 @@ const TeacherAttendance = () => {
 
   return (
     <>
-      <PageTitle>Attendance</PageTitle>
+      <PageTitle>Teacher Attendance</PageTitle>
       <div className="grid grid-cols-3 gap-4 mb-4">
         <div>
           <SectionTitle>From Date</SectionTitle>

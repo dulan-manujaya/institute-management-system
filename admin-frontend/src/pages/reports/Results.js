@@ -117,7 +117,7 @@ const Results = () => {
 
   return (
     <>
-      <PageTitle>Results</PageTitle>
+      <PageTitle>Student Results</PageTitle>
       <div className="grid grid-cols-3 gap-4 mb-4">
         <div>
           <SectionTitle>Mark Range</SectionTitle>
