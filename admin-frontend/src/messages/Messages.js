@@ -1,4 +1,5 @@
 export const ErrorMessages = {
+  generalError: "Unable to perform this action",
   validationFailed: "Validation failed",
   noStudentId: "Please select a student to continue.",
   noCourseId: "Please select a course to continue.",
@@ -36,5 +37,6 @@ export const SuccessMessages = {
 export const InfoMessages = {
   enrollmentDeleted:
     "Student has been declined from the selected course successfully.",
+  courseDeleted: "Course has been deleted successfully",
   greaterStartTime: "Start time cannot be greater than end time.",
 };
