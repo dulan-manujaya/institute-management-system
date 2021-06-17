@@ -9,7 +9,14 @@ const EditCourse = (props) => {
   const [courseId, setCourseId] = useState(props.match.params.courseid);
   const [courseData, setCourseData] = useState("");
   const [courseName, setCourseName] = useState("");
+  const [courseDescription, setCourseDescription] = useState("");
   const [amount, setAmount] = useState("");
+
+  const courseDetails = {
+    course_name: courseName,
+    amount: amount,
+    description: courseDescription,
+  };
 
   const getCourseDetails = async () => {
     await axios
@@ -17,6 +24,9 @@ const EditCourse = (props) => {
       .then((response) => {
         console.log(response);
         setCourseData(response.data);
+        setCourseDescription(response.data.description);
+        setAmount(response.data.amount);
+        setCourseName(response.data.course_name);
       });
   };
 
@@ -25,10 +35,7 @@ const EditCourse = (props) => {
     await axios
       .patch(
         `${variables.apiServer}/api/v1/courses/id/${courseId}`,
-        {
-          course_name: courseName,
-          amount: amount,
-        },
+        courseDetails,
         {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -89,6 +96,26 @@ const EditCourse = (props) => {
                 }}
               />
               {/* {!submitted ? null : !studentLastName ? <FormFillError /> : null} */}
+            </div>
+          </div>
+          <div className="-mx-3 md:flex mb-6">
+            <div className="md:w-full px-3 mb-6 md:mb-0">
+              <label
+                className="block uppercase tracking-wide text-gray-900 dark:text-gray-200 text-xs font-bold mb-2"
+                htmlFor="grid-courset-name"
+              >
+                Course Description
+              </label>
+              <Input
+                className="appearance-none block w-full bg-grey-lighter text-grey-darker border border-red rounded py-3 px-4"
+                id="grid-courset-name"
+                type="text"
+                placeholder={courseData.description}
+                value={courseDescription}
+                onChange={(e) => {
+                  setCourseDescription(e.target.value);
+                }}
+              />
             </div>
           </div>
           <div className="flex justify-end space-x-4 mt-4">
