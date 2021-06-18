@@ -245,7 +245,7 @@ function Students() {
                     </span>
                   </TableCell>
                   <TableCell>
-                    <Link to={`/app/student-details/${user.student_id}`}>
+                    <Link to={`/app/student-edit/${user.student_id}`}>
                       <Button className="mr-4" size="small">
                         Edit
                       </Button>

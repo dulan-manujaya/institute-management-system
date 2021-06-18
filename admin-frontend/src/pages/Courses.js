@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { Link } from "react-router-dom";
+import ToastMessage from "../messages/HandleMessages";
+import { ToastContainer } from "react-toastify";
 import {
   TableBody,
   TableContainer,
@@ -11,6 +13,10 @@ import {
   TableFooter,
   Pagination,
   Button,
+  Modal,
+  ModalBody,
+  ModalFooter,
+  ModalHeader,
 } from "@windmill/react-ui";
 import variables from "../common/globalVariables";
 import PageTitle from "../components/Typography/PageTitle";
@@ -20,12 +26,23 @@ const Courses = () => {
   const [page, setPage] = useState(1);
   const [data, setData] = useState([]);
   const [totalResults, setTotalResults] = useState(0);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [selectedId, setSelectedId] = useState("");
+  const [selectedName, setSelectedName] = useState("");
 
   const resultsPerPage = 9;
 
   const onPageChange = (p) => {
     setPage(p);
   };
+
+  function openModal() {
+    setIsModalOpen(true);
+  }
+
+  function closeModal() {
+    setIsModalOpen(false);
+  }
 
   const getAllCourses = async () => {
     try {
@@ -50,18 +67,53 @@ const Courses = () => {
       })
       .then((response) => {
         console.log(response);
+        ToastMessage(response.data);
       })
       .catch((err) => {
-        console.log(err);
+        console.log(err.response);
+        if (err.response) {
+          ToastMessage(err.response.data.message);
+        }
+      })
+      .finally(() => {
+        getAllCourses();
+        closeModal();
       });
   };
 
   useEffect(() => {
     getAllCourses();
-  }, []);
+  }, [page]);
 
   return (
     <>
+      <Modal isOpen={isModalOpen} onClose={closeModal}>
+        <ModalHeader>Delete Course : {selectedName}</ModalHeader>
+        <ModalBody>Are you sure you want to delete this course?</ModalBody>
+        <ModalFooter>
+          <div className="hidden sm:block">
+            <Button layout="outline" onClick={closeModal}>
+              Cancel
+            </Button>
+          </div>
+          <div className="hidden sm:block">
+            <Button
+              iconLeft={TrashIcon}
+              className="text-white"
+              onClick={() => {
+                deleteCourse(selectedId);
+              }}
+            >
+              <span>Delete</span>
+            </Button>
+          </div>
+          <div className="block w-full sm:hidden">
+            <Button block size="large" layout="outline" onClick={closeModal}>
+              Cancel
+            </Button>
+          </div>
+        </ModalFooter>
+      </Modal>
       <PageTitle>Courses</PageTitle>
       <TableContainer>
         <Table>
@@ -96,8 +148,13 @@ const Courses = () => {
                       layout="link"
                       size="icon"
                       aria-label="Delete"
+                      // onClick={() => {
+                      //   deleteCourse(course.course_id);
+                      // }}
                       onClick={() => {
-                        deleteCourse(course.course_id);
+                        setSelectedId(course.course_id);
+                        setSelectedName(course.course_name);
+                        openModal();
                       }}
                     >
                       <TrashIcon className="w-5 h-5" aria-hidden="true" />
@@ -117,6 +174,7 @@ const Courses = () => {
           />
         </TableFooter>
       </TableContainer>
+      <ToastContainer />
     </>
   );
 };
