@@ -104,6 +104,7 @@ const ToastMessage = (toast_msg) => {
       break;
     case /Exam was created/.test(toast_msg):
       alert(SuccessMessages.examCreated, "success");
+      break;
     // Info
     case /Enrollment has been deleted/.test(toast_msg):
       alert(InfoMessages.enrollmentDeleted, "info");
