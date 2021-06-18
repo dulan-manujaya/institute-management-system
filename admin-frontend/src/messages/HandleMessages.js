@@ -17,8 +17,12 @@ const alert = (message, type) => {
 };
 
 const ToastMessage = (toast_msg) => {
+  console.log(toast_msg);
   switch (true) {
     //Error
+    case /Internal server error/.test(toast_msg):
+      alert(ErrorMessages.generalError, "error");
+      break;
     case /Incorrect integer value: '' for column 'student_id'/.test(toast_msg):
       alert(ErrorMessages.noStudentId, "error");
       break;
@@ -89,9 +93,18 @@ const ToastMessage = (toast_msg) => {
     case /Attendance was created/.test(toast_msg):
       alert(SuccessMessages.attendanceCreated, "success");
       break;
+    case /Teacher updated successfully/.test(toast_msg):
+      alert(SuccessMessages.teacherUpdated, "success");
+      break;
+    case /Student updated successfully/.test(toast_msg):
+      alert(SuccessMessages.studentUpdated, "success");
+      break;
     // Info
     case /Enrollment has been deleted/.test(toast_msg):
       alert(InfoMessages.enrollmentDeleted, "info");
+      break;
+    case /Course has been deleted/.test(toast_msg):
+      alert(InfoMessages.courseDeleted, "info");
       break;
     case /Start time cannot be greater than end time/.test(toast_msg):
       alert(InfoMessages.greaterStartTime, "info");
