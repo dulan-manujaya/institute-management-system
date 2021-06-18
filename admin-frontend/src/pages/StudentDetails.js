@@ -29,16 +29,16 @@ const StudentDetails = (props) => {
     }
   };
 
-  const getStudentCourses = async (student_id) => {
-    try {
-      const stuCourses = await axios.get(
-        `${variables.apiServer}/api/v1/enrollments/student/${student_id}`
-      );
-      setEnrolledCourses(stuCourses.data);
-    } catch (err) {
-      console.log(err);
-    }
-  };
+  // const getStudentCourses = async (student_id) => {
+  //   try {
+  //     const stuCourses = await axios.get(
+  //       `${variables.apiServer}/api/v1/enrollments/student/${student_id}`
+  //     );
+  //     setEnrolledCourses(stuCourses.data);
+  //   } catch (err) {
+  //     console.log(err);
+  //   }
+  // };
 
   const onShowInformation = () => {
     if (showInformation) {
@@ -50,7 +50,7 @@ const StudentDetails = (props) => {
 
   useEffect(() => {
     getStudentDetails(studentId);
-    getStudentCourses(studentId);
+    // getStudentCourses(studentId);
     console.log(student);
   }, [showInformation]);
 
@@ -228,7 +228,7 @@ const StudentDetails = (props) => {
               {/* End of about section */}
 
               {/* Experience and education */}
-              <div className="dark:bg-gray-700 bg-gray-200 p-3 shadow-sm rounded-sm">
+              {/* <div className="dark:bg-gray-700 bg-gray-200 p-3 shadow-sm rounded-sm">
                 <div className="grid grid-cols-2">
                   <div>
                     <div className="flex items-center space-x-2 font-semibold text-gray-500 leading-8 mb-3">
@@ -276,8 +276,8 @@ const StudentDetails = (props) => {
                     </ul>
                   </div>
                 </div>
-                {/* End of Experience and education grid */}
-              </div>
+      
+              </div> */}
               {/* End of profile tab */}
             </div>
           </div>

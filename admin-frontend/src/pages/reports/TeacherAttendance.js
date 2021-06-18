@@ -96,13 +96,12 @@ const TeacherAttendance = () => {
 
   const generatePDF = () => {
     const doc = new jsPDF();
-    var col = ["Date", "Course", "Student"];
+    var col = ["Date", "Teacher Name"];
     var rows = [];
     attendanceResponse.map((item) => {
       rows.push([
         new Date(item.att_date).toLocaleDateString(),
-        item.course_name,
-        item.student_name,
+        item.teacher_name,
       ]);
     });
     doc.autoTable(col, rows);

@@ -17,6 +17,7 @@ const alert = (message, type) => {
 };
 
 const ToastMessage = (toast_msg) => {
+  console.log(toast_msg);
   switch (true) {
     //Error
     case /Internal server error/.test(toast_msg):
@@ -91,6 +92,9 @@ const ToastMessage = (toast_msg) => {
       break;
     case /Attendance was created/.test(toast_msg):
       alert(SuccessMessages.attendanceCreated, "success");
+      break;
+    case /Teacher updated successfully/.test(toast_msg):
+      alert(SuccessMessages.teacherUpdated, "success");
       break;
     // Info
     case /Enrollment has been deleted/.test(toast_msg):
