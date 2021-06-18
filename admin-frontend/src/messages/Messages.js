@@ -35,7 +35,7 @@ export const SuccessMessages = {
   teacherUpdated: "Teacher has been updated successfully",
   studentUpdated: "Student has been updated successfully",
   examCreated: "Exam has been created successfully",
-  courseUpdated: "Course has updated successfully",
+  courseUpdated: "Course has been updated successfully",
 };
 
 export const InfoMessages = {
