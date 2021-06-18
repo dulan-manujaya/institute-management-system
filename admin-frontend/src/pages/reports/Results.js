@@ -39,7 +39,13 @@ const Results = () => {
 
   const getAllResults = async () => {
     try {
-      var results = await axios.get(`${variables.apiServer}/api/v1/results`);
+      var results = await axios.post(
+        `${variables.apiServer}/api/v1/results/all`,
+        {
+          studentId: studentId,
+          courseId: courseId,
+        }
+      );
       if (marksFilter != "All") {
         if (marksFilter == "<50") {
           results.data = results.data.filter((result) => result.marks < 50);
@@ -139,6 +145,38 @@ const Results = () => {
             </option>
           </Select>
         </div>
+        <div>
+          <SectionTitle>Courses</SectionTitle>
+          <Select
+            className="appearance-none block w-full bg-grey-lighter text-grey-darker border border-grey-lighter rounded py-3 px-4"
+            onChange={(e) => {
+              setCourseId(e.target.value);
+            }}
+          >
+            <option key={"-1"}>All</option>
+            {courses.map((enrollment, i) => (
+              <option key={i} value={enrollment.course_id}>
+                {enrollment.course_name}
+              </option>
+            ))}
+          </Select>
+        </div>
+        <div>
+          <SectionTitle>Students</SectionTitle>
+          <Select
+            className="appearance-none block w-full bg-grey-lighter text-grey-darker border border-grey-lighter rounded py-3 px-4"
+            onChange={(e) => {
+              setStudentId(e.target.value);
+            }}
+          >
+            <option key={"-1"}>All</option>
+            {students.map((student, i) => (
+              <option key={student.student_id} value={student.student_id}>
+                {student.first_name} {student.last_name}
+              </option>
+            ))}
+          </Select>
+        </div>
       </div>
       <Button onClick={() => getAllResults()} className="my-4 w-1/4">
         Apply Filters
@@ -168,9 +206,7 @@ const Results = () => {
                       <span className="text-sm">{result.exam_name}</span>
                     </TableCell>
                     <TableCell>
-                      <span className="text-sm">
-                        {result.first_name} {result.last_name}
-                      </span>
+                      <span className="text-sm">{result.student_name}</span>
                     </TableCell>
                     <TableCell>
                       <span className="text-sm">{result.marks}</span>

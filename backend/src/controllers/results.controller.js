@@ -168,6 +168,22 @@ class ResultController {
     }
   };
 
+  getAll = async (req, res, next) => {
+    let resultsList = await ResultModel.getResultsAll({
+      course_id: req.body.courseId,
+      student_id: req.body.studentId,
+    });
+    if (!resultsList.length) {
+      throw new HttpException(204, "Results not found");
+    } else {
+      resultsList = resultsList.map((result) => {
+        return result;
+      });
+
+      res.send(resultsList);
+    }
+  };
+
   //Parent
 
   getByParentId = async (req, res, next) => {
