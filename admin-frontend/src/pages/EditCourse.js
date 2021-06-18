@@ -46,7 +46,7 @@ const EditCourse = (props) => {
       )
       .then((response) => {
         console.log(response);
-        ToastMessage(response.data);
+        ToastMessage(response.data.message);
       })
       .catch((error) => {
         console.log(error);
