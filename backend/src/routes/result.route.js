@@ -52,6 +52,8 @@ router.post(
   awaitHandlerFactory(resultController.getByStudentId)
 );
 
+router.post("/all", awaitHandlerFactory(resultController.getAll));
+
 // Teacher
 
 router.post(
