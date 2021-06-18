@@ -13,6 +13,10 @@ import {
   Pagination,
   Select,
   Button,
+  Modal,
+  ModalBody,
+  ModalFooter,
+  ModalHeader,
 } from "@windmill/react-ui";
 import variables from "../common/globalVariables";
 import { TeacherContext, GradeContext } from "../context/Context.Index";
