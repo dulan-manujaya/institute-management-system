@@ -212,12 +212,12 @@ const AddTeacher = () => {
             </div>
           </div> */}
           <div className="flex justify-end space-x-4 mt-4">
-            <button
+            {/* <button
               className="mr-5 bg-red-600 hover:bg-red-800 text-white font-bold py-2 px-6 rounded-md"
               type="button"
             >
               Clear Form
-            </button>
+            </button> */}
             <button
               onClick={() => {
                 createTeacher();
