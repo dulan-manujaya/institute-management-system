@@ -60,10 +60,11 @@ function Teachers() {
         console.log(response);
       })
       .catch((err) => {
-        console.log(err.response);
+        console.log(err.response.data);
       })
       .finally(() => {
         getAllTeachers();
+        closeModal();
       });
   };
 
