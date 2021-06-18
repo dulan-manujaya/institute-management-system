@@ -13,8 +13,6 @@ const EditTeacher = (props) => {
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
   const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [confirmPassword, setConfirmPassword] = useState("");
   const [mobile, setMobile] = useState("");
   const [teacherData, setTeacherData] = useState("");
 
