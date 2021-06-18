@@ -122,7 +122,7 @@ const Attendance = () => {
       ]);
     });
     doc.autoTable(col, rows);
-    doc.save("Parent - Student Attendance.pdf");
+    doc.save("Attendance.pdf");
   };
 
   return (
