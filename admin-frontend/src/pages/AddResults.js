@@ -13,6 +13,8 @@ import {
   Pagination,
   Button,
 } from "@windmill/react-ui";
+import ToastMessage from "../messages/HandleMessages";
+import { ToastContainer } from "react-toastify";
 
 import PageTitle from "../components/Typography/PageTitle";
 import variables from "../common/globalVariables";
@@ -121,9 +123,13 @@ const AddResults = () => {
       })
       .then((response) => {
         console.log(response);
+        ToastMessage(response.data);
       })
       .catch((error) => {
         console.log(error.response);
+      })
+      .finally(() => {
+        getExams();
       });
   };
 
@@ -193,12 +199,6 @@ const AddResults = () => {
           </div>
         </div>
         <div className="flex justify-end space-x-4 mt-4">
-          <button
-            className="mr-5 bg-red-600 hover:bg-red-800 text-white font-bold py-2 px-6 rounded-md"
-            type="button"
-          >
-            Clear Form
-          </button>
           <button
             onClick={() => {
               createExam();
@@ -315,6 +315,7 @@ const AddResults = () => {
           />
         </TableFooter>
       </TableContainer>
+      <ToastContainer />
     </>
   );
 };
