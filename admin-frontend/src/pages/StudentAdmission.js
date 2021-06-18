@@ -379,13 +379,6 @@ const StudentAdmission = () => {
           </div>
           <div className="flex justify-end space-x-4 mt-4">
             <button
-              className="mr-5 bg-red-600 hover:bg-red-800 text-white font-bold py-2 px-6 rounded-md"
-              type="button"
-              onClick={() => clearForm()}
-            >
-              Clear Form
-            </button>
-            <button
               type="submit"
               onClick={() => setSubmitted(true)}
               className="mr-5 bg-green-600 hover:bg-green-800 text-white font-bold py-2 px-6 rounded-lg"

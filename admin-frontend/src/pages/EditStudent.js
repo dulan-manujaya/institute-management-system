@@ -177,7 +177,7 @@ const EditStudent = (props) => {
               <Select
                 className="block appearance-none w-full bg-grey-lighter border border-grey-lighter text-grey-darker py-3 px-4 pr-8 rounded"
                 id="grid-gender"
-                value={studentData.gender}
+                value={gender}
                 onChange={async (e) => {
                   setGender(e.target.value);
                 }}
@@ -189,12 +189,6 @@ const EditStudent = (props) => {
             </div>
           </div>
           <div className="flex justify-end space-x-4 mt-4">
-            <button
-              className="mr-5 bg-red-600 hover:bg-red-800 text-white font-bold py-2 px-6 rounded-md"
-              type="button"
-            >
-              Clear Form
-            </button>
             <button
               onClick={() => {
                 editStudent();
