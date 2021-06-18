@@ -105,7 +105,7 @@ const TeacherAttendance = () => {
       ]);
     });
     doc.autoTable(col, rows);
-    doc.save("Parent - Student Attendance.pdf");
+    doc.save("Teacher Attendance.pdf");
   };
 
   return (
