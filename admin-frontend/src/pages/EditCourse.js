@@ -109,10 +109,9 @@ const EditCourse = (props) => {
               >
                 Course Description
               </label>
-              <Input
-                className="appearance-none block w-full bg-grey-lighter text-grey-darker border border-red rounded py-3 px-4"
+              <textarea
+                className="appearance-none block w-full bg-gray-700 text-gray-200 border border-gray-500 rounded py-3 px-4"
                 id="grid-courset-name"
-                type="text"
                 placeholder={courseData.description}
                 value={courseDescription}
                 onChange={(e) => {

@@ -119,9 +119,8 @@ const CreateCourse = () => {
             <label className="block uppercase tracking-wide text-gray-900 dark:text-gray-200 text-xs font-bold mb-2">
               Course Description
             </label>
-            <Input
-              className="appearance-none block w-full bg-grey-lighter text-grey-darker border border-red rounded py-3 px-4"
-              type="text"
+            <textarea
+              className="appearance-none block w-full bg-gray-700 text-gray-200 border border-gray-500 rounded py-3 px-4"
               placeholder="Description about the course"
               value={description}
               onChange={(e) => {
