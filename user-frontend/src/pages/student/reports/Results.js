@@ -128,7 +128,7 @@ const Results = () => {
     resultsResponse.map((item) => {
       rows.push([item.course_name, item.exam_name, item.marks]);
     });
-    doc.setFontSize(40);
+    doc.setFontSize(35);
     doc.text("Student - Results", 15, 15);
 
     doc.setFontSize(16);

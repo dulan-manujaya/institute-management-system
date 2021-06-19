@@ -144,7 +144,7 @@ const Attendance = () => {
   }, [attendancePage]);
 
   const generatePDF = () => {
-    const doc = new jsPDF();
+    const doc = new jsPDF({ orientation: "landscape" });
     var col = ["Date", "Course", "Student"];
     var rows = [];
     attendanceResponse.map((item) => {
@@ -154,7 +154,7 @@ const Attendance = () => {
         item.student_name,
       ]);
     });
-    doc.setFontSize(40);
+    doc.setFontSize(35);
     doc.text("Parent - Student Attendance", 15, 15);
 
     doc.setFontSize(16);

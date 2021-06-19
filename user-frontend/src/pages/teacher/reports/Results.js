@@ -150,7 +150,7 @@ const Results = () => {
   }, [resultsPage]);
 
   const generatePDF = () => {
-    const doc = new jsPDF();
+    const doc = new jsPDF({ orientation: "landscape" });
     var col = ["Course", "Exam", "Student", "Marks"];
     var rows = [];
     resultsResponse.map((item) => {
@@ -161,7 +161,7 @@ const Results = () => {
         item.marks,
       ]);
     });
-    doc.setFontSize(40);
+    doc.setFontSize(35);
     doc.text("Teacher - Student Results", 15, 15);
 
     doc.setFontSize(16);
