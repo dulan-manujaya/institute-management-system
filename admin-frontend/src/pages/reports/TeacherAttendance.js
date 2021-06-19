@@ -105,12 +105,12 @@ const TeacherAttendance = () => {
       ]);
     });
     doc.autoTable(col, rows);
-    doc.save("Parent - Student Attendance.pdf");
+    doc.save("Teacher Attendance.pdf");
   };
 
   return (
     <>
-      <PageTitle>Attendance</PageTitle>
+      <PageTitle>Teacher Attendance</PageTitle>
       <div className="grid grid-cols-3 gap-4 mb-4">
         <div>
           <SectionTitle>From Date</SectionTitle>

@@ -152,6 +152,57 @@ class ExamModel {
     }
   };
 
+  getResultsAll = async (params = {}) => {
+    if (params.course_id == "All") {
+      if (params.student_id == "All") {
+        let sql = `SELECT C.course_name, C.course_id, E.exam_name, CONCAT (S.first_name, ' ', S.last_name) as student_name, S.student_id, R.marks 
+        FROM results R 
+        INNER JOIN exams E
+        ON E.exam_id = R.exam_id
+        INNER JOIN courses C
+        ON E.course_id = C.course_id
+        INNER JOIN student S
+        ON S.student_id = R.student_id`;
+        return await query(sql);
+      } else {
+        let sql = `SELECT C.course_name, C.course_id, E.exam_name, CONCAT (S.first_name, ' ', S.last_name) as student_name, S.student_id, R.marks 
+        FROM results R 
+        INNER JOIN exams E
+        ON E.exam_id = R.exam_id
+        INNER JOIN courses C
+        ON E.course_id = C.course_id
+        INNER JOIN student S
+        ON S.student_id = R.student_id
+        WHERE R.student_id = ${params.student_id}`;
+        return await query(sql);
+      }
+    } else {
+      if (params.student_id == "All") {
+        let sql = `SELECT C.course_name, C.course_id, E.exam_name, CONCAT (S.first_name, ' ', S.last_name) as student_name, S.student_id, R.marks 
+        FROM results R 
+        INNER JOIN exams E
+        ON E.exam_id = R.exam_id
+        INNER JOIN courses C
+        ON E.course_id = C.course_id
+        INNER JOIN student S
+        ON S.student_id = R.student_id
+        WHERE E.course_id = ${params.course_id}`;
+        return await query(sql);
+      } else {
+        let sql = `SELECT C.course_name, C.course_id, E.exam_name, CONCAT (S.first_name, ' ', S.last_name) as student_name, S.student_id, R.marks 
+        FROM results R 
+        INNER JOIN exams E
+        ON E.exam_id = R.exam_id
+        INNER JOIN courses C
+        ON E.course_id = C.course_id
+        INNER JOIN student S
+        ON S.student_id = R.student_id
+        WHERE R.student_id = ${params.student_id} AND E.course_id = ${params.course_id}`;
+        return await query(sql);
+      }
+    }
+  };
+
   // Parent
 
   getResultsByParentId = async (params = {}) => {

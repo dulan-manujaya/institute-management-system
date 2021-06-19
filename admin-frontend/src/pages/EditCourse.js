@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { Input } from "@windmill/react-ui";
+import ToastMessage from "../messages/HandleMessages";
+import { ToastContainer } from "react-toastify";
 
 import PageTitle from "../components/Typography/PageTitle";
 import variables from "../common/globalVariables";
@@ -44,6 +46,7 @@ const EditCourse = (props) => {
       )
       .then((response) => {
         console.log(response);
+        ToastMessage(response.data.message);
       })
       .catch((error) => {
         console.log(error);
@@ -120,12 +123,6 @@ const EditCourse = (props) => {
           </div>
           <div className="flex justify-end space-x-4 mt-4">
             <button
-              className="mr-5 bg-red-600 hover:bg-red-800 text-white font-bold py-2 px-6 rounded-md"
-              type="button"
-            >
-              Clear Form
-            </button>
-            <button
               onClick={() => {
                 editCourseDetails();
               }}
@@ -136,6 +133,7 @@ const EditCourse = (props) => {
           </div>
         </div>
       </div>
+      <ToastContainer />
     </>
   );
 };

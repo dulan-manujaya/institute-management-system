@@ -113,16 +113,16 @@ const PaymentsReports = () => {
       rows.push([
         new Date(item.att_date).toLocaleDateString(),
         item.course_name,
-        item.student_name,
+        item.first_name + " " + item.last_name,
       ]);
     });
     doc.autoTable(col, rows);
-    doc.save("Parent - Student Attendance.pdf");
+    doc.save("Payments.pdf");
   };
 
   return (
     <>
-      <PageTitle>Attendance</PageTitle>
+      <PageTitle>Student Payments</PageTitle>
       <div className="grid grid-cols-3 gap-4 mb-4">
         <div>
           <SectionTitle>Students</SectionTitle>
