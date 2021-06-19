@@ -118,7 +118,7 @@ const Results = () => {
       ]);
     });
     doc.autoTable(col, rows);
-    doc.save("Parent - Student Results.pdf");
+    doc.save("Results.pdf");
   };
 
   return (
