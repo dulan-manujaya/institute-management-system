@@ -95,7 +95,7 @@ const TeacherAttendance = () => {
   }, [attendancePage]);
 
   const generatePDF = () => {
-    const doc = new jsPDF();
+    const doc = new jsPDF({ orientation: "landscape" });
     var col = ["Date", "Teacher Name"];
     var rows = [];
     attendanceResponse.map((item) => {
@@ -104,7 +104,13 @@ const TeacherAttendance = () => {
         item.teacher_name,
       ]);
     });
-    doc.autoTable(col, rows);
+    doc.setFontSize(40);
+    doc.text("Teacher Attendance", 15, 15);
+
+    doc.setFontSize(16);
+    doc.text(`From Date : ${fromDate.toISOString().substring(0, 10)}`, 15, 30);
+    doc.text(`To Date : ${toDate.toISOString().substring(0, 10)}`, 15, 40);
+    doc.autoTable(col, rows, { startY: 50 });
     doc.save("Teacher Attendance.pdf");
   };
 
