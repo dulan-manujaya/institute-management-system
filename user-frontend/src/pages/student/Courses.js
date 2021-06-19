@@ -283,12 +283,13 @@ const Courses = () => {
                         <Button
                           size="small"
                           onClick={(e) => {
-                            selectedId(course.course_id);
-                            selectedName(course.course_name);
-                            selectedDescription(course.course_description);
+                            setSelectedId(course.course_id);
+                            setSelectedName(course.course_name);
+                            setSelectedDescription(course.course_description);
+                            openModal()
                           }}
                         >
-                          Enroll
+                          View
                         </Button>
                       </div>
                     </TableCell>
