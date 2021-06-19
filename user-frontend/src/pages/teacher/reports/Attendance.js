@@ -33,7 +33,9 @@ const Attendance = () => {
   const [toDate, setToDate] = useState(new Date());
 
   const [courseId, setCourseId] = useState("All");
+  const [courseName, setCourseName] = useState("All");
   const [studentId, setStudentId] = useState("All");
+  const [studentName, setStudentName] = useState("All");
 
   const resultsPerPage = 10;
 
@@ -146,7 +148,7 @@ const Attendance = () => {
   }, [attendancePage]);
 
   const generatePDF = () => {
-    const doc = new jsPDF();
+    const doc = new jsPDF({ orientation: "landscape" });
     var col = ["Date", "Course", "Student"];
     var rows = [];
     attendanceResponse.map((item) => {
@@ -156,7 +158,19 @@ const Attendance = () => {
         item.student_name,
       ]);
     });
-    doc.autoTable(col, rows);
+    doc.setFontSize(35);
+    doc.text("Teacher - Student Attendance", 15, 15);
+
+    doc.setFontSize(16);
+    doc.text(`From Date : ${fromDate.toISOString().substring(0, 10)}`, 15, 30);
+    doc.text(`To Date : ${toDate.toISOString().substring(0, 10)}`, 15, 40);
+    doc.text(`Course : ${courseName == null ? courseId : courseName}`, 15, 50);
+    doc.text(
+      `Student : ${studentName == null ? studentId : studentName}`,
+      15,
+      60
+    );
+    doc.autoTable(col, rows, { startY: 70 });
     doc.save("Teacher - Student Attendance.pdf");
   };
 
@@ -192,11 +206,20 @@ const Attendance = () => {
             className="appearance-none block w-full bg-grey-lighter text-grey-darker border border-grey-lighter rounded py-3 px-4"
             onChange={(e) => {
               setCourseId(e.target.value);
+              setCourseName(
+                e.target.options[e.target.selectedIndex].getAttribute(
+                  "course_name"
+                )
+              );
             }}
           >
             <option key={"-1"}>All</option>
             {courses.map((enrollment, i) => (
-              <option key={enrollment.course_id} value={enrollment.course_id}>
+              <option
+                key={enrollment.course_id}
+                value={enrollment.course_id}
+                course_name={enrollment.course_name}
+              >
                 {enrollment.course_name}
               </option>
             ))}
@@ -208,11 +231,20 @@ const Attendance = () => {
             className="appearance-none block w-full bg-grey-lighter text-grey-darker border border-grey-lighter rounded py-3 px-4"
             onChange={(e) => {
               setStudentId(e.target.value);
+              setStudentName(
+                e.target.options[e.target.selectedIndex].getAttribute(
+                  "student_name"
+                )
+              );
             }}
           >
             <option key={"-1"}>All</option>
             {students.map((student, i) => (
-              <option key={student.student_id} value={student.student_id}>
+              <option
+                key={student.student_id}
+                value={student.student_id}
+                student_name={student.student_name}
+              >
                 {student.student_name}
               </option>
             ))}

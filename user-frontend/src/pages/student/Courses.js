@@ -9,6 +9,10 @@ import {
   TableFooter,
   TableHeader,
   TableRow,
+  Modal,
+  ModalBody,
+  ModalFooter,
+  ModalHeader,
 } from "@windmill/react-ui";
 import axios from "axios";
 import React, { useContext, useEffect, useState } from "react";
@@ -30,6 +34,20 @@ const Courses = () => {
   const totalCoursesResults = coursesResponse.length;
   const [coursesPage, setCoursesPage] = useState(1);
   const [coursesData, setCoursesData] = useState([]);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [selectedId, setSelectedId] = useState("");
+  const [selectedName, setSelectedName] = useState("");
+  const [selectedDescription, setSelectedDescription] = useState("");
+  const [selectedAmount, setSelectedAmount] = useState("");
+  const [selectedTeacher, setSelectedTeacher] = useState("");
+
+  function openModal() {
+    setIsModalOpen(true);
+  }
+
+  function closeModal() {
+    setIsModalOpen(false);
+  }
 
   const resultsPerPage = 10;
 
@@ -161,6 +179,41 @@ const Courses = () => {
   }, [coursesPage]);
   return (
     <>
+      <Modal isOpen={isModalOpen} onClose={closeModal}>
+        <ModalHeader>Course : {selectedName}</ModalHeader>
+        <ModalBody>
+          Description: <span className="font-bold">{selectedDescription}</span>
+          <br />
+          <br />
+          Teacher: <span className="font-bold">{selectedTeacher}</span>
+          <br />
+          <br />
+          Amount: <span className="font-bold">LKR {selectedAmount}/=</span>
+        </ModalBody>
+        <ModalFooter>
+          <div className="hidden sm:block">
+            <Button layout="outline" onClick={closeModal}>
+              Cancel
+            </Button>
+          </div>
+          <div className="hidden sm:block">
+            <Button
+              className="text-white"
+              onClick={() => {
+                createEnrollment(selectedId);
+                // deleteCourse(selectedId);
+              }}
+            >
+              <span>Enroll</span>
+            </Button>
+          </div>
+          <div className="block w-full sm:hidden">
+            <Button block size="large" layout="outline" onClick={closeModal}>
+              Cancel
+            </Button>
+          </div>
+        </ModalFooter>
+      </Modal>
       <PageTitle>Courses</PageTitle>
       <SectionTitle>Enrolled Courses</SectionTitle>
       <TableContainer className="mb-4">
@@ -168,7 +221,6 @@ const Courses = () => {
           <TableHeader>
             <tr className="text-gray-700 dark:text-gray-200">
               <TableCell>Title</TableCell>
-              <TableCell>Description</TableCell>
               <TableCell>Enrolled Date</TableCell>
               {/* <TableCell>Actions</TableCell> */}
             </tr>
@@ -183,9 +235,6 @@ const Courses = () => {
                   >
                     <TableCell>
                       <span className="text-sm">{enrollment.course_name}</span>
-                    </TableCell>
-                    <TableCell>
-                      <span className="text-sm">{enrollment.description}</span>
                     </TableCell>
                     <TableCell>
                       <span className="text-sm">
@@ -213,7 +262,6 @@ const Courses = () => {
           <TableHeader>
             <tr className="text-gray-700 dark:text-gray-200">
               <TableCell>Title</TableCell>
-              <TableCell>Description</TableCell>
               <TableCell>Tutor</TableCell>
               <TableCell>Actions</TableCell>
             </tr>
@@ -230,18 +278,22 @@ const Courses = () => {
                       <span className="text-sm">{course.course_name}</span>
                     </TableCell>
                     <TableCell>
-                      <span className="text-sm">{course.description}</span>
-                    </TableCell>
-                    <TableCell>
                       <span className="text-sm">{course.teacher_name}</span>
                     </TableCell>
                     <TableCell>
                       <div className="flex items-center space-x-4">
                         <Button
                           size="small"
-                          onClick={(e) => createEnrollment(course.course_id)}
+                          onClick={(e) => {
+                            setSelectedId(course.course_id);
+                            setSelectedName(course.course_name);
+                            setSelectedDescription(course.description);
+                            setSelectedAmount(course.amount);
+                            setSelectedTeacher(course.teacher_name);
+                            openModal();
+                          }}
                         >
-                          Enroll
+                          View
                         </Button>
                       </div>
                     </TableCell>
