@@ -38,6 +38,8 @@ const Courses = () => {
   const [selectedId, setSelectedId] = useState("");
   const [selectedName, setSelectedName] = useState("");
   const [selectedDescription, setSelectedDescription] = useState("");
+  const [selectedAmount, setSelectedAmount] = useState("");
+  const [selectedTeacher, setSelectedTeacher] = useState("");
 
   function openModal() {
     setIsModalOpen(true);
@@ -179,7 +181,15 @@ const Courses = () => {
     <>
       <Modal isOpen={isModalOpen} onClose={closeModal}>
         <ModalHeader>Course : {selectedName}</ModalHeader>
-        <ModalBody>{selectedDescription}</ModalBody>
+        <ModalBody>
+          Description: <span className="font-bold">{selectedDescription}</span>
+          <br />
+          <br />
+          Teacher: <span className="font-bold">{selectedTeacher}</span>
+          <br />
+          <br />
+          Amount: <span className="font-bold">LKR {selectedAmount}/=</span>
+        </ModalBody>
         <ModalFooter>
           <div className="hidden sm:block">
             <Button layout="outline" onClick={closeModal}>
@@ -285,8 +295,10 @@ const Courses = () => {
                           onClick={(e) => {
                             setSelectedId(course.course_id);
                             setSelectedName(course.course_name);
-                            setSelectedDescription(course.course_description);
-                            openModal()
+                            setSelectedDescription(course.description);
+                            setSelectedAmount(course.amount);
+                            setSelectedTeacher(course.teacher_name);
+                            openModal();
                           }}
                         >
                           View
