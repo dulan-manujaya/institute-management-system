@@ -9,6 +9,10 @@ import {
   TableFooter,
   TableHeader,
   TableRow,
+  Modal,
+  ModalBody,
+  ModalFooter,
+  ModalHeader,
 } from "@windmill/react-ui";
 import axios from "axios";
 import React, { useContext, useEffect, useState } from "react";
@@ -30,6 +34,18 @@ const Courses = () => {
   const totalCoursesResults = coursesResponse.length;
   const [coursesPage, setCoursesPage] = useState(1);
   const [coursesData, setCoursesData] = useState([]);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [selectedId, setSelectedId] = useState("");
+  const [selectedName, setSelectedName] = useState("");
+  const [selectedDescription, setSelectedDescription] = useState("");
+
+  function openModal() {
+    setIsModalOpen(true);
+  }
+
+  function closeModal() {
+    setIsModalOpen(false);
+  }
 
   const resultsPerPage = 10;
 
@@ -161,6 +177,33 @@ const Courses = () => {
   }, [coursesPage]);
   return (
     <>
+      <Modal isOpen={isModalOpen} onClose={closeModal}>
+        <ModalHeader>Course : {selectedName}</ModalHeader>
+        <ModalBody>{selectedDescription}</ModalBody>
+        <ModalFooter>
+          <div className="hidden sm:block">
+            <Button layout="outline" onClick={closeModal}>
+              Cancel
+            </Button>
+          </div>
+          <div className="hidden sm:block">
+            <Button
+              className="text-white"
+              onClick={() => {
+                createEnrollment(selectedId);
+                // deleteCourse(selectedId);
+              }}
+            >
+              <span>Enroll</span>
+            </Button>
+          </div>
+          <div className="block w-full sm:hidden">
+            <Button block size="large" layout="outline" onClick={closeModal}>
+              Cancel
+            </Button>
+          </div>
+        </ModalFooter>
+      </Modal>
       <PageTitle>Courses</PageTitle>
       <SectionTitle>Enrolled Courses</SectionTitle>
       <TableContainer className="mb-4">
@@ -239,7 +282,11 @@ const Courses = () => {
                       <div className="flex items-center space-x-4">
                         <Button
                           size="small"
-                          onClick={(e) => createEnrollment(course.course_id)}
+                          onClick={(e) => {
+                            selectedId(course.course_id);
+                            selectedName(course.course_name);
+                            selectedDescription(course.course_description);
+                          }}
                         >
                           Enroll
                         </Button>
