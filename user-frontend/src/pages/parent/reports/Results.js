@@ -30,7 +30,9 @@ const Results = () => {
 
   const [marksFilter, setMarksFilter] = useState("All");
   const [courseId, setCourseId] = useState("All");
+  const [courseName, setCourseName] = useState("All");
   const [studentId, setStudentId] = useState("All");
+  const [studentName, setStudentName] = useState("All");
 
   const resultsPerPage = 10;
 
@@ -159,7 +161,18 @@ const Results = () => {
         item.marks,
       ]);
     });
-    doc.autoTable(col, rows);
+    doc.setFontSize(40);
+    doc.text("Parent - Student Results", 15, 15);
+
+    doc.setFontSize(16);
+    doc.text(`Mark Range : ${marksFilter}`, 15, 30);
+    doc.text(`Course : ${courseName == null ? courseId : courseName}`, 15, 40);
+    doc.text(
+      `Student : ${studentName == null ? studentId : studentName}`,
+      15,
+      50
+    );
+    doc.autoTable(col, rows, { startY: 60 });
     doc.save("Parent - Student Results.pdf");
   };
 
@@ -173,6 +186,11 @@ const Results = () => {
             className="appearance-none block w-full bg-grey-lighter text-grey-darker border border-grey-lighter rounded py-3 px-4"
             onChange={(e) => {
               setCourseId(e.target.value);
+              setCourseName(
+                e.target.options[e.target.selectedIndex].getAttribute(
+                  "course_name"
+                )
+              );
             }}
           >
             <option key={"-1"}>All</option>
@@ -180,6 +198,7 @@ const Results = () => {
               <option
                 key={enrollment.enrollment_id}
                 value={enrollment.course_id}
+                course_name={enrollment.course_name}
               >
                 {enrollment.course_name}
               </option>
@@ -192,11 +211,20 @@ const Results = () => {
             className="appearance-none block w-full bg-grey-lighter text-grey-darker border border-grey-lighter rounded py-3 px-4"
             onChange={(e) => {
               setStudentId(e.target.value);
+              setStudentName(
+                e.target.options[e.target.selectedIndex].getAttribute(
+                  "student_name"
+                )
+              );
             }}
           >
             <option key={"-1"}>All</option>
             {students.map((student, i) => (
-              <option key={student.student_id} value={student.student_id}>
+              <option
+                key={student.student_id}
+                value={student.student_id}
+                student_name={student.student_name}
+              >
                 {student.student_name}
               </option>
             ))}
