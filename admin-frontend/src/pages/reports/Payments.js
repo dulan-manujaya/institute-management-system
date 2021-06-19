@@ -28,11 +28,8 @@ const PaymentsReports = () => {
   const [paymentsPage, setAttendancePage] = useState(1);
   const [attendanceData, setAttendanceData] = useState([]);
 
-  // const [fromDate, setFromDate] = useState(new Date("10/23/2015"));
-  // const [toDate, setToDate] = useState(new Date());
-
-  const [courseId, setCourseId] = useState("All");
   const [studentId, setStudentId] = useState("All");
+  const [studentName, setStudentName] = useState("All");
 
   const resultsPerPage = 10;
 
@@ -106,7 +103,7 @@ const PaymentsReports = () => {
   }, [paymentsPage]);
 
   const generatePDF = () => {
-    const doc = new jsPDF();
+    const doc = new jsPDF({ orientation: "landscape" });
     var col = ["Date", "Course", "Student"];
     var rows = [];
     paymentsResponse.map((item) => {
@@ -116,8 +113,17 @@ const PaymentsReports = () => {
         item.first_name + " " + item.last_name,
       ]);
     });
-    doc.autoTable(col, rows);
-    doc.save("Payments.pdf");
+    doc.setFontSize(40);
+    doc.text("Student Payments", 15, 15);
+
+    doc.setFontSize(16);
+    doc.text(
+      `Student : ${studentName == null ? studentId : studentName}`,
+      15,
+      30
+    );
+    doc.autoTable(col, rows, { startY: 40 });
+    doc.save("Student Payments.pdf");
   };
 
   return (
@@ -130,11 +136,20 @@ const PaymentsReports = () => {
             className="appearance-none block w-full bg-grey-lighter text-grey-darker border border-grey-lighter rounded py-3 px-4"
             onChange={(e) => {
               setStudentId(e.target.value);
+              setStudentName(
+                e.target.options[e.target.selectedIndex].getAttribute(
+                  "student_name"
+                )
+              );
             }}
           >
             <option key={"-1"}>All</option>
             {students.map((student, i) => (
-              <option key={student.student_id} value={student.student_id}>
+              <option
+                key={student.student_id}
+                value={student.student_id}
+                student_name={`${student.first_name} ${student.last_name}`}
+              >
                 {student.first_name} {student.last_name}
               </option>
             ))}
