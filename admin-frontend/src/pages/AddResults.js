@@ -70,6 +70,7 @@ const AddResults = () => {
       )
       .then((response) => {
         console.log(response);
+        ToastMessage(response.data);
       })
       .catch((error) => {
         console.error(error);
