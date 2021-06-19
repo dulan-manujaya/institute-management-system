@@ -211,7 +211,6 @@ const Courses = () => {
           <TableHeader>
             <tr className="text-gray-700 dark:text-gray-200">
               <TableCell>Title</TableCell>
-              <TableCell>Description</TableCell>
               <TableCell>Enrolled Date</TableCell>
               {/* <TableCell>Actions</TableCell> */}
             </tr>
@@ -226,9 +225,6 @@ const Courses = () => {
                   >
                     <TableCell>
                       <span className="text-sm">{enrollment.course_name}</span>
-                    </TableCell>
-                    <TableCell>
-                      <span className="text-sm">{enrollment.description}</span>
                     </TableCell>
                     <TableCell>
                       <span className="text-sm">
@@ -256,7 +252,6 @@ const Courses = () => {
           <TableHeader>
             <tr className="text-gray-700 dark:text-gray-200">
               <TableCell>Title</TableCell>
-              <TableCell>Description</TableCell>
               <TableCell>Tutor</TableCell>
               <TableCell>Actions</TableCell>
             </tr>
@@ -273,9 +268,6 @@ const Courses = () => {
                       <span className="text-sm">{course.course_name}</span>
                     </TableCell>
                     <TableCell>
-                      <span className="text-sm">{course.description}</span>
-                    </TableCell>
-                    <TableCell>
                       <span className="text-sm">{course.teacher_name}</span>
                     </TableCell>
                     <TableCell>
@@ -286,7 +278,7 @@ const Courses = () => {
                             setSelectedId(course.course_id);
                             setSelectedName(course.course_name);
                             setSelectedDescription(course.course_description);
-                            openModal()
+                            openModal();
                           }}
                         >
                           View
