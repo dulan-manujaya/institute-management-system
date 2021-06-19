@@ -44,14 +44,14 @@ const Header = () => {
     history.push("/login");
   };
 
-  // useEffect(() => {
-  //   if (loggedInUser === null || loggedInUser === "") {
-  //     const token = sessionStorage.getItem("adminAccessToken");
-  //     if (!token) {
-  //       history.push("/login");
-  //     }
-  //   }
-  // }, [loggedInUser]);
+  useEffect(() => {
+    if (loggedInUser === null || loggedInUser === "") {
+      const token = sessionStorage.getItem("adminAccessToken");
+      if (!token) {
+        history.push("/login");
+      }
+    }
+  }, []);
 
   return (
     <header className="z-40 py-4 bg-white shadow-bottom dark:bg-gray-800">
