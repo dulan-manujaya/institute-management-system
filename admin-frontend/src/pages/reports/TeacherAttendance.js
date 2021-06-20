@@ -110,7 +110,8 @@ const TeacherAttendance = () => {
     doc.setFontSize(16);
     doc.text(`From Date : ${fromDate.toISOString().substring(0, 10)}`, 15, 30);
     doc.text(`To Date : ${toDate.toISOString().substring(0, 10)}`, 15, 40);
-    doc.autoTable(col, rows, { startY: 50 });
+    doc.text(`Total Days : ${attendanceResponse.length}`, 15, 50);
+    doc.autoTable(col, rows, { startY: 60 });
     doc.save("Teacher Attendance.pdf");
   };
 
