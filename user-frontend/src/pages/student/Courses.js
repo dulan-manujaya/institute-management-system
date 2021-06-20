@@ -13,6 +13,7 @@ import {
   ModalBody,
   ModalFooter,
   ModalHeader,
+  Label,
 } from "@windmill/react-ui";
 import axios from "axios";
 import React, { useContext, useEffect, useState } from "react";
@@ -182,7 +183,10 @@ const Courses = () => {
       <Modal isOpen={isModalOpen} onClose={closeModal}>
         <ModalHeader>Course : {selectedName}</ModalHeader>
         <ModalBody>
-          Description: <span className="font-bold">{selectedDescription}</span>
+          <div className="block overflow-y overflow-x-hidden break-words">
+            Description:
+            <Label className="font-bold">{selectedDescription}</Label>
+          </div>
           <br />
           <br />
           Teacher: <span className="font-bold">{selectedTeacher}</span>
