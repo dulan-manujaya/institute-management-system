@@ -183,10 +183,10 @@ const Courses = () => {
       <Modal isOpen={isModalOpen} onClose={closeModal}>
         <ModalHeader>Course : {selectedName}</ModalHeader>
         <ModalBody>
-          Description:{" "}
-          <span className="font-bold">
-            <Label className="w-8">{selectedDescription}</Label>
-          </span>
+          <div className="block overflow-y overflow-x-hidden break-words">
+            Description:
+            <Label className="font-bold">{selectedDescription}</Label>
+          </div>
           <br />
           <br />
           Teacher: <span className="font-bold">{selectedTeacher}</span>
