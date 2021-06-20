@@ -109,13 +109,15 @@ const PaymentsReports = () => {
     }
 
     const doc = new jsPDF({ orientation: "landscape" });
-    var col = ["Date", "Course", "Student"];
+    var col = ["Date", "Course", "Student", "Paid For", "Amount"];
     var rows = [];
     paymentsResponse.map((item) => {
       rows.push([
         new Date(item.paid_date).toLocaleDateString(),
         item.course_name,
         item.first_name + " " + item.last_name,
+        `${item.paid_for_month}/${item.paid_for_year}`,
+        `Rs. ${item.amount}`,
       ]);
     });
     doc.setFontSize(40);
@@ -173,6 +175,7 @@ const PaymentsReports = () => {
               <TableCell>Course</TableCell>
               <TableCell>Student</TableCell>
               <TableCell>Paid For</TableCell>
+              <TableCell>Amount</TableCell>
             </tr>
           </TableHeader>
           <TableBody>
@@ -199,6 +202,11 @@ const PaymentsReports = () => {
                     <TableCell>
                       <span className="text-sm">
                         {payments.paid_for_month}/{payments.paid_for_year}
+                      </span>
+                    </TableCell>
+                    <TableCell>
+                      <span className="text-sm">
+                        {`Rs. ${payments.amount}`}
                       </span>
                     </TableCell>
                   </TableRow>
