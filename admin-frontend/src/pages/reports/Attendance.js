@@ -134,7 +134,8 @@ const Attendance = () => {
       15,
       60
     );
-    doc.autoTable(col, rows, { startY: 70 });
+    doc.text(`Total Days : ${attendanceResponse.length}`, 15, 70);
+    doc.autoTable(col, rows, { startY: 80 });
     doc.save("Student Attendance.pdf");
   };
 

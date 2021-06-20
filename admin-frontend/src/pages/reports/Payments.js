@@ -103,12 +103,17 @@ const PaymentsReports = () => {
   }, [paymentsPage]);
 
   const generatePDF = () => {
+    var sum = 0;
+    for (var i = 0; i < paymentsResponse.length; i++) {
+      sum += parseInt(paymentsResponse[i].amount, 10); //don't forget to add the base
+    }
+
     const doc = new jsPDF({ orientation: "landscape" });
     var col = ["Date", "Course", "Student"];
     var rows = [];
     paymentsResponse.map((item) => {
       rows.push([
-        new Date(item.att_date).toLocaleDateString(),
+        new Date(item.paid_date).toLocaleDateString(),
         item.course_name,
         item.first_name + " " + item.last_name,
       ]);
@@ -122,7 +127,8 @@ const PaymentsReports = () => {
       15,
       30
     );
-    doc.autoTable(col, rows, { startY: 40 });
+    doc.text(`Total Amount : ${sum}`, 15, 40);
+    doc.autoTable(col, rows, { startY: 50 });
     doc.save("Student Payments.pdf");
   };
 
