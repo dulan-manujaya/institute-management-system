@@ -84,40 +84,6 @@ function Students() {
       });
   };
 
-  var numberOfAjaxCAllPending = 0;
-
-  // Add a request interceptor
-  axios.interceptors.request.use(
-    function (config) {
-      numberOfAjaxCAllPending++;
-      // show loader
-      return config;
-    },
-    function (error) {
-      return Promise.reject(error);
-    }
-  );
-
-  // Add a response interceptor
-  axios.interceptors.response.use(
-    function (response) {
-      numberOfAjaxCAllPending--;
-      console.log("------------  Ajax pending", numberOfAjaxCAllPending);
-
-      if (numberOfAjaxCAllPending === 0) {
-        //hide loader
-      }
-      return response;
-    },
-    function (error) {
-      numberOfAjaxCAllPending--;
-      if (numberOfAjaxCAllPending === 0) {
-        //hide loader
-      }
-      return Promise.reject(error);
-    }
-  );
-
   // const getStudentsByCourse = async (id) => {
   //   try {
   //     const students = await axios.get(
@@ -205,7 +171,7 @@ function Students() {
                 ))}
           </Select>
         </div> */}
-        <div className="mb-4">
+        {/* <div className="mb-4">
           <Button
             onClick={() => {
               clearFilters();
@@ -214,7 +180,7 @@ function Students() {
           >
             Clear Filters / Refresh List
           </Button>
-        </div>
+        </div> */}
       </div>
       {!data ? (
         <button type="button" className="bg-rose-600 ..." disabled>
@@ -277,6 +243,7 @@ function Students() {
                       onClick={() => {
                         setSelectedId(user.student_id);
                         setSelectedName(user.first_name);
+                        setIsModalOpen(true);
                       }}
                     >
                       <TrashIcon className="w-5 h-5" aria-hidden="true" />
