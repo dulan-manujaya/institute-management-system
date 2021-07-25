@@ -157,6 +157,40 @@ class ExamController {
 
     res.status(201).send("Exam Answer Submission was created!");
   };
+
+  // Parent
+
+  getByParentId = async (req, res, next) => {
+    let examList = await ExamModel.getExamsByParentId({
+      guardian_id: req.params.parentId,
+    });
+    if (!examList.length) {
+      throw new HttpException(204, "Exams not found");
+    } else {
+      examList = examList.map((exam) => {
+        return exam;
+      });
+
+      res.send(examList);
+    }
+  };
+
+  // Teacher
+
+  getByTeacherId = async (req, res, next) => {
+    let examList = await ExamModel.getExamsByTeacherId({
+      teacher_id: req.params.teacherId,
+    });
+    if (!examList.length) {
+      throw new HttpException(204, "Exams not found");
+    } else {
+      examList = examList.map((exam) => {
+        return exam;
+      });
+
+      res.send(examList);
+    }
+  };
 }
 
 module.exports = new ExamController();

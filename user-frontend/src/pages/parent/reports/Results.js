@@ -22,6 +22,7 @@ const Results = () => {
   const [parentId, setParentId] = useState("0");
   const [courses, setCourses] = useState([]);
   const [students, setStudents] = useState([]);
+  const [exams, setExams] = useState([]);
 
   const [resultsResponse, setResultResponse] = useState([]);
   const totalResults = resultsResponse.length;
@@ -33,6 +34,8 @@ const Results = () => {
   const [courseName, setCourseName] = useState("All");
   const [studentId, setStudentId] = useState("All");
   const [studentName, setStudentName] = useState("All");
+  const [examId, setExamId] = useState("All");
+  const [examName, setExamName] = useState("All");
 
   const resultsPerPage = 10;
 
@@ -75,6 +78,11 @@ const Results = () => {
         if (marksFilter == ">75") {
           results.data = results.data.filter((result) => result.marks >= 75);
         }
+      }
+      if (examId != "All") {
+        results.data = results.data.filter(
+          (result) => result.exam_id == examId
+        );
       }
       setResultsData(
         results.data.slice(
@@ -134,10 +142,34 @@ const Results = () => {
     setStudents(students.data);
   };
 
+  const getAllExams = async () => {
+    const token = sessionStorage.getItem("parentAccessToken");
+    const currParent = await axios.get(
+      "http://localhost:4000/api/v1/parents/whoami",
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+    const pid = currParent.data.guardian_id;
+    setParentId(pid);
+    const exams = await axios.get(
+      `${variables.apiServer}/api/v1/exams/parent/${pid}`,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+    setExams(exams.data);
+  };
+
   useEffect(() => {
     getAllResults();
     getAllCourses();
     getAllStudents();
+    getAllExams();
   }, [resultsPage]);
 
   useEffect(() => {
@@ -178,9 +210,10 @@ const Results = () => {
       15,
       50
     );
-    doc.text(`Average Mark : ${avg}`, 15, 60);
+    doc.text(`Exam : ${examName == null ? examId : examName}`, 15, 60);
+    doc.text(`Average Mark : ${avg}`, 15, 70);
     doc.autoTable(col, rows, {
-      startY: 70,
+      startY: 80,
       didDrawPage: function (data) {
         doc.setFontSize(10);
         var pageSize = doc.internal.pageSize;
@@ -249,6 +282,33 @@ const Results = () => {
                 {student.student_name}
               </option>
             ))}
+          </Select>
+        </div>
+        <div>
+          <SectionTitle>Exams</SectionTitle>
+          <Select
+            className="appearance-none block w-full bg-grey-lighter text-grey-darker border border-grey-lighter rounded py-3 px-4"
+            onChange={(e) => {
+              setExamId(e.target.value);
+              setExamName(
+                e.target.options[e.target.selectedIndex].getAttribute(
+                  "exam_name"
+                )
+              );
+            }}
+          >
+            <option key={"-1"}>All</option>
+            {!exams
+              ? null
+              : exams.map((exam, i) => (
+                  <option
+                    key={exam.exam_id}
+                    value={exam.exam_id}
+                    exam_name={exam.exam_name}
+                  >
+                    {exam.exam_name}
+                  </option>
+                ))}
           </Select>
         </div>
         <div>
