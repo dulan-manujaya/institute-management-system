@@ -122,7 +122,7 @@ const Results = () => {
 
   const generatePDF = () => {
     console.log(examName);
-    console.log(examId)
+    console.log(examId);
     var sum = 0;
     for (var i = 0; i < resultsResponse.length; i++) {
       sum += parseInt(resultsResponse[i].marks, 10); //don't forget to add the base
@@ -143,7 +143,7 @@ const Results = () => {
     doc.setFontSize(40);
     doc.text("Student Results", 15, 15);
 
-    doc.setFontSize(16);
+    doc.setFontSize(15);
     doc.text(`Mark Range : ${marksFilter}`, 15, 30);
     doc.text(`Course : ${courseName == null ? courseId : courseName}`, 15, 40);
     doc.text(
@@ -152,9 +152,24 @@ const Results = () => {
       50
     );
     doc.text(`Exam : ${examName == null ? examId : examName}`, 15, 60);
-    doc.text(`Average Mark : ${avg}`, 15, 70);
+    doc.text(
+      `No. of Students : ${studentName == "All" ? students.length : 1}`,
+      15,
+      70
+    );
+    doc.text(
+      `Highest Mark : ${Math.max.apply(
+        Math,
+        resultsResponse.map((result) => {
+          return result.marks;
+        })
+      )}`,
+      15,
+      80
+    );
+    doc.text(`Average Mark : ${avg}`, 15, 90);
     doc.autoTable(col, rows, {
-      startY: 80,
+      startY: 100,
       didDrawPage: function (data) {
         doc.setFontSize(10);
         var pageSize = doc.internal.pageSize;
