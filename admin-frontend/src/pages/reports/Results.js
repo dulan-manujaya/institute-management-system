@@ -137,7 +137,21 @@ const Results = () => {
       50
     );
     doc.text(`Average Mark : ${avg}`, 15, 60);
-    doc.autoTable(col, rows, { startY: 70 });
+    doc.autoTable(col, rows, {
+      startY: 70,
+      didDrawPage: function (data) {
+        doc.setFontSize(10);
+        var pageSize = doc.internal.pageSize;
+        var pageHeight = pageSize.height
+          ? pageSize.height
+          : pageSize.getHeight();
+        doc.text(
+          `Benchmark Education Institute - Matara`,
+          220,
+          pageHeight - 10
+        );
+      },
+    });
     doc.save("Student Results.pdf");
   };
 
