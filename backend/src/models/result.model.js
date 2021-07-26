@@ -78,7 +78,7 @@ class ExamModel {
 
   getResultsByStudentId = async (params = {}) => {
     if (params.course_id == "All") {
-      let sql = `SELECT C.course_name, C.course_id, E.exam_name, R.marks 
+      let sql = `SELECT C.course_name, C.course_id, E.exam_name, E.exam_id, R.marks 
       FROM results R 
       INNER JOIN exams E
       ON E.exam_id = R.exam_id
@@ -87,7 +87,7 @@ class ExamModel {
       WHERE R.student_id = ${params.student_id}`;
       return await query(sql);
     } else {
-      let sql = `SELECT C.course_name, C.course_id, E.exam_name, R.marks 
+      let sql = `SELECT C.course_name, C.course_id, E.exam_name, E.exam_id, R.marks 
       FROM results R 
       INNER JOIN exams E
       ON E.exam_id = R.exam_id
@@ -103,7 +103,7 @@ class ExamModel {
   getResultsByTeacherId = async (params = {}) => {
     if (params.course_id == "All") {
       if (params.student_id == "All") {
-        let sql = `SELECT C.course_name, C.course_id, E.exam_name, CONCAT (S.first_name, ' ', S.last_name) as student_name, S.student_id, R.marks 
+        let sql = `SELECT C.course_name, C.course_id, E.exam_name, E.exam_id, CONCAT (S.first_name, ' ', S.last_name) as student_name, S.student_id, R.marks 
         FROM results R 
         INNER JOIN exams E
         ON E.exam_id = R.exam_id
@@ -114,7 +114,7 @@ class ExamModel {
         WHERE C.teacher_id = ${params.teacher_id} `;
         return await query(sql);
       } else {
-        let sql = `SELECT C.course_name, C.course_id, E.exam_name, CONCAT (S.first_name, ' ', S.last_name) as student_name, S.student_id, R.marks 
+        let sql = `SELECT C.course_name, C.course_id, E.exam_name, E.exam_id, CONCAT (S.first_name, ' ', S.last_name) as student_name, S.student_id, R.marks 
         FROM results R 
         INNER JOIN exams E
         ON E.exam_id = R.exam_id
@@ -127,7 +127,7 @@ class ExamModel {
       }
     } else {
       if (params.student_id == "All") {
-        let sql = `SELECT C.course_name, C.course_id, E.exam_name, CONCAT (S.first_name, ' ', S.last_name) as student_name, S.student_id, R.marks 
+        let sql = `SELECT C.course_name, C.course_id, E.exam_name, E.exam_id, CONCAT (S.first_name, ' ', S.last_name) as student_name, S.student_id, R.marks 
         FROM results R 
         INNER JOIN exams E
         ON E.exam_id = R.exam_id
@@ -138,7 +138,7 @@ class ExamModel {
         WHERE C.teacher_id = ${params.teacher_id} AND E.course_id = ${params.course_id}`;
         return await query(sql);
       } else {
-        let sql = `SELECT C.course_name, C.course_id, E.exam_name, CONCAT (S.first_name, ' ', S.last_name) as student_name, S.student_id, R.marks 
+        let sql = `SELECT C.course_name, C.course_id, E.exam_name, E.exam_id, CONCAT (S.first_name, ' ', S.last_name) as student_name, S.student_id, R.marks 
         FROM results R 
         INNER JOIN exams E
         ON E.exam_id = R.exam_id
@@ -155,7 +155,7 @@ class ExamModel {
   getResultsAll = async (params = {}) => {
     if (params.course_id == "All") {
       if (params.student_id == "All") {
-        let sql = `SELECT C.course_name, C.course_id, E.exam_name, CONCAT (S.first_name, ' ', S.last_name) as student_name, S.student_id, R.marks 
+        let sql = `SELECT C.course_name, C.course_id, E.exam_name, E.exam_id, CONCAT (S.first_name, ' ', S.last_name) as student_name, S.student_id, R.marks 
         FROM results R 
         INNER JOIN exams E
         ON E.exam_id = R.exam_id
@@ -165,7 +165,7 @@ class ExamModel {
         ON S.student_id = R.student_id`;
         return await query(sql);
       } else {
-        let sql = `SELECT C.course_name, C.course_id, E.exam_name, CONCAT (S.first_name, ' ', S.last_name) as student_name, S.student_id, R.marks 
+        let sql = `SELECT C.course_name, C.course_id, E.exam_name, E.exam_id, CONCAT (S.first_name, ' ', S.last_name) as student_name, S.student_id, R.marks 
         FROM results R 
         INNER JOIN exams E
         ON E.exam_id = R.exam_id
@@ -178,7 +178,7 @@ class ExamModel {
       }
     } else {
       if (params.student_id == "All") {
-        let sql = `SELECT C.course_name, C.course_id, E.exam_name, CONCAT (S.first_name, ' ', S.last_name) as student_name, S.student_id, R.marks 
+        let sql = `SELECT C.course_name, C.course_id, E.exam_name, E.exam_id, CONCAT (S.first_name, ' ', S.last_name) as student_name, S.student_id, R.marks 
         FROM results R 
         INNER JOIN exams E
         ON E.exam_id = R.exam_id
@@ -189,7 +189,7 @@ class ExamModel {
         WHERE E.course_id = ${params.course_id}`;
         return await query(sql);
       } else {
-        let sql = `SELECT C.course_name, C.course_id, E.exam_name, CONCAT (S.first_name, ' ', S.last_name) as student_name, S.student_id, R.marks 
+        let sql = `SELECT C.course_name, C.course_id, E.exam_name, E.exam_id, CONCAT (S.first_name, ' ', S.last_name) as student_name, S.student_id, R.marks 
         FROM results R 
         INNER JOIN exams E
         ON E.exam_id = R.exam_id
@@ -208,7 +208,7 @@ class ExamModel {
   getResultsByParentId = async (params = {}) => {
     if (params.course_id == "All") {
       if (params.student_id == "All") {
-        let sql = `SELECT C.course_name, C.course_id, E.exam_name, CONCAT (S.first_name, ' ', S.last_name) as student_name, S.student_id, R.marks 
+        let sql = `SELECT C.course_name, C.course_id, E.exam_name, E.exam_id, CONCAT (S.first_name, ' ', S.last_name) as student_name, S.student_id, R.marks 
         FROM results R 
         INNER JOIN exams E
         ON E.exam_id = R.exam_id
@@ -219,7 +219,7 @@ class ExamModel {
         WHERE S.guardian_id = ${params.guardian_id} `;
         return await query(sql);
       } else {
-        let sql = `SELECT C.course_name, C.course_id, E.exam_name, CONCAT (S.first_name, ' ', S.last_name) as student_name, S.student_id, R.marks 
+        let sql = `SELECT C.course_name, C.course_id, E.exam_name, E.exam_id, CONCAT (S.first_name, ' ', S.last_name) as student_name, S.student_id, R.marks 
         FROM results R 
         INNER JOIN exams E
         ON E.exam_id = R.exam_id
@@ -232,7 +232,7 @@ class ExamModel {
       }
     } else {
       if (params.student_id == "All") {
-        let sql = `SELECT C.course_name, C.course_id, E.exam_name, CONCAT (S.first_name, ' ', S.last_name) as student_name, S.student_id, R.marks 
+        let sql = `SELECT C.course_name, C.course_id, E.exam_name, E.exam_id, CONCAT (S.first_name, ' ', S.last_name) as student_name, S.student_id, R.marks 
         FROM results R 
         INNER JOIN exams E
         ON E.exam_id = R.exam_id
@@ -243,7 +243,7 @@ class ExamModel {
         WHERE S.guardian_id = ${params.guardian_id} AND E.course_id = ${params.course_id} `;
         return await query(sql);
       } else {
-        let sql = `SELECT C.course_name, C.course_id, E.exam_name, CONCAT (S.first_name, ' ', S.last_name) as student_name, S.student_id, R.marks 
+        let sql = `SELECT C.course_name, C.course_id, E.exam_name, E.exam_id, CONCAT (S.first_name, ' ', S.last_name) as student_name, S.student_id, R.marks 
         FROM results R 
         INNER JOIN exams E
         ON E.exam_id = R.exam_id

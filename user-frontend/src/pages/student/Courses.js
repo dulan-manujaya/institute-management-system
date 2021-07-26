@@ -192,7 +192,7 @@ const Courses = () => {
           Teacher: <span className="font-bold">{selectedTeacher}</span>
           <br />
           <br />
-          Amount: <span className="font-bold">LKR {selectedAmount}/=</span>
+          Monthly Fee: <span className="font-bold">LKR {selectedAmount}/=</span>
         </ModalBody>
         <ModalFooter>
           <div className="hidden sm:block">

@@ -21,6 +21,7 @@ import "jspdf-autotable";
 const Results = () => {
   const [courses, setCourses] = useState([]);
   const [students, setStudents] = useState([]);
+  const [exams, setExams] = useState([]);
 
   const [resultsResponse, setResultResponse] = useState([]);
   const totalResults = resultsResponse.length;
@@ -32,6 +33,8 @@ const Results = () => {
   const [courseName, setCourseName] = useState("All");
   const [studentId, setStudentId] = useState("All");
   const [studentName, setStudentName] = useState("All");
+  const [examId, setExamId] = useState("All");
+  const [examName, setExamName] = useState("All");
 
   const resultsPerPage = 10;
 
@@ -59,7 +62,11 @@ const Results = () => {
           results.data = results.data.filter((result) => result.marks >= 75);
         }
       }
-      console.log(results);
+      if (examId != "All") {
+        results.data = results.data.filter(
+          (result) => result.exam_id == examId
+        );
+      }
       setResultsData(
         results.data.slice(
           (resultsPage - 1) * resultsPerPage,
@@ -92,10 +99,16 @@ const Results = () => {
     setStudents(students.data);
   };
 
+  const getAllExams = async () => {
+    const exams = await axios.get(`${variables.apiServer}/api/v1/exams/`, {});
+    setExams(exams.data);
+  };
+
   useEffect(() => {
     getAllResults();
     getAllCourses();
     getAllStudents();
+    getAllExams();
   }, [resultsPage]);
 
   useEffect(() => {
@@ -108,6 +121,8 @@ const Results = () => {
   }, [resultsPage]);
 
   const generatePDF = () => {
+    console.log(examName);
+    console.log(examId);
     var sum = 0;
     for (var i = 0; i < resultsResponse.length; i++) {
       sum += parseInt(resultsResponse[i].marks, 10); //don't forget to add the base
@@ -128,7 +143,7 @@ const Results = () => {
     doc.setFontSize(40);
     doc.text("Student Results", 15, 15);
 
-    doc.setFontSize(16);
+    doc.setFontSize(15);
     doc.text(`Mark Range : ${marksFilter}`, 15, 30);
     doc.text(`Course : ${courseName == null ? courseId : courseName}`, 15, 40);
     doc.text(
@@ -136,8 +151,38 @@ const Results = () => {
       15,
       50
     );
-    doc.text(`Average Mark : ${avg}`, 15, 60);
-    doc.autoTable(col, rows, { startY: 70 });
+    doc.text(`Exam : ${examName == null ? examId : examName}`, 15, 60);
+    doc.text(
+      `No. of Students : ${studentName == "All" ? students.length : 1}`,
+      15,
+      70
+    );
+    doc.text(
+      `Highest Mark : ${Math.max.apply(
+        Math,
+        resultsResponse.map((result) => {
+          return result.marks;
+        })
+      )}`,
+      15,
+      80
+    );
+    doc.text(`Average Mark : ${avg}`, 15, 90);
+    doc.autoTable(col, rows, {
+      startY: 100,
+      didDrawPage: function (data) {
+        doc.setFontSize(10);
+        var pageSize = doc.internal.pageSize;
+        var pageHeight = pageSize.height
+          ? pageSize.height
+          : pageSize.getHeight();
+        doc.text(
+          `Benchmark Education Institute - Matara`,
+          220,
+          pageHeight - 10
+        );
+      },
+    });
     doc.save("Student Results.pdf");
   };
 
@@ -145,26 +190,6 @@ const Results = () => {
     <>
       <PageTitle>Student Results</PageTitle>
       <div className="grid grid-cols-3 gap-4 mb-4">
-        <div>
-          <SectionTitle>Mark Range</SectionTitle>
-          <Select
-            className="appearance-none block w-full bg-grey-lighter text-grey-darker border border-grey-lighter rounded py-3 px-4"
-            onChange={(e) => {
-              setMarksFilter(e.target.value);
-            }}
-          >
-            <option key="-1">All</option>
-            <option key="1" value="<50">
-              Below 50
-            </option>
-            <option key="2" value=">50">
-              Above 50
-            </option>
-            <option key="3" value=">75">
-              Above 75
-            </option>
-          </Select>
-        </div>
         <div>
           <SectionTitle>Courses</SectionTitle>
           <Select
@@ -213,6 +238,53 @@ const Results = () => {
                 {student.first_name} {student.last_name}
               </option>
             ))}
+          </Select>
+        </div>
+        <div>
+          <SectionTitle>Exams</SectionTitle>
+          <Select
+            className="appearance-none block w-full bg-grey-lighter text-grey-darker border border-grey-lighter rounded py-3 px-4"
+            onChange={(e) => {
+              setExamId(e.target.value);
+              setExamName(
+                e.target.options[e.target.selectedIndex].getAttribute(
+                  "exam_name"
+                )
+              );
+            }}
+          >
+            <option key={"-1"}>All</option>
+            {!exams
+              ? null
+              : exams.map((exam, i) => (
+                  <option
+                    key={exam.exam_id}
+                    value={exam.exam_id}
+                    exam_name={exam.exam_name}
+                  >
+                    {exam.exam_name}
+                  </option>
+                ))}
+          </Select>
+        </div>
+        <div>
+          <SectionTitle>Mark Range</SectionTitle>
+          <Select
+            className="appearance-none block w-full bg-grey-lighter text-grey-darker border border-grey-lighter rounded py-3 px-4"
+            onChange={(e) => {
+              setMarksFilter(e.target.value);
+            }}
+          >
+            <option key="-1">All</option>
+            <option key="1" value="<50">
+              Below 50
+            </option>
+            <option key="2" value=">50">
+              Above 50
+            </option>
+            <option key="3" value=">75">
+              Above 75
+            </option>
           </Select>
         </div>
       </div>

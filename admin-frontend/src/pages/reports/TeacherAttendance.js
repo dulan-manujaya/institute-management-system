@@ -111,7 +111,21 @@ const TeacherAttendance = () => {
     doc.text(`From Date : ${fromDate.toISOString().substring(0, 10)}`, 15, 30);
     doc.text(`To Date : ${toDate.toISOString().substring(0, 10)}`, 15, 40);
     doc.text(`Total Days : ${attendanceResponse.length}`, 15, 50);
-    doc.autoTable(col, rows, { startY: 60 });
+    doc.autoTable(col, rows, {
+      startY: 60,
+      didDrawPage: function (data) {
+        doc.setFontSize(10);
+        var pageSize = doc.internal.pageSize;
+        var pageHeight = pageSize.height
+          ? pageSize.height
+          : pageSize.getHeight();
+        doc.text(
+          `Benchmark Education Institute - Matara`,
+          220,
+          pageHeight - 10
+        );
+      },
+    });
     doc.save("Teacher Attendance.pdf");
   };
 
