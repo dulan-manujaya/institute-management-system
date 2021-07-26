@@ -9,6 +9,7 @@ class DBConnection {
       user: process.env.DBUSER,
       password: process.env.PASSWORD,
       database: "benchmarsystemdb",
+      port: process.env.DB_PORT,
     });
 
     this.checkConnection();
