@@ -29,6 +29,8 @@ const app = express();
 // Init environment
 dotenv.config();
 
+const stripe = require("stripe")(process.env.STRIPE_SEC_KEY);
+
 const upload = multer({
   storage: multer.diskStorage({
     destination: (req, file, callback) => {
@@ -78,6 +80,10 @@ app.use(`/api/v1/notifications`, notificationRouter);
 
 app.post("/api/v1/uploads/:type", upload.single("file"), (req, res) => {
   res.status(200).send("File Uploaded Successfully");
+});
+
+app.post("/api/v1/payments/create", (req, res) => {
+  const { amount, currency } = req.body;
 });
 
 // 404 error

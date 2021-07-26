@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Input } from "@windmill/react-ui";
+import { useHistory } from "react-router-dom";
 import axios from "axios";
 import ToastMessage from "../messages/HandleMessages";
 import { ToastContainer } from "react-toastify";
@@ -15,6 +16,7 @@ const EditTeacher = (props) => {
   const [email, setEmail] = useState("");
   const [mobile, setMobile] = useState("");
   const [teacherData, setTeacherData] = useState("");
+  const history = useHistory();
 
   const teacherObj = {
     first_name: firstName,
@@ -38,6 +40,7 @@ const EditTeacher = (props) => {
       .then((response) => {
         console.log(response);
         ToastMessage(response.data.message);
+        history.push("/app/teachers");
       })
       .catch((error) => {
         console.log(error.response);
