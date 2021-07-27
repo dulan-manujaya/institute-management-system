@@ -285,7 +285,6 @@ const AddResults = () => {
                   <TableCell>
                     <Input
                       type="number"
-                      value={marks}
                       onChange={(e) => {
                         setMarks(e.target.value);
                       }}
