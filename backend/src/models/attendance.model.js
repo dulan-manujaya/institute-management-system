@@ -72,7 +72,6 @@ class AttendanceModel {
       INNER JOIN teacher T
       ON T.teacher_id = A.teacher_id
       WHERE att_date BETWEEN '${params.from_date}' AND '${params.to_date}'`;
-    console.log(sql);
     return await query(sql);
   };
 
