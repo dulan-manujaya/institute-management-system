@@ -32,7 +32,6 @@ router.get(
 );
 router.get(
   "/student/:studentid",
-  studentAuth(),
   awaitHandlerFactory(enrollmentController.getMyEnrollmentsStudent)
 );
 router.get(

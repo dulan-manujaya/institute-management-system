@@ -86,7 +86,7 @@ const EditCourse = (props) => {
                 className="block uppercase tracking-wide text-gray-900 dark:text-gray-200 text-xs font-bold mb-2"
                 htmlFor="grid-course-amount"
               >
-                Course Amount
+                Monthly Fee
               </label>
               <Input
                 className="appearance-none block w-full bg-grey-lighter text-grey-darker border border-grey-lighter rounded py-3 px-4"

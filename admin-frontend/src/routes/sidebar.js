@@ -89,7 +89,7 @@ const routes = [
   {
     path: "/app/mark-attendance",
     icon: "PeopleIcon",
-    name: "Attendance",
+    name: "Student Attendance",
   },
   {
     path: "/app/mark-teacher-attendance",
