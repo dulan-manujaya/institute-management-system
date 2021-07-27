@@ -22,6 +22,7 @@ import variables from "../../common/globalVariables";
 import PageTitle from "../../components/Typography/PageTitle";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { StripeContainer } from "../../components/StripeContainer";
 
 const Payments = () => {
   const [studentId, setStudentId] = useState("0");
@@ -30,6 +31,7 @@ const Payments = () => {
   const [enrollmentId, setEnrollmentId] = useState();
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [payments, setPayments] = useState("");
+  const [selectedEnrl, setSelectedEnrl] = useState("");
   const resultsPerPage = 10;
   const totalResults = payments.length;
   const [page, setPage] = useState(1);
@@ -136,6 +138,7 @@ const Payments = () => {
   const setLastPaidDate = async (course_Id) => {
     let enrollment = enrollments.find((e) => e.course_id == course_Id);
     setEnrollmentId(enrollment.enrollment_id);
+    setSelectedEnrl(enrollment);
 
     const token = sessionStorage.getItem("studentAccessToken");
     await axios
@@ -196,6 +199,10 @@ const Payments = () => {
     getAllPayments();
     getAllEnrollments();
   }, []);
+
+  useEffect(() => {
+    console.log(selectedEnrl);
+  }, [selectedEnrl]);
 
   useEffect(() => {
     setData(response.slice((page - 1) * resultsPerPage, page * resultsPerPage));
@@ -294,9 +301,19 @@ const Payments = () => {
               </>
             ) : null}
           </div>
+          {selectedEnrl ? (
+            <div className="mt-4">
+              <StripeContainer
+                amount={selectedEnrl.amount}
+                createPayment={createPayment}
+                closeModal={closeModal}
+                latestPayment={latestPayment}
+              />
+            </div>
+          ) : null}
         </ModalBody>
         <ModalFooter>
-          <div className="hidden sm:block">
+          {/* <div className="hidden sm:block">
             <Button layout="outline" onClick={closeModal}>
               Cancel
             </Button>
@@ -311,12 +328,12 @@ const Payments = () => {
             >
               <span>Pay for next month</span>
             </Button>
-          </div>
-          <div className="block w-full sm:hidden">
+          </div> */}
+          {/* <div className="block w-full sm:hidden">
             <Button block size="large" layout="outline" onClick={closeModal}>
               Cancel
             </Button>
-          </div>
+          </div> */}
         </ModalFooter>
       </Modal>
       <ToastContainer />

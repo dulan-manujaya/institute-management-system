@@ -1,12 +1,13 @@
 export const doughnutLegends = [
-  { title: 'Shirts', color: 'bg-blue-500' },
-  { title: 'Shoes', color: 'bg-teal-600' },
-  { title: 'Bags', color: 'bg-purple-600' },
+  { title: 'Students', color: 'bg-blue-500' },
+  { title: 'Teachers', color: 'bg-teal-600' },
+  { title: 'Parents', color: 'bg-purple-600' },
 ]
 
 export const lineLegends = [
-  { title: 'Organic', color: 'bg-teal-600' },
-  { title: 'Paid', color: 'bg-purple-600' },
+  { title: 'Students', color: 'bg-blue-500' },
+  { title: 'Teachers', color: 'bg-teal-600' },
+  { title: 'Parents', color: 'bg-purple-600' },
 ]
 
 export const barLegends = [
@@ -18,16 +19,16 @@ export const doughnutOptions = {
   data: {
     datasets: [
       {
-        data: [33, 33, 33],
+        data: [50, 20, 30],
         /**
          * These colors come from Tailwind CSS palette
          * https://tailwindcss.com/docs/customizing-colors/#default-color-palette
          */
-        backgroundColor: ['#0694a2', '#1c64f2', '#7e3af2'],
+        backgroundColor: ['#3f83f8', '#047481', '#7e3af2'],
         label: 'Dataset 1',
       },
     ],
-    labels: ['Shoes', 'Shirts', 'Bags'],
+    labels: ['Students', 'Teachers', 'Parents'],
   },
   options: {
     responsive: true,
@@ -43,18 +44,29 @@ export const lineOptions = {
     labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July'],
     datasets: [
       {
-        label: 'Organic',
+        label: 'Students',
         /**
          * These colors come from Tailwind CSS palette
          * https://tailwindcss.com/docs/customizing-colors/#default-color-palette
          */
-        backgroundColor: '#0694a2',
-        borderColor: '#0694a2',
+        backgroundColor: '#3f83f8',
+        borderColor: '#3f83f8',
         data: [43, 48, 40, 54, 67, 73, 70],
         fill: false,
       },
       {
-        label: 'Paid',
+        label: 'Teachers',
+        fill: false,
+        /**
+         * These colors come from Tailwind CSS palette
+         * https://tailwindcss.com/docs/customizing-colors/#default-color-palette
+         */
+        backgroundColor: '#047481',
+        borderColor: '#047481',
+        data: [24, 50, 64, 74, 52, 51, 65],
+      },
+      {
+        label: 'Parents',
         fill: false,
         /**
          * These colors come from Tailwind CSS palette
@@ -62,7 +74,7 @@ export const lineOptions = {
          */
         backgroundColor: '#7e3af2',
         borderColor: '#7e3af2',
-        data: [24, 50, 64, 74, 52, 51, 65],
+        data: [14, 20, 44, 54, 22, 31, 45],
       },
     ],
   },

@@ -204,8 +204,12 @@ const Courses = () => {
             <Button
               className="text-white"
               onClick={() => {
-                createEnrollment(selectedId);
-                // deleteCourse(selectedId);
+                const answer = window.confirm(
+                  "Are you sure you want to enroll?"
+                );
+                if (answer) {
+                  createEnrollment(selectedId);
+                }
               }}
             >
               <span>Enroll</span>

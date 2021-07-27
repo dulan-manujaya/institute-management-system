@@ -10,6 +10,7 @@ const {
 } = require("../middleware/validators/paymentValidator.middleware");
 
 router.get("/", awaitHandlerFactory(paymentController.getAllPayments));
+// router.post("/stripe" ,awaitHandlerFactory(paymentController.makeStripePayment));
 router.get(
   "/reports",
   awaitHandlerFactory(paymentController.getAllPaymentReports)

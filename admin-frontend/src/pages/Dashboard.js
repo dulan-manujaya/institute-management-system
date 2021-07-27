@@ -19,7 +19,7 @@ import {
 import variables from "../common/globalVariables";
 
 const Dashboard = () => {
-  const [noOfStudents, setnoOfStudents] = useState("0");
+  const [noOfStudents, setnoOfStudents] = useState("50");
   const { loggedInUser } = useContext(TeacherContext);
 
   const getAllAcceptedStudents = async () => {
@@ -61,7 +61,7 @@ const Dashboard = () => {
           />
         </InfoCard>
 
-        <InfoCard title="Pending balance" value="$ 46,760.89">
+        <InfoCard title="Total payments" value="Rs 46,760.89">
           <RoundIcon
             icon={MoneyIcon}
             iconColorClass="text-green-500 dark:text-green-100"
@@ -70,7 +70,7 @@ const Dashboard = () => {
           />
         </InfoCard>
 
-        <InfoCard title="Assignment Submissions" value="376">
+        <InfoCard title="Total courses" value="26">
           <RoundIcon
             icon={MenuIcon}
             iconColorClass="text-blue-500 dark:text-blue-100"
@@ -79,7 +79,7 @@ const Dashboard = () => {
           />
         </InfoCard>
 
-        <InfoCard title="Pending Enrollments" value={7}>
+        <InfoCard title="Average marks" value={56}>
           <RoundIcon
             icon={ChatIcon}
             iconColorClass="text-teal-500 dark:text-teal-100"
@@ -87,6 +87,18 @@ const Dashboard = () => {
             className="mr-4"
           />
         </InfoCard>
+      </div>
+      <PageTitle>Charts</PageTitle>
+      <div className="grid gap-6 mb-8 md:grid-cols-2">
+        <ChartCard title="User Types">
+          <Doughnut {...doughnutOptions} />
+          <ChartLegend legends={doughnutLegends} />
+        </ChartCard>
+
+        <ChartCard title="New Users">
+          <Line {...lineOptions} />
+          <ChartLegend legends={lineLegends} />
+        </ChartCard>
       </div>
     </>
   );

@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { Input } from "@windmill/react-ui";
+import { useHistory } from "react-router-dom";
 import axios from "axios";
 import ToastMessage from "../messages/HandleMessages";
 import { ToastContainer } from "react-toastify";
@@ -9,6 +10,7 @@ import variables from "../common/globalVariables";
 import PageTitle from "../components/Typography/PageTitle";
 
 const AddTeacher = () => {
+  const history = useHistory();
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
   const [email, setEmail] = useState("");
@@ -36,6 +38,7 @@ const AddTeacher = () => {
       .then((response) => {
         console.log(response);
         ToastMessage(response.data);
+        history.push("/app/teachers");
       })
       .catch((error) => {
         console.log(error.response);
@@ -212,12 +215,12 @@ const AddTeacher = () => {
             </div>
           </div> */}
           <div className="flex justify-end space-x-4 mt-4">
-            {/* <button
+            <button
               className="mr-5 bg-red-600 hover:bg-red-800 text-white font-bold py-2 px-6 rounded-md"
               type="button"
             >
-              Clear Form
-            </button> */}
+              Cancel
+            </button>
             <button
               onClick={() => {
                 createTeacher();

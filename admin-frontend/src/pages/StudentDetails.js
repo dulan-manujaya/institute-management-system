@@ -29,30 +29,23 @@ const StudentDetails = (props) => {
     }
   };
 
-  // const getStudentCourses = async (student_id) => {
-  //   try {
-  //     const stuCourses = await axios.get(
-  //       `${variables.apiServer}/api/v1/enrollments/student/${student_id}`
-  //     );
-  //     setEnrolledCourses(stuCourses.data);
-  //   } catch (err) {
-  //     console.log(err);
-  //   }
-  // };
-
-  const onShowInformation = () => {
-    if (showInformation) {
-      setShowInformation(false);
-    } else {
-      setShowInformation(true);
+  const getStudentCourses = async (student_id) => {
+    try {
+      const stuCourses = await axios.get(
+        `${variables.apiServer}/api/v1/enrollments/student/${student_id}`
+      );
+      setEnrolledCourses(stuCourses.data);
+      console.log(stuCourses);
+    } catch (err) {
+      console.log(err);
     }
   };
 
   useEffect(() => {
     getStudentDetails(studentId);
-    // getStudentCourses(studentId);
+    getStudentCourses(studentId);
     console.log(student);
-  }, [showInformation]);
+  }, []);
 
   if (!student) {
     return (
@@ -88,7 +81,7 @@ const StudentDetails = (props) => {
   return (
     <>
       <PageTitle>Student Details</PageTitle>
-      <div className="dark:bg-gray-900 dark:bg-gray-200">
+      <div className="dark:bg-gray-900">
         <div className="container mx-auto my-5 p-5">
           <div className="md:flex no-wrap md:-mx-2 ">
             {/* Left Side */}
@@ -211,24 +204,11 @@ const StudentDetails = (props) => {
                     </div>
                   </div>
                 </div>
-                <Button
-                  className="block w-full text-white text-sm font-semibold rounded-lg focus:outline-none focus:shadow-outline hover:shadow-xs p-3 my-4"
-                  onClick={() => {
-                    onShowInformation();
-                  }}
-                >
-                  Show Full Information
-                </Button>
-                {showInformation ? (
-                  <div className="dark:bg-gray-800 bg-gray-300 p-3 shadow-sm rounded-sm">
-                    {/* Guardian details */}
-                  </div>
-                ) : null}
               </div>
               {/* End of about section */}
 
               {/* Experience and education */}
-              {/* <div className="dark:bg-gray-700 bg-gray-200 p-3 shadow-sm rounded-sm">
+              <div className="dark:bg-gray-700 bg-gray-200 p-3 shadow-sm rounded-sm">
                 <div className="grid grid-cols-2">
                   <div>
                     <div className="flex items-center space-x-2 font-semibold text-gray-500 leading-8 mb-3">
@@ -276,8 +256,7 @@ const StudentDetails = (props) => {
                     </ul>
                   </div>
                 </div>
-      
-              </div> */}
+              </div>
               {/* End of profile tab */}
             </div>
           </div>

@@ -1,4 +1,5 @@
 import { Input, Select } from "@windmill/react-ui";
+import { useHistory } from "react-router-dom";
 import axios from "axios";
 import React, { useContext, useEffect, useState } from "react";
 import { ToastContainer } from "react-toastify";
@@ -9,6 +10,7 @@ import { TeacherContext } from "../context/Context.Index";
 import ToastMessage from "../messages/HandleMessages";
 
 const StudentAdmission = () => {
+  const history = useHistory();
   const { loggedInUser } = useContext(TeacherContext);
   const [submitted, setSubmitted] = useState(false);
   const [studentFirstName, setStudentFirstName] = useState("");
@@ -128,6 +130,7 @@ const StudentAdmission = () => {
                 handleFileSubmission(avatar);
                 ToastMessage(response.data);
                 clearForm();
+                history.push("/app/students");
               })
               .catch((error) => {
                 console.log(error.response);
@@ -378,6 +381,13 @@ const StudentAdmission = () => {
             </div>
           </div>
           <div className="flex justify-end space-x-4 mt-4">
+            <button
+              type="button"
+              onClick={() => clearForm()}
+              className="mr-5 bg-red-600 hover:bg-red-800 text-white font-bold py-2 px-6 rounded-lg"
+            >
+              Cancel
+            </button>
             <button
               type="submit"
               onClick={() => setSubmitted(true)}

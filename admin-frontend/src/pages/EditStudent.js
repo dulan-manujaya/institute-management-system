@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Input, Select } from "@windmill/react-ui";
+import { useHistory } from "react-router-dom";
 import axios from "axios";
 import ToastMessage from "../messages/HandleMessages";
 import { ToastContainer } from "react-toastify";
@@ -9,6 +10,7 @@ import variables from "../common/globalVariables";
 import PageTitle from "../components/Typography/PageTitle";
 
 const EditStudent = (props) => {
+  const history = useHistory();
   const [studentId, setStudentId] = useState(props.match.params.studentid);
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
@@ -40,6 +42,7 @@ const EditStudent = (props) => {
       .then((response) => {
         console.log(response);
         ToastMessage(response.data.message);
+        history.push("/app/students");
       })
       .catch((error) => {
         console.log(error.response.data);
