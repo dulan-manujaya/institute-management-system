@@ -21,6 +21,7 @@ import "jspdf-autotable";
 const Results = () => {
   const [studentId, setStudentId] = useState("0");
   const [enrollments, setEnrollments] = useState([]);
+  const [exams, setExams] = useState([]);
 
   const [resultsResponse, setResultResponse] = useState([]);
   const totalResults = resultsResponse.length;
@@ -30,6 +31,8 @@ const Results = () => {
   const [marksFilter, setMarksFilter] = useState("All");
   const [courseId, setCourseId] = useState("All");
   const [courseName, setCourseName] = useState("All");
+  const [examId, setExamId] = useState("All");
+  const [examName, setExamName] = useState("All");
 
   const resultsPerPage = 10;
 
@@ -72,6 +75,12 @@ const Results = () => {
           results.data = results.data.filter((result) => result.marks >= 75);
         }
       }
+      if (examId != "All") {
+        results.data = results.data.filter(
+          (result) => result.exam_id == examId
+        );
+      }
+
       setResultsData(
         results.data.slice(
           (resultsPage - 1) * resultsPerPage,
@@ -107,9 +116,33 @@ const Results = () => {
     setEnrollments(enrollments.data);
   };
 
+  const getAllExams = async () => {
+    const token = sessionStorage.getItem("studentAccessToken");
+    const currStudent = await axios.get(
+      `${variables.apiServer}/api/v1/students/whoami`,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+    const sid = currStudent.data.student_id;
+    setStudentId(sid);
+    const exams = await axios.get(
+      `${variables.apiServer}/api/v1/exams/student/${sid}`,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+    setExams(exams.data);
+  };
+
   useEffect(() => {
     getAllResults();
     getAllEnrollments();
+    getAllExams();
   }, [resultsPage]);
 
   useEffect(() => {
@@ -140,15 +173,30 @@ const Results = () => {
     doc.setFontSize(16);
     doc.text(`Mark Range : ${marksFilter}`, 15, 30);
     doc.text(`Course : ${courseName == null ? courseId : courseName}`, 15, 40);
-    doc.text(`Average Mark : ${avg}`, 15, 50);
-    doc.autoTable(col, rows, { startY: 60 });
+    doc.text(`Exam : ${examName == null ? examId : examName}`, 15, 50);
+    doc.text(`Average Mark : ${avg}`, 15, 60);
+    doc.autoTable(col, rows, {
+      startY: 70,
+      didDrawPage: function (data) {
+        doc.setFontSize(10);
+        var pageSize = doc.internal.pageSize;
+        var pageHeight = pageSize.height
+          ? pageSize.height
+          : pageSize.getHeight();
+        doc.text(
+          `Benchmark Education Institute - Matara`,
+          220,
+          pageHeight - 10
+        );
+      },
+    });
     doc.save("Student - Results.pdf");
   };
 
   return (
     <>
       <PageTitle>Results</PageTitle>
-      <div className="grid grid-cols-2 gap-4 mb-4">
+      <div className="grid grid-cols-3 gap-4 mb-4">
         <div>
           <SectionTitle>Courses</SectionTitle>
           <Select
@@ -163,15 +211,44 @@ const Results = () => {
             }}
           >
             <option key={"-1"}>All</option>
-            {enrollments.map((enrollment, i) => (
-              <option
-                key={enrollment.enrollment_id}
-                value={enrollment.course_id}
-                course_name={enrollment.course_name}
-              >
-                {enrollment.course_name}
-              </option>
-            ))}
+            {!enrollments
+              ? null
+              : enrollments.map((enrollment, i) => (
+                  <option
+                    key={enrollment.enrollment_id}
+                    value={enrollment.course_id}
+                    course_name={enrollment.course_name}
+                  >
+                    {enrollment.course_name}
+                  </option>
+                ))}
+          </Select>
+        </div>
+        <div>
+          <SectionTitle>Exams</SectionTitle>
+          <Select
+            className="appearance-none block w-full bg-grey-lighter text-grey-darker border border-grey-lighter rounded py-3 px-4"
+            onChange={(e) => {
+              setExamId(e.target.value);
+              setExamName(
+                e.target.options[e.target.selectedIndex].getAttribute(
+                  "exam_name"
+                )
+              );
+            }}
+          >
+            <option key={"-1"}>All</option>
+            {!exams
+              ? null
+              : exams.map((exam, i) => (
+                  <option
+                    key={exam.exam_id}
+                    value={exam.exam_id}
+                    exam_name={exam.exam_name}
+                  >
+                    {exam.exam_name}
+                  </option>
+                ))}
           </Select>
         </div>
         <div>

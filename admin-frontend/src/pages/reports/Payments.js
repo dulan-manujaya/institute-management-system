@@ -130,7 +130,21 @@ const PaymentsReports = () => {
       30
     );
     doc.text(`Total Amount : ${sum}`, 15, 40);
-    doc.autoTable(col, rows, { startY: 50 });
+    doc.autoTable(col, rows, {
+      startY: 50,
+      didDrawPage: function (data) {
+        doc.setFontSize(10);
+        var pageSize = doc.internal.pageSize;
+        var pageHeight = pageSize.height
+          ? pageSize.height
+          : pageSize.getHeight();
+        doc.text(
+          `Benchmark Education Institute - Matara`,
+          220,
+          pageHeight - 10
+        );
+      },
+    });
     doc.save("Student Payments.pdf");
   };
 
