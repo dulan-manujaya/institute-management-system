@@ -8,9 +8,15 @@ export const StripeContainer = (props) => {
     "pk_test_51JH1p7KlckvcV53ylNrdtoopa8lsZDivFaf4367cbaPKenIxKsPqjNVO3O6it0yD3S9yyP6YDdWWjG9XejRBNS9d00Qet0vrXr";
 
   const stripePromise = loadStripe(PUBLIC_KEY);
+  console.log(props.amount);
   return (
     <Elements stripe={stripePromise}>
-      <PaymentForm amount={props.amount} />
+      <PaymentForm
+        amount={props.amount}
+        createPayment={props.createPayment}
+        closeModal={props.closeModal}
+        latestPayment={props.latestPayment}
+      />
     </Elements>
   );
 };

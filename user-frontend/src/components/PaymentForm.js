@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { Button } from "@windmill/react-ui";
 import { CardElement, useElements, useStripe } from "@stripe/react-stripe-js";
 import axios from "axios";
 import globalVariables from "../common/globalVariables";
@@ -40,7 +41,7 @@ export const PaymentForm = (props) => {
         const response = await axios.post(
           `${globalVariables.apiServer}/api/v1/payments/stripe`,
           {
-            amount: props.amount,
+            amount: props.amount * 100,
             id,
           }
         );
@@ -59,13 +60,33 @@ export const PaymentForm = (props) => {
   return (
     <>
       {!success ? (
-        <form onSubmit={handleSubmit}>
+        <form>
           <fieldset className="FormGroup">
             <div className="FormRow">
               <CardElement options={CARD_OPTIONS} />
             </div>
           </fieldset>
-          <button>Pay</button>
+          <div className="hidden sm:block">
+            <Button
+              layout="outline"
+              className="text-white float-left"
+              onClick={props.closeModal}
+            >
+              Cancel
+            </Button>
+          </div>
+          <div className="hidden sm:block">
+            <Button
+              className="text-white float-right"
+              disabled={props.latestPayment == undefined}
+              onClick={(e) => {
+                handleSubmit(e);
+                props.createPayment();
+              }}
+            >
+              <span>Pay for next month</span>
+            </Button>
+          </div>
         </form>
       ) : (
         <div>

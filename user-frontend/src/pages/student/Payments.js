@@ -303,12 +303,17 @@ const Payments = () => {
           </div>
           {selectedEnrl ? (
             <div className="mt-4">
-              <StripeContainer amount={selectedEnrl.amount} />
+              <StripeContainer
+                amount={selectedEnrl.amount}
+                createPayment={createPayment}
+                closeModal={closeModal}
+                latestPayment={latestPayment}
+              />
             </div>
           ) : null}
         </ModalBody>
         <ModalFooter>
-          <div className="hidden sm:block">
+          {/* <div className="hidden sm:block">
             <Button layout="outline" onClick={closeModal}>
               Cancel
             </Button>
@@ -323,12 +328,12 @@ const Payments = () => {
             >
               <span>Pay for next month</span>
             </Button>
-          </div>
-          <div className="block w-full sm:hidden">
+          </div> */}
+          {/* <div className="block w-full sm:hidden">
             <Button block size="large" layout="outline" onClick={closeModal}>
               Cancel
             </Button>
-          </div>
+          </div> */}
         </ModalFooter>
       </Modal>
       <ToastContainer />

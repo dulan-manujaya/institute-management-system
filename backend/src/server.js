@@ -86,14 +86,14 @@ app.post("/api/v1/payments/stripe", async (req, res) => {
   const { amount, id } = req.body;
   try {
     const payment = await stripe.paymentIntents.create({
-      amount,
+      amount:amount,
       currency: "USD",
       description: "Class fee payment",
       payment_method: id,
       confirm: true,
     });
 
-    console.log("Payment", payment);
+    // console.log("Payment", payment);
     res.json({
       message: "Payment success",
       success: true,
