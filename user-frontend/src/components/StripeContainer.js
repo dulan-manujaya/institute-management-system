@@ -5,7 +5,7 @@ import { PaymentForm } from "./PaymentForm";
 
 export const StripeContainer = (props) => {
   const PUBLIC_KEY =
-    "pk_test_51JH1p7KlckvcV53ylNrdtoopa8lsZDivFaf4367cbaPKenIxKsPqjNVO3O6it0yD3S9yyP6YDdWWjG9XejRBNS9d00Qet0vrXr";
+    "pk_test_51JG35JAZL6aaSWRyLJXMQGH0RB9Tvj0Ffwnb7EBjXcPo6S0n7pbpOAbLseVTy2KcAXiZSOskqBHzKjIA20fH7bzU00R9GxEY0U";
 
   const stripePromise = loadStripe(PUBLIC_KEY);
   console.log(props.amount);
