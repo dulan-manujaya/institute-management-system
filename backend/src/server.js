@@ -82,10 +82,27 @@ app.post("/api/v1/uploads/:type", upload.single("file"), (req, res) => {
   res.status(200).send("File Uploaded Successfully");
 });
 
-app.post("/api/v1/payments/create", (req, res) => {
-  const { amount, currency } = req.body;
-});
+app.post("/api/v1/payments/stripe", async (req, res) => {
+  const { amount, id } = req.body;
+  try {
+    const payment = await stripe.paymentIntents.create({
+      amount,
+      currency: "USD",
+      description: "Class fee payment",
+      payment_method: id,
+      confirm: true,
+    });
 
+    console.log("Payment", payment);
+    res.json({
+      message: "Payment success",
+      success: true,
+    });
+  } catch (error) {
+    console.log("Error", error.message);
+    res.json({ message: "Payment failed", success: false });
+  }
+});
 // 404 error
 app.all("*", (req, res, next) => {
   const err = new HttpException(404, "Endpoint Not Found");
